@@ -1,0 +1,159 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function githubUser() {
+      return signedIn() && request.auth.token.firebase.sign_in_provider == 'github.com';
+    }
+
+    function moderatorPath(uid) {
+      return /databases/$(database)/documents/moderators/$(uid);
+    }
+
+    function isModerator() {
+      return signedIn()
+        && exists(moderatorPath(request.auth.uid))
+        && get(moderatorPath(request.auth.uid)).data.enabled == true;
+    }
+
+    function validSubmission(data) {
+      return data.keys().hasAll([
+          'slug', 'title', 'description', 'content', 'tags', 'author',
+          'status', 'submitterUid', 'createdAt'
+        ])
+        && data.keys().hasOnly([
+          'slug', 'title', 'description', 'content', 'tags', 'author',
+          'status', 'submitterUid', 'createdAt'
+        ])
+        && data.slug is string
+        && data.slug.matches('^[a-z0-9]+(-[a-z0-9]+)*$')
+        && data.slug.size() <= 48
+        && data.title is string
+        && data.title.size() >= 2
+        && data.title.size() <= 60
+        && data.description is string
+        && data.description.size() >= 20
+        && data.description.size() <= 280
+        && data.content is string
+        && data.content.size() >= 50
+        && data.content.size() <= 20000
+        && data.tags is list
+        && data.tags.size() <= 5
+        && (data.tags.size() < 1 || (data.tags[0] is string && data.tags[0].size() <= 24))
+        && (data.tags.size() < 2 || (data.tags[1] is string && data.tags[1].size() <= 24))
+        && (data.tags.size() < 3 || (data.tags[2] is string && data.tags[2].size() <= 24))
+        && (data.tags.size() < 4 || (data.tags[3] is string && data.tags[3].size() <= 24))
+        && (data.tags.size() < 5 || (data.tags[4] is string && data.tags[4].size() <= 24))
+        && data.author is map
+        && data.author.keys().hasOnly(['name', 'url'])
+        && data.author.name is string
+        && data.author.name.size() <= 39
+        && data.author.name.matches('^[A-Za-z0-9-]*$')
+        && (!('url' in data.author) || (data.author.url is string && data.author.url.size() <= 2048))
+        && data.status == 'pending'
+        && data.submitterUid == request.auth.uid
+        && data.createdAt == request.time;
+    }
+
+    function validPublishedRule(data, slug) {
+      return data.slug == slug
+        && data.title is string
+        && data.description is string
+        && data.content is string
+        && data.tags is list
+        && data.author is map
+        && data.status == 'published'
+        && data.upvotes == 0
+        && data.sourceSubmissionId is string;
+    }
+
+    function votePath(slug, uid) {
+      return /databases/$(database)/documents/votes/$(slug + '__' + uid);
+    }
+
+    function validVoteForRule(slug) {
+      let path = votePath(slug, request.auth.uid);
+      return githubUser()
+        && resource.data.status == 'published'
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['upvotes'])
+        && request.resource.data.upvotes == resource.data.upvotes + 1
+        && !exists(path)
+        && existsAfter(path)
+        && getAfter(path).data.uid == request.auth.uid
+        && getAfter(path).data.slug == slug;
+    }
+
+    match /rules/{slug} {
+      allow read: if isModerator() || resource.data.status == 'published';
+
+      allow create: if isModerator()
+        && validPublishedRule(request.resource.data, slug)
+        && exists(/databases/$(database)/documents/submissions/$(request.resource.data.sourceSubmissionId))
+        && get(/databases/$(database)/documents/submissions/$(request.resource.data.sourceSubmissionId)).data.status == 'pending'
+        && getAfter(/databases/$(database)/documents/submissions/$(request.resource.data.sourceSubmissionId)).data.status == 'approved'
+        && getAfter(/databases/$(database)/documents/submissions/$(request.resource.data.sourceSubmissionId)).data.approvedSlug == slug;
+
+      allow update: if (
+          isModerator()
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+          && request.resource.data.status == 'published'
+        ) || validVoteForRule(slug);
+
+      allow delete: if false;
+    }
+
+    match /submissions/{submissionId} {
+      allow create: if githubUser() && validSubmission(request.resource.data);
+      allow read: if isModerator();
+
+      allow update: if isModerator()
+        && resource.data.status == 'pending'
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'status', 'moderatedAt', 'moderatedBy', 'approvedSlug'
+        ])
+        && request.resource.data.status in ['approved', 'rejected']
+        && request.resource.data.moderatedAt == request.time
+        && request.resource.data.moderatedBy == request.auth.uid
+        && (
+          request.resource.data.status == 'rejected'
+          || (
+            request.resource.data.approvedSlug is string
+            && getAfter(/databases/$(database)/documents/rules/$(request.resource.data.approvedSlug)).data.sourceSubmissionId == submissionId
+          )
+        );
+
+      allow delete: if false;
+    }
+
+    match /votes/{voteId} {
+      allow read: if isModerator() || (signedIn() && resource.data.uid == request.auth.uid);
+
+      allow create: if githubUser()
+        && request.resource.data.keys().hasOnly(['slug', 'uid', 'createdAt'])
+        && request.resource.data.slug is string
+        && request.resource.data.uid == request.auth.uid
+        && voteId == request.resource.data.slug + '__' + request.auth.uid
+        && request.resource.data.createdAt == request.time
+        && !exists(/databases/$(database)/documents/votes/$(voteId))
+        && exists(/databases/$(database)/documents/rules/$(request.resource.data.slug))
+        && get(/databases/$(database)/documents/rules/$(request.resource.data.slug)).data.status == 'published'
+        && existsAfter(/databases/$(database)/documents/rules/$(request.resource.data.slug))
+        && getAfter(/databases/$(database)/documents/rules/$(request.resource.data.slug)).data.upvotes
+          == get(/databases/$(database)/documents/rules/$(request.resource.data.slug)).data.upvotes + 1;
+
+      allow update, delete: if false;
+    }
+
+    match /moderators/{uid} {
+      allow read, write: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

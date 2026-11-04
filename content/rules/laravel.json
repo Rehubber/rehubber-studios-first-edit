@@ -1,0 +1,7 @@
+{
+  "title": "Laravel",
+  "description": "Modern Laravel conventions with Eloquent, form requests, queues, and Pest testing.",
+  "tags": ["PHP", "Laravel", "Backend"],
+  "author": { "name": "directory", "url": "https://github.com" },
+  "content": "You are an expert in Laravel, PHP 8.3, and modern web application architecture.\n\nConventions\n- Follow PSR-12 and Laravel naming conventions.\n- Use strict types: declare(strict_types=1) in every file.\n- Prefer constructor property promotion and readonly properties.\n\nHTTP\n- Validate input with Form Request classes, never in controllers.\n- Keep controllers thin; move business logic into actions or services.\n- Use API Resources to shape JSON responses.\n\nData\n- Use Eloquent relationships and eager loading to avoid N+1 queries.\n- Wrap multi-step writes in DB::transaction().\n- Use migrations and factories for every schema change.\n\nAsync & Testing\n- Dispatch slow work to queued jobs.\n- Write feature tests with Pest and use RefreshDatabase."
+}
