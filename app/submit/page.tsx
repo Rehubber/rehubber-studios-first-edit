@@ -4,14 +4,14 @@ import { SiteHeader } from '@/components/site-header'
 import { SubmitForm } from '@/components/submit-form'
 
 export const metadata: Metadata = {
-  title: 'Submit a rule',
-  description: 'Contribute Cursor rules for your framework. Every submission is reviewed by a moderator before publishing.',
+  title: 'Submit your open source tool',
+  description: 'Submit your open source tool for review.',
 }
 
 const steps = [
   { icon: GitBranch, title: 'Your submission is queued', body: 'It is saved privately while awaiting review.' },
   { icon: FileCode, title: 'A moderator reviews it', body: 'Submissions are checked before publication.' },
-  { icon: GitPullRequest, title: 'Approved rules go live', body: 'Approved rules are included in the next hourly directory export.' },
+  { icon: GitPullRequest, title: 'Approved tools go live', body: 'Approved tools are added to the directory.' },
 ]
 
 export default function SubmitPage() {
@@ -20,13 +20,10 @@ export default function SubmitPage() {
     <SiteHeader />
     <main className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 sm:py-16 lg:grid-cols-[1fr_18rem] lg:gap-16">
       <div className="flex flex-col gap-8">
-        <header className="flex flex-col gap-3">
-          <p className="font-mono text-xs text-primary">{'$ github login → pending review'}</p>
-          <h1 className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl">Submit a rule</h1>
-          <p className="max-w-xl text-pretty leading-relaxed text-muted-foreground">
-            Share the instructions that make Cursor write code the way your framework expects. Sign in with GitHub to
-            submit; a moderator reviews every submission before it goes live.
-          </p>
+        <header className="flex flex-col gap-2">
+          <h1 className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl">
+            Submit your open source tool
+          </h1>
         </header>
         <SubmitForm />
       </div>

@@ -1,7 +1,0 @@
-{
-  "title": "Expo + React Native",
-  "description": "Cross-platform mobile development with Expo Router, typed navigation, and performant lists.",
-  "tags": ["React Native", "Expo", "Mobile"],
-  "author": { "name": "directory", "url": "https://github.com" },
-  "content": "You are an expert in TypeScript, React Native, Expo, and mobile UI development.\n\nProject\n- Use Expo Router for file-based navigation.\n- Use Expo SDK modules before reaching for bare native libraries.\n- Keep platform-specific code in .ios.tsx / .android.tsx files.\n\nUI\n- Use SafeAreaView and useSafeAreaInsets for notches and home bars.\n- Use FlashList or FlatList for long lists; never map inside ScrollView.\n- Respect dynamic type and dark mode via useColorScheme.\n\nPerformance\n- Memoize list items and stable callbacks.\n- Use react-native-reanimated for animations on the UI thread.\n- Load images with expo-image and set explicit dimensions.\n\nState\n- Use React Query for server state and Zustand for local app state."
-}

@@ -19,7 +19,7 @@ const requireFirestore = process.argv.includes('--require-firestore')
 function normalizeRule(data, slug) {
   const title = typeof data.title === 'string' ? data.title : ''
   const content = typeof data.content === 'string' ? data.content : ''
-  if (!title || !content) return null
+  if (!title) return null
 
   const tags = Array.isArray(data.tags) ? data.tags.filter((tag) => typeof tag === 'string') : []
   const authorName =
@@ -27,7 +27,7 @@ function normalizeRule(data, slug) {
       ? data.author.name
       : typeof data.authorName === 'string'
         ? data.authorName
-        : 'anonymous'
+        : 'directory'
   const authorUrl =
     typeof data.author?.url === 'string'
       ? data.author.url
@@ -43,6 +43,9 @@ function normalizeRule(data, slug) {
     author: { name: authorName, ...(authorUrl ? { url: authorUrl } : {}) },
     content,
     upvotes: Number.isSafeInteger(data.upvotes) && data.upvotes >= 0 ? data.upvotes : 0,
+    date: typeof data.date === 'string' ? data.date : undefined,
+    url: typeof data.url === 'string' ? data.url : undefined,
+    showShare: Boolean(data.showShare),
   }
 }
 

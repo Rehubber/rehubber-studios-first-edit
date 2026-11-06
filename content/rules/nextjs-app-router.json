@@ -1,7 +1,0 @@
-{
-  "title": "Next.js App Router",
-  "description": "Server-first conventions for Next.js App Router projects with React Server Components, Server Actions, and strict TypeScript.",
-  "tags": ["Next.js", "React", "TypeScript"],
-  "author": { "name": "directory", "url": "https://github.com" },
-  "content": "You are an expert in TypeScript, Next.js App Router, React, and Tailwind CSS.\n\nCode Style\n- Write concise, technical TypeScript with accurate types.\n- Prefer functional, declarative patterns; avoid classes.\n- Use descriptive names with auxiliary verbs (isLoading, hasError).\n\nReact Server Components\n- Default to Server Components; add 'use client' only for interactivity.\n- Keep client components small and push them to the leaves of the tree.\n- Fetch data in Server Components and pass it down as props.\n\nData Mutations\n- Use Server Actions for form submissions and mutations.\n- Validate all input on the server with a schema library.\n- Revalidate with revalidatePath or updateTag after writes.\n\nPerformance\n- Use next/image for images and next/font for fonts.\n- Wrap async boundaries in Suspense with meaningful fallbacks.\n- Await params, searchParams, cookies and headers (they are async)."
-}

@@ -1,11 +1,14 @@
 export type Rule = {
   slug: string
   title: string
-  description: string
+  description?: string
   tags: string[]
-  author: { name: string; url?: string }
-  content: string
-  upvotes: number
+  author?: { name: string; url?: string }
+  content?: string
+  upvotes?: number
+  date?: string
+  url?: string
+  showShare?: boolean
 }
 
 export type DirectoryPage = {

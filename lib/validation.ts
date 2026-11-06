@@ -2,8 +2,8 @@ import type { SubmissionInput } from './types'
 
 export const LIMITS = {
   title: { min: 2, max: 60 },
-  description: { min: 20, max: 280 },
-  content: { min: 50, max: 20000 },
+  description: { min: 3, max: 80 },
+  content: { min: 0, max: 20000 },
   tags: { max: 5, tagMax: 24 },
   authorName: { max: 39 },
 } as const
@@ -48,24 +48,24 @@ export function parseSubmission(
     fieldErrors.description = `Description must be ${LIMITS.description.min}-${LIMITS.description.max} characters.`
   }
 
-  if (content.length < LIMITS.content.min || content.length > LIMITS.content.max) {
-    fieldErrors.content = `Rules must be at least ${LIMITS.content.min} characters.`
+  if (content && content.length > LIMITS.content.max) {
+    fieldErrors.content = `Content must be under ${LIMITS.content.max} characters.`
   }
 
   if (tags.length > LIMITS.tags.max || tags.some((tag) => tag.length > LIMITS.tags.tagMax)) {
     fieldErrors.tags = `Use up to ${LIMITS.tags.max} tags, ${LIMITS.tags.tagMax} characters each.`
   }
 
-  if (authorName.length > LIMITS.authorName.max || /[^a-zA-Z0-9-]/.test(authorName)) {
+  if (authorName && (authorName.length > LIMITS.authorName.max || /[^a-zA-Z0-9-]/.test(authorName))) {
     fieldErrors.authorName = 'Use a valid GitHub username.'
   }
 
   if (authorUrl) {
     try {
       const url = new URL(authorUrl)
-      if (url.protocol !== 'https:') throw new Error()
+      if (url.protocol !== 'https:' && url.protocol !== 'http:') throw new Error()
     } catch {
-      fieldErrors.authorUrl = 'Link must be a valid https:// URL.'
+      fieldErrors.authorUrl = 'Link must be a valid URL.'
     }
   }
 

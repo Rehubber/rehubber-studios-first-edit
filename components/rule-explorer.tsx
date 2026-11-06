@@ -3,6 +3,7 @@
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { LoaderCircle, Search, X } from 'lucide-react'
+import { EmailSubscribeCard } from '@/components/email-subscribe-card'
 import { RuleCard } from '@/components/rule-card'
 import type { DirectoryPage, Rule } from '@/lib/types'
 import { cn } from '@/lib/utils'
@@ -51,7 +52,7 @@ async function loadDirectoryPage(pageNumber: number): Promise<DirectoryPage> {
 }
 
 function matches(rule: Rule, terms: string[]) {
-  const haystack = `${rule.title} ${rule.description} ${rule.tags.join(' ')} ${rule.content}`.toLowerCase()
+  const haystack = `${rule.title} ${rule.description ?? ''} ${rule.tags.join(' ')} ${rule.content ?? ''}`.toLowerCase()
   return terms.every((term) => haystack.includes(term))
 }
 
@@ -74,7 +75,6 @@ export function RuleExplorer({ initialPage }: { initialPage: DirectoryPage }) {
   const [loadedPage, setLoadedPage] = useState(currentPage)
   const [query, setQuery] = useState('')
   const [activeTag, setActiveTag] = useState<string | null>(null)
-  const [density, setDensity] = useState<'compact' | 'balanced' | 'spacious'>('compact')
   const deferredQuery = useDeferredValue(query)
   const inputRef = useRef<HTMLInputElement>(null)
   const tags = useMemo(() => getTags(rules), [rules])
@@ -125,7 +125,7 @@ export function RuleExplorer({ initialPage }: { initialPage: DirectoryPage }) {
   }
 
   return (
-    <section id="rules" aria-labelledby="rules-heading" className="mx-auto flex max-w-6xl scroll-mt-20 flex-col gap-6 px-4 pb-24 sm:px-6">
+    <section id="rules" aria-labelledby="rules-heading" className="mx-auto flex max-w-7xl scroll-mt-20 flex-col gap-6 px-4 pb-24 sm:px-6 lg:px-8">
       <h2 id="rules-heading" className="sr-only">
         Rules
       </h2>
@@ -184,31 +184,12 @@ export function RuleExplorer({ initialPage }: { initialPage: DirectoryPage }) {
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
+      <div className="flex items-center justify-center">
         <p aria-live="polite" className="font-mono text-xs text-muted-foreground">
           {filtered.length === rules.length
             ? `Showing ${rules.length} loaded rules`
             : `${filtered.length} of ${rules.length} loaded rules match`}
         </p>
-
-        <div className="flex items-center gap-1 rounded-lg border border-border bg-card/60 p-1 text-xs font-mono" role="group" aria-label="Grid spacing density">
-          <span className="px-2 text-muted-foreground">Spacing:</span>
-          {(['compact', 'balanced', 'spacious'] as const).map((mode) => (
-            <button
-              key={mode}
-              type="button"
-              onClick={() => setDensity(mode)}
-              className={cn(
-                'capitalize rounded px-2.5 py-0.5 transition-colors',
-                density === mode
-                  ? 'bg-primary text-primary-foreground font-semibold shadow-xs'
-                  : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
-              )}
-            >
-              {mode}
-            </button>
-          ))}
-        </div>
       </div>
       {hasMore && (
         <p className="-mt-4 text-center text-xs text-muted-foreground">
@@ -217,21 +198,39 @@ export function RuleExplorer({ initialPage }: { initialPage: DirectoryPage }) {
       )}
 
       {filtered.length > 0 ? (
-        <ul
-          className={cn(
-            'grid md:grid-cols-2 lg:grid-cols-3 transition-all duration-200',
-            density === 'compact' && 'gap-3.5 sm:gap-4',
-            density === 'balanced' && 'gap-5 sm:gap-6',
-            density === 'spacious' && 'gap-7 lg:gap-8'
-          )}
-        >
-          {filtered.map((rule) => (
-            <li key={rule.slug} className="flex">
-              <div className="flex w-full flex-col [&>article]:flex-1">
-                <RuleCard rule={rule} density={density} />
-              </div>
-            </li>
-          ))}
+        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {(() => {
+            const insertIndex = Math.min(12, filtered.length)
+            const cards: React.ReactNode[] = []
+            filtered.forEach((rule, idx) => {
+              if (idx === insertIndex) {
+                cards.push(
+                  <li key="email-subscribe-card" className="flex">
+                    <div className="flex w-full flex-col [&>article]:flex-1">
+                      <EmailSubscribeCard />
+                    </div>
+                  </li>
+                )
+              }
+              cards.push(
+                <li key={rule.slug} className="flex">
+                  <div className="flex w-full flex-col [&>article]:flex-1">
+                    <RuleCard rule={rule} density="compact" />
+                  </div>
+                </li>
+              )
+            })
+            if (filtered.length <= insertIndex) {
+              cards.push(
+                <li key="email-subscribe-card" className="flex">
+                  <div className="flex w-full flex-col [&>article]:flex-1">
+                    <EmailSubscribeCard />
+                  </div>
+                </li>
+              )
+            }
+            return cards
+          })()}
         </ul>
       ) : (
         <div className="flex flex-col items-center gap-3 rounded-xl border border-dashed border-border px-6 py-16 text-center">

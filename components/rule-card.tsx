@@ -1,8 +1,9 @@
-import { CopyButton } from '@/components/copy-button'
+'use client'
+
+import { useState } from 'react'
+import { Check, ExternalLink, History, Share2, Sparkles } from 'lucide-react'
 import { UpvoteButton } from '@/components/upvote-button'
 import type { Rule } from '@/lib/types'
-
-const PREVIEW_LINES = 9
 
 export function RuleCard({
   rule,
@@ -11,90 +12,91 @@ export function RuleCard({
   rule: Rule
   density?: 'spacious' | 'balanced' | 'compact'
 }) {
-  const previewLines = density === 'compact' ? 6 : density === 'spacious' ? 10 : 9
-  const lines = rule.content.split('\n')
-  const preview = lines.slice(0, previewLines)
-  const hiddenCount = Math.max(0, lines.length - previewLines)
+  const [copied, setCopied] = useState(false)
+  const primaryTag = rule.tags[0] || 'AI Tool'
+  const dateText = rule.date || '27 Mar 2023'
+  const isExternal = Boolean(rule.url)
 
-  const bodyPadding =
-    density === 'spacious' ? 'p-6 sm:p-7 gap-4' : density === 'compact' ? 'p-4 gap-2.5' : 'p-5 sm:p-6 gap-3.5'
+  async function handleShare(e: React.MouseEvent) {
+    e.preventDefault()
+    e.stopPropagation()
+    const shareUrl = rule.url || (typeof window !== 'undefined' ? window.location.href : '')
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: rule.title,
+          text: rule.description || rule.title,
+          url: shareUrl,
+        })
+      } else if (navigator.clipboard) {
+        await navigator.clipboard.writeText(shareUrl)
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
+      }
+    } catch {
+      // User cancelled share dialog
+    }
+  }
 
-  const headerPadding =
-    density === 'spacious'
-      ? 'px-6 sm:px-7 py-3'
-      : density === 'compact'
-        ? 'px-4 py-2'
-        : 'px-5 sm:px-6 py-2.5'
-
-  const prePadding =
-    density === 'spacious'
-      ? 'px-6 sm:px-7 py-4'
-      : density === 'compact'
-        ? 'px-4 py-2.5'
-        : 'px-5 sm:px-6 py-3.5'
-
-  const footerPadding =
-    density === 'spacious'
-      ? 'px-6 sm:px-7 py-4'
-      : density === 'compact'
-        ? 'px-4 py-2.5'
-        : 'px-5 sm:px-6 py-3.5'
+  const CardWrapper = isExternal ? 'a' : 'div'
+  const wrapperProps = isExternal
+    ? {
+        href: rule.url,
+        target: '_blank',
+        rel: 'noopener noreferrer',
+      }
+    : {}
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-colors hover:border-primary/30">
-      <div className={`flex flex-col ${bodyPadding}`}>
-        <div className="flex items-start justify-between gap-3">
-          <h3 className="text-pretty text-base font-semibold leading-snug">{rule.title}</h3>
-          <span className="shrink-0 font-mono text-xs text-muted-foreground">{lines.length} lines</span>
-        </div>
-        <p className="line-clamp-2 text-pretty text-sm leading-relaxed text-muted-foreground">{rule.description}</p>
-        <ul className="flex flex-wrap gap-1.5" aria-label="Tags">
-          {rule.tags.map((tag) => (
-            <li key={tag} className="rounded-md bg-secondary px-2 py-0.5 font-mono text-xs text-secondary-foreground">
-              {tag}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="relative mt-auto border-t border-border bg-code">
-        <div className={`flex items-center justify-between border-b border-border ${headerPadding}`}>
-          <span className="font-mono text-xs text-muted-foreground">.cursorrules</span>
-          <CopyButton text={rule.content} label={`${rule.title} rules`} />
-        </div>
-        <pre className={`overflow-hidden font-mono text-xs leading-relaxed ${prePadding}`} aria-label={`${rule.title} rules preview`}>
-          <code className="grid">
-            {preview.map((line, index) => (
-              <span key={index} className="grid grid-cols-[2ch_1fr] gap-3">
-                <span aria-hidden="true" className="select-none text-right text-muted-foreground/50">
-                  {index + 1}
-                </span>
-                <span className="truncate text-foreground/85">{line || ' '}</span>
-              </span>
-            ))}
-          </code>
-        </pre>
-        {hiddenCount > 0 && (
-          <p className={`border-t border-border font-mono text-xs text-muted-foreground ${density === 'compact' ? 'px-4 py-1.5' : 'px-5 sm:px-6 py-2'}`}>
-            {`+ ${hiddenCount} more lines — copy to get the full ruleset`}
-          </p>
-        )}
-      </div>
-
-      <footer className={`flex items-center justify-between gap-3 border-t border-border text-xs text-muted-foreground ${footerPadding}`}>
-        <span>
-          by{' '}
-          {rule.author.url ? (
-            <a href={rule.author.url} target="_blank" rel="noreferrer" className="text-foreground hover:text-primary">
-              @{rule.author.name}
-            </a>
-          ) : (
-            <span className="text-foreground">@{rule.author.name}</span>
+    <article className="group relative flex h-full min-h-[148px] flex-col justify-between overflow-hidden rounded-xl border border-border bg-card p-4 transition-all duration-150 hover:border-primary/40 hover:bg-card/90">
+      <CardWrapper {...wrapperProps} className="flex flex-1 flex-col gap-3 focus:outline-none">
+        <div className="flex items-start justify-between gap-2">
+          <h3 className="text-pretty text-[15px] font-semibold leading-snug tracking-tight text-foreground group-hover:text-primary transition-colors">
+            {rule.title}
+          </h3>
+          {isExternal && (
+            <ExternalLink
+              className="mt-0.5 size-3.5 shrink-0 text-muted-foreground group-hover:text-primary transition-colors"
+              aria-hidden="true"
+            />
           )}
-        </span>
-        <div className="flex items-center gap-3">
-          <span className="font-mono">{rule.slug}.json</span>
-          <UpvoteButton slug={rule.slug} initialCount={rule.upvotes} />
+        </div>
+
+        <div className="flex items-center">
+          <span className="inline-flex items-center gap-1.5 rounded-md bg-secondary/80 px-2.5 py-1 text-xs font-medium text-secondary-foreground transition-colors group-hover:bg-secondary">
+            <Sparkles className="size-3 text-muted-foreground/90 group-hover:text-primary transition-colors" aria-hidden="true" />
+            <span>{primaryTag}</span>
+          </span>
+        </div>
+      </CardWrapper>
+
+      <footer className="mt-4 flex items-center justify-between gap-2 pt-1 text-xs text-muted-foreground">
+        <div className="flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground/80">
+          <History className="size-3.5 text-muted-foreground/60" aria-hidden="true" />
+          <span>{dateText}</span>
+        </div>
+
+        <div className="flex items-center gap-1.5">
+          <button
+            type="button"
+            onClick={handleShare}
+            className="inline-flex h-7 items-center gap-1 rounded-full px-2 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+            aria-label={`Share ${rule.title}`}
+          >
+            {copied ? (
+              <>
+                <Check className="size-3 text-emerald-500" aria-hidden="true" />
+                <span className="text-emerald-500">Copied</span>
+              </>
+            ) : (
+              <>
+                <Share2 className="size-3" aria-hidden="true" />
+                <span>Share</span>
+              </>
+            )}
+          </button>
+
+          <UpvoteButton slug={rule.slug} initialCount={rule.upvotes ?? 0} />
         </div>
       </footer>
     </article>
