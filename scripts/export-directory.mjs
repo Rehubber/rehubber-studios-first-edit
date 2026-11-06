@@ -43,6 +43,7 @@ function normalizeRule(data, slug) {
     author: { name: authorName, ...(authorUrl ? { url: authorUrl } : {}) },
     content,
     upvotes: Number.isSafeInteger(data.upvotes) && data.upvotes >= 0 ? data.upvotes : 0,
+    views: Number.isSafeInteger(data.views) && data.views >= 0 ? data.views : 0,
     date: typeof data.date === 'string' ? data.date : undefined,
     url: typeof data.url === 'string' ? data.url : undefined,
     showShare: Boolean(data.showShare),

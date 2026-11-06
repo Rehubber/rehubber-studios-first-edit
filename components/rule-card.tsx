@@ -1,9 +1,19 @@
 'use client'
 
 import { useState } from 'react'
-import { Check, ExternalLink, History, Share2, Sparkles } from 'lucide-react'
+import { Check, ExternalLink, Eye, History, Share2, Sparkles } from 'lucide-react'
 import { UpvoteButton } from '@/components/upvote-button'
 import type { Rule } from '@/lib/types'
+
+function formatViews(count: number): string {
+  if (count >= 1_000_000) {
+    return (count / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M'
+  }
+  if (count >= 1_000) {
+    return (count / 1_000).toFixed(1).replace(/\.0$/, '') + 'k'
+  }
+  return count.toLocaleString()
+}
 
 export function RuleCard({
   rule,
@@ -13,9 +23,40 @@ export function RuleCard({
   density?: 'spacious' | 'balanced' | 'compact'
 }) {
   const [copied, setCopied] = useState(false)
+  const [views, setViews] = useState(rule.views ?? 0)
   const primaryTag = rule.tags[0] || 'AI Tool'
   const dateText = rule.date || '27 Mar 2023'
   const isExternal = Boolean(rule.url)
+
+  function trackView() {
+    try {
+      const key = `rehubber:viewed:${rule.slug}`
+      if (typeof window !== 'undefined' && !window.sessionStorage.getItem(key)) {
+        window.sessionStorage.setItem(key, '1')
+        setViews((prev) => prev + 1)
+
+        const runUpdate = async () => {
+          try {
+            const { getFirebaseClientFirestore } = await import('@/lib/firebase-client')
+            const { doc, updateDoc, increment } = await import('firebase/firestore')
+            const db = getFirebaseClientFirestore()
+            const ruleRef = doc(db, 'rules', rule.slug)
+            await updateDoc(ruleRef, { views: increment(1) })
+          } catch {
+            // Non-blocking background analytics
+          }
+        }
+
+        if ('requestIdleCallback' in window) {
+          ;(window as Window & { requestIdleCallback: (cb: () => void) => number }).requestIdleCallback(runUpdate)
+        } else {
+          setTimeout(runUpdate, 150)
+        }
+      }
+    } catch {
+      // Ignore background storage errors
+    }
+  }
 
   async function handleShare(e: React.MouseEvent) {
     e.preventDefault()
@@ -44,12 +85,16 @@ export function RuleCard({
         href: rule.url,
         target: '_blank',
         rel: 'noopener noreferrer',
+        onClick: trackView,
+        onAuxClick: trackView,
       }
-    : {}
+    : {
+        onClick: trackView,
+      }
 
   return (
     <article className="group relative flex h-full min-h-[148px] flex-col justify-between overflow-hidden rounded-xl border border-border bg-card p-4 transition-all duration-150 hover:border-primary/40 hover:bg-card/90">
-      <CardWrapper {...wrapperProps} className="flex flex-1 flex-col gap-3 focus:outline-none">
+      <CardWrapper {...wrapperProps} className="flex flex-1 flex-col gap-3 focus:outline-none cursor-pointer">
         <div className="flex items-start justify-between gap-2">
           <h3 className="text-pretty text-[15px] font-semibold leading-snug tracking-tight text-foreground group-hover:text-primary transition-colors">
             {rule.title}
@@ -72,8 +117,17 @@ export function RuleCard({
 
       <footer className="mt-4 flex items-center justify-between gap-2 pt-1 text-xs text-muted-foreground">
         <div className="flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground/80">
-          <History className="size-3.5 text-muted-foreground/60" aria-hidden="true" />
-          <span>{dateText}</span>
+          <div className="flex items-center gap-1" title={`Added on ${dateText}`}>
+            <History className="size-3.5 text-muted-foreground/60" aria-hidden="true" />
+            <span>{dateText}</span>
+          </div>
+
+          <span className="text-muted-foreground/30" aria-hidden="true">•</span>
+
+          <div className="flex items-center gap-1 text-muted-foreground/75" title={`${views.toLocaleString()} views`}>
+            <Eye className="size-3.5 text-muted-foreground/60" aria-hidden="true" />
+            <span>{formatViews(views)}</span>
+          </div>
         </div>
 
         <div className="flex items-center gap-1.5">

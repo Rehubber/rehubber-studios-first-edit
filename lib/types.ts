@@ -6,6 +6,7 @@ export type Rule = {
   author?: { name: string; url?: string }
   content?: string
   upvotes?: number
+  views?: number
   date?: string
   url?: string
   showShare?: boolean
