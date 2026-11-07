@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "node scripts/export-directory.mjs --local && next dev -p 3000 -H 0.0.0.0",
     "export:directory": "node scripts/export-directory.mjs",
-    "build": "npm run export:directory && next build"
+    "build": "npm run export:directory && next build",
+    "lint": "tsc --noEmit"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
