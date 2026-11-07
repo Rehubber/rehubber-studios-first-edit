@@ -87,6 +87,17 @@ service cloud.firestore {
         && getAfter(path).data.slug == slug;
     }
 
+    function validRuleVoteOrView() {
+      return resource.data.status == 'published'
+        && (
+          (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['upvotes'])
+           && (request.resource.data.upvotes == resource.data.upvotes + 1 || request.resource.data.upvotes == resource.data.upvotes - 1))
+          ||
+          (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views'])
+           && request.resource.data.views == resource.data.views + 1)
+        );
+    }
+
     match /rules/{slug} {
       allow read: if isModerator() || resource.data.status == 'published';
 
@@ -101,7 +112,7 @@ service cloud.firestore {
           isModerator()
           && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
           && request.resource.data.status == 'published'
-        ) || validVoteForRule(slug);
+        ) || validVoteForRule(slug) || validRuleVoteOrView();
 
       allow delete: if false;
     }
