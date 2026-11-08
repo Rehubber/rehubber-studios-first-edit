@@ -115,17 +115,17 @@ export function RuleCard({
         </div>
       </CardWrapper>
 
-      <footer className="mt-4 flex items-center justify-between gap-2 pt-1 text-xs text-muted-foreground">
-        <div className="flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground/80">
-          <div className="flex items-center gap-1" title={`Added on ${dateText}`}>
-            <History className="size-3.5 text-muted-foreground/60" aria-hidden="true" />
+      <footer className="mt-4 flex items-center justify-between gap-2 pt-1 text-muted-foreground">
+        <div className="flex items-center gap-1 font-mono text-[6px] font-medium text-muted-foreground/80">
+          <div className="flex items-center gap-0.5" title={`Added on ${dateText}`}>
+            <History className="size-2 text-muted-foreground/60" aria-hidden="true" />
             <span>{dateText}</span>
           </div>
 
-          <span className="text-muted-foreground/30" aria-hidden="true">•</span>
+          <span className="text-muted-foreground/30 text-[5px]" aria-hidden="true">•</span>
 
-          <div className="flex items-center gap-1 text-muted-foreground/75" title={`${views.toLocaleString()} views`}>
-            <Eye className="size-3.5 text-muted-foreground/60" aria-hidden="true" />
+          <div className="flex items-center gap-0.5 text-muted-foreground/75" title={`${views.toLocaleString()} views`}>
+            <Eye className="size-2 text-muted-foreground/60" aria-hidden="true" />
             <span>{formatViews(views)}</span>
           </div>
         </div>
@@ -134,17 +134,17 @@ export function RuleCard({
           <button
             type="button"
             onClick={handleShare}
-            className="inline-flex h-7 items-center gap-1 rounded-full px-2 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+            className="inline-flex h-5 items-center gap-0.5 rounded-full px-1.5 text-[6px] font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
             aria-label={`Share ${rule.title}`}
           >
             {copied ? (
               <>
-                <Check className="size-3 text-emerald-500" aria-hidden="true" />
+                <Check className="size-2 text-emerald-500" aria-hidden="true" />
                 <span className="text-emerald-500">Copied</span>
               </>
             ) : (
               <>
-                <Share2 className="size-3" aria-hidden="true" />
+                <Share2 className="size-2" aria-hidden="true" />
                 <span>Share</span>
               </>
             )}
