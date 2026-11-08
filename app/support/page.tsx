@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: 'Support & Inquiries · Rehubber',
     description:
       'Contact Rehubber support for tool claims, bug reports, feature requests, or partnerships.',
-    url: 'https://rehubber.com/support',
+    url: 'https://www.rehubber.com/support',
     siteName: 'Rehubber',
     type: 'website',
   },

@@ -10,6 +10,26 @@ export function SiteHeader() {
         >
           Rehubber
         </Link>
+        <nav aria-label="Main Navigation" className="flex items-center gap-1 sm:gap-2">
+          <Link
+            href="/submit"
+            className="rounded-md px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+          >
+            Submit Tool
+          </Link>
+          <Link
+            href="/partner"
+            className="rounded-md px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+          >
+            Partner
+          </Link>
+          <Link
+            href="/support"
+            className="hidden sm:inline-block rounded-md px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+          >
+            Support
+          </Link>
+        </nav>
       </div>
     </header>
   )

@@ -47,7 +47,7 @@ export function Hero() {
             <span>Submit</span>
           </Link>
           <Link
-            href="/support"
+            href="/partner"
             className="inline-flex h-9 min-w-32 items-center justify-center gap-1.5 rounded-md border border-border bg-card px-3.5 text-xs font-medium text-foreground shadow-xs transition-colors hover:border-primary/60 hover:bg-secondary hover:text-primary"
           >
             <Handshake className="size-3.5" aria-hidden="true" />

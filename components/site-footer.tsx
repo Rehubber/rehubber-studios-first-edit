@@ -13,6 +13,10 @@ export function SiteFooter() {
             Submit for review
           </Link>
           <span className="text-muted-foreground/30" aria-hidden="true">•</span>
+          <Link href="/partner" className="text-foreground/80 underline-offset-4 hover:text-primary hover:underline">
+            Partner with us
+          </Link>
+          <span className="text-muted-foreground/30" aria-hidden="true">•</span>
           <Link href="/support" className="text-foreground/80 underline-offset-4 hover:text-primary hover:underline">
             Support
           </Link>

@@ -8,13 +8,27 @@ const geist = Geist({ subsets: ['latin'], variable: '--font-geist' })
 const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono' })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.rehubber.com'),
   title: {
-    default: 'Rules Directory — Open-source .cursorrules for every stack',
-    template: '%s · Rules Directory',
+    default: 'Rehubber — Open Source Developer Tools Directory',
+    template: '%s · Rehubber',
   },
   description:
-    'A lightweight, open-source directory of Cursor rules. Search, copy, and submit AI coding rules for review.',
-  generator: 'v0.app',
+    'Discover open source tools updated daily. Ranked by the community, over 600 listed across all categories.',
+  openGraph: {
+    title: 'Rehubber — Open Source Developer Tools Directory',
+    description:
+      'Discover open source tools updated daily. Ranked by the community, over 600 listed across all categories.',
+    url: 'https://www.rehubber.com',
+    siteName: 'Rehubber',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Rehubber — Open Source Developer Tools Directory',
+    description:
+      'Discover open source tools updated daily. Ranked by the community, over 600 listed across all categories.',
+  },
 }
 
 export const viewport: Viewport = {

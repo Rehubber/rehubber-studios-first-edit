@@ -4,8 +4,20 @@ import { SiteHeader } from '@/components/site-header'
 import { SubmitForm } from '@/components/submit-form'
 
 export const metadata: Metadata = {
-  title: 'Submit your open source tool',
-  description: 'Submit your open source tool for review.',
+  title: 'Submit your open source tool · Rehubber',
+  description: 'Submit your open-source developer tool to Rehubber for community review and listing.',
+  openGraph: {
+    title: 'Submit your open source tool · Rehubber',
+    description: 'Submit your open-source developer tool to Rehubber for community review and listing.',
+    url: 'https://www.rehubber.com/submit',
+    siteName: 'Rehubber',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Submit your open source tool · Rehubber',
+    description: 'Submit your open-source developer tool to Rehubber for community review and listing.',
+  },
 }
 
 const steps = [
