@@ -11,9 +11,17 @@ export function Hero() {
         </span>
       </h1>
 
-      <p className="max-w-xl text-pretty text-[14px] leading-relaxed text-muted-foreground sm:text-[15.5px]">
-        Ranked by the community, over 600 listed across all categories
-      </p>
+      <div className="flex flex-col items-center gap-1.5">
+        <p className="max-w-xl text-pretty text-[14px] leading-relaxed text-muted-foreground sm:text-[15.5px]">
+          Ranked by the community, over 600 listed across all categories
+        </p>
+        <Link
+          href="/submit"
+          className="text-[13px] font-medium text-primary underline-offset-4 hover:underline sm:text-[14px]"
+        >
+          Get yours listed
+        </Link>
+      </div>
 
       <div className="flex flex-col items-center gap-3.5 pt-1">
         <a
