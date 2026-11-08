@@ -18,9 +18,9 @@ export function Hero() {
       <div className="flex flex-col items-center gap-3.5 pt-1">
         <a
           href="#rules"
-          className="group relative flex w-48 flex-col items-center justify-center gap-0.5 rounded-lg bg-primary py-1.5 shadow-lg shadow-primary/20 ring-1 ring-white/20 transition-all duration-200 hover:shadow-xl hover:shadow-primary/30 hover:brightness-105 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          className="group relative flex w-48 flex-col items-center justify-center gap-0.5 rounded-lg bg-primary py-1.5 transition-colors hover:bg-primary/90 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
-          <span className="text-[17px] font-semibold tracking-tight leading-tight text-primary-foreground drop-shadow-[0_1px_1px_rgba(0,0,0,0.12)]">
+          <span className="text-[17px] font-semibold tracking-tight leading-tight text-primary-foreground">
             Start Exploring
           </span>
           <span className="flex flex-col items-center -space-y-2 text-primary-foreground/85 transition-transform duration-200 group-hover:translate-y-0.5" aria-hidden="true">
