@@ -1,0 +1,4 @@
+# Redirect non-www to www for SEO and canonical URL consistency
+https://rehubber.com/* https://www.rehubber.com/:splat 301!
+http://rehubber.com/* https://www.rehubber.com/:splat 301!
+http://www.rehubber.com/* https://www.rehubber.com/:splat 301!
