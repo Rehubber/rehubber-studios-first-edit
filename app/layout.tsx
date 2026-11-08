@@ -29,6 +29,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geist.variable} ${geistMono.variable} bg-background`}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if(typeof window!=='undefined'&&window.location.hostname==='rehubber.com'){window.location.replace('https://www.rehubber.com'+window.location.pathname+window.location.search+window.location.hash);}`,
+          }}
+        />
+      </head>
       <body className="flex min-h-dvh flex-col antialiased">
         <div className="flex-1">{children}</div>
         <SiteFooter />
