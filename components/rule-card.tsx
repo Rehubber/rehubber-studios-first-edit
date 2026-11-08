@@ -107,11 +107,9 @@ export function RuleCard({
           )}
         </div>
 
-        <div className="flex items-center">
-          <span className="inline-flex items-center gap-1.5 rounded-md bg-secondary/80 px-2.5 py-1 text-[11px] font-medium text-secondary-foreground transition-colors group-hover:bg-secondary">
-            <Sparkles className="size-3 text-muted-foreground/90 group-hover:text-primary transition-colors" aria-hidden="true" />
-            <span>{primaryTag}</span>
-          </span>
+        <div className="flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground transition-colors group-hover:text-foreground">
+          <Sparkles className="size-3 text-muted-foreground/80 group-hover:text-primary transition-colors" aria-hidden="true" />
+          <span>{primaryTag}</span>
         </div>
       </CardWrapper>
 
