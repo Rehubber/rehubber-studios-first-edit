@@ -159,6 +159,16 @@ service cloud.firestore {
       allow update, delete: if false;
     }
 
+    match /support_messages/{messageId} {
+      allow create: if request.resource.data.keys().hasAll(['name', 'email', 'category', 'message', 'createdAt'])
+        && request.resource.data.name is string && request.resource.data.name.size() >= 2 && request.resource.data.name.size() <= 100
+        && request.resource.data.email is string && request.resource.data.email.size() >= 5 && request.resource.data.email.size() <= 150
+        && request.resource.data.category in ['General Question', 'Feature Request', 'Bug Report', 'Tool Claim', 'Partnership']
+        && request.resource.data.message is string && request.resource.data.message.size() >= 10 && request.resource.data.message.size() <= 4000
+        && request.resource.data.createdAt == request.time;
+      allow read, update, delete: if isModerator();
+    }
+
     match /moderators/{uid} {
       allow read, write: if false;
     }
