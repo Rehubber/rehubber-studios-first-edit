@@ -47,8 +47,8 @@ export function EmailSubscribeCard() {
   }
 
   return (
-    <article className="group relative flex h-full min-h-[148px] flex-col justify-between overflow-hidden rounded-xl border border-border bg-card p-4 transition-all duration-150 hover:border-primary/40 hover:bg-card/90">
-      <div className="flex flex-col gap-2">
+    <article className="group relative flex h-full min-h-[120px] flex-col justify-between overflow-hidden rounded-xl border border-border bg-card px-4 pt-2 pb-3 transition-all duration-150 hover:border-primary/40 hover:bg-card/90">
+      <div className="flex flex-col gap-1">
         <div className="flex items-center gap-1.5 text-primary">
           <Mail className="size-3 shrink-0 text-primary" aria-hidden="true" />
           <span className="font-mono text-[11px] font-semibold tracking-wide text-primary">

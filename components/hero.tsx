@@ -3,7 +3,7 @@ import { ChevronDown, Handshake, Plus } from 'lucide-react'
 
 export function Hero() {
   return (
-    <section className="mx-auto flex max-w-6xl flex-col items-center gap-5 px-4 pt-8 pb-4 text-center sm:px-6">
+    <section className="mx-auto flex max-w-6xl flex-col items-center gap-2.5 px-4 pt-5 pb-2 text-center sm:px-6">
       <h1 className="tracking-tight text-foreground">
         <span className="block text-xl font-extrabold tracking-tight sm:text-[28px] lg:text-[32px] sm:whitespace-nowrap">
           Discover open source tools updated daily
@@ -11,7 +11,7 @@ export function Hero() {
         </span>
       </h1>
 
-      <div className="flex flex-col items-center gap-1.5">
+      <div className="flex flex-col items-center gap-1">
         <p className="max-w-xl text-pretty text-[14px] leading-relaxed text-muted-foreground sm:text-[15.5px]">
           Ranked by the community, over 600 listed across all categories
         </p>
