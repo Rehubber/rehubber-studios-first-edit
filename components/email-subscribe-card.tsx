@@ -56,7 +56,7 @@ export function EmailSubscribeCard() {
           </span>
         </div>
 
-        <p className="text-pretty text-xs font-medium leading-snug text-foreground">
+        <p className="text-pretty text-[11px] font-medium leading-snug text-foreground">
           Never miss on another top new tool. Sign up to be added to the wait list.
         </p>
       </div>
