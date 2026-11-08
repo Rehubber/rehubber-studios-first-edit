@@ -8,8 +8,8 @@ export default async function HomePage() {
 
   return (
     <main>
-      <Hero />
       <SiteHeader />
+      <Hero />
       <RuleExplorer initialPage={page} />
     </main>
   )
