@@ -4,10 +4,10 @@ import { ChevronDown, Handshake, Plus } from 'lucide-react'
 export function Hero() {
   return (
     <section className="mx-auto flex max-w-6xl flex-col items-center gap-5 px-4 pt-8 pb-4 text-center sm:px-6">
-      <h1 className="max-w-2xl text-balance tracking-tight">
-        <span className="block text-2xl font-extrabold leading-tight tracking-tight sm:text-[30px] lg:text-[33px]">
-          Discover open source tools <span className="font-mono text-primary">updated daily</span>
-          <span aria-hidden="true" className="animate-caret ml-1 inline-block h-[0.9em] w-[0.08em] translate-y-[0.1em] bg-primary" />
+      <h1 className="tracking-tight text-foreground">
+        <span className="block text-xl font-extrabold tracking-tight sm:text-[28px] lg:text-[32px] sm:whitespace-nowrap">
+          Discover open source tools updated daily
+          <span aria-hidden="true" className="animate-caret ml-1.5 inline-block h-[0.85em] w-[0.08em] translate-y-[0.08em] bg-foreground/80" />
         </span>
       </h1>
 
