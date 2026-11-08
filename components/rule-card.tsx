@@ -96,12 +96,12 @@ export function RuleCard({
     <article className="group relative flex h-full min-h-[148px] flex-col justify-between overflow-hidden rounded-xl border border-border bg-card p-4 transition-all duration-150 hover:border-primary/40 hover:bg-card/90">
       <CardWrapper {...wrapperProps} className="flex flex-1 flex-col gap-3 focus:outline-none cursor-pointer">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="text-pretty text-[15px] font-semibold leading-snug tracking-tight text-foreground group-hover:text-primary transition-colors">
+          <h3 className="text-pretty text-[8px] font-bold leading-snug tracking-tight text-foreground group-hover:text-primary transition-colors">
             {rule.title}
           </h3>
           {isExternal && (
             <ExternalLink
-              className="mt-0.5 size-3.5 shrink-0 text-muted-foreground group-hover:text-primary transition-colors"
+              className="mt-0.5 size-2.5 shrink-0 text-muted-foreground group-hover:text-primary transition-colors"
               aria-hidden="true"
             />
           )}

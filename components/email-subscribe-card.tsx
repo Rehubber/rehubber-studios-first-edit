@@ -50,13 +50,13 @@ export function EmailSubscribeCard() {
     <article className="group relative flex h-full min-h-[148px] flex-col justify-between overflow-hidden rounded-xl border border-border bg-card p-4 transition-all duration-150 hover:border-primary/40 hover:bg-card/90">
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-1.5 text-primary">
-          <Mail className="size-3.5 shrink-0 text-primary" aria-hidden="true" />
-          <span className="font-mono text-[11px] font-semibold text-primary">
+          <Mail className="size-2.5 shrink-0 text-primary" aria-hidden="true" />
+          <span className="font-mono text-[8px] font-bold uppercase tracking-wider text-primary">
             Launching our exclusive newsletter
           </span>
         </div>
 
-        <p className="text-pretty text-sm font-medium leading-snug text-foreground">
+        <p className="text-pretty text-xs font-medium leading-snug text-foreground">
           Never miss on another top new tool. Sign up to be added to the wait list.
         </p>
       </div>
