@@ -5,7 +5,7 @@ import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { CircleAlert } from 'lucide-react'
 import { GithubAuthProvider, onAuthStateChanged, signInWithPopup, type User } from 'firebase/auth'
 import { SubmitSuccess } from '@/components/submit-success'
-import { getFirebaseAppCheckToken, getFirebaseClientAuth, getFirebaseClientFirestore } from '@/lib/firebase-client'
+import { getFirebaseAppCheckToken, getFirebaseClientAuth, getFirebaseClientFirestore, isFirebaseConfigured } from '@/lib/firebase-client'
 import type { SubmissionInput, SubmitResponse } from '@/lib/types'
 import { cn } from '@/lib/utils'
 import { LIMITS, parseSubmission, slugify } from '@/lib/validation'
@@ -27,10 +27,11 @@ export function SubmitForm() {
   const [result, setResult] = useState<Success | null>(null)
 
   useEffect(() => {
+    if (!isFirebaseConfigured()) return
     try {
       return onAuthStateChanged(getFirebaseClientAuth(), setUser)
-    } catch (authError) {
-      setError(authError instanceof Error ? authError.message : 'Firebase Authentication is not configured.')
+    } catch {
+      // Silently ignore auth listener initialization error in public UI
     }
   }, [])
 
@@ -58,6 +59,14 @@ export function SubmitForm() {
     setPending(true)
     setError(null)
     setFieldErrors({})
+
+    if (!isFirebaseConfigured()) {
+      setError(
+        'Online submissions are temporarily undergoing backend sync. You can submit your open-source tool directly by emailing submissions@rehubber.com or opening a pull request on GitHub.'
+      )
+      setPending(false)
+      return
+    }
 
     try {
       const auth = getFirebaseClientAuth()
