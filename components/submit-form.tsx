@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { CircleAlert } from 'lucide-react'
 import { GithubAuthProvider, onAuthStateChanged, signInWithPopup, type User } from 'firebase/auth'
+import { GithubIcon } from '@/components/github-icon'
 import { SubmitSuccess } from '@/components/submit-success'
 import { getFirebaseAppCheckToken, getFirebaseClientAuth, getFirebaseClientFirestore, isFirebaseConfigured } from '@/lib/firebase-client'
 import type { SubmissionInput, SubmitResponse } from '@/lib/types'
@@ -29,7 +30,8 @@ export function SubmitForm() {
   useEffect(() => {
     if (!isFirebaseConfigured()) return
     try {
-      return onAuthStateChanged(getFirebaseClientAuth(), setUser)
+      const auth = getFirebaseClientAuth()
+      return onAuthStateChanged(auth, setUser)
     } catch {
       // Silently ignore auth listener initialization error in public UI
     }
@@ -41,7 +43,7 @@ export function SubmitForm() {
     const submission = {
       title,
       description,
-      content: description,
+      content: description.length >= 20 ? description : `${title}: ${description}. Repository: ${githubUrl.trim()}`,
       tags: String(form.get('tags') ?? '')
         .split(',')
         .map((tag) => tag.trim())
@@ -61,37 +63,78 @@ export function SubmitForm() {
     setFieldErrors({})
 
     try {
+      let signedInUser = user
+
+      // Live GitHub sign-in requirement
       if (isFirebaseConfigured()) {
-        try {
-          const db = getFirebaseClientFirestore()
-          const created = await addDoc(collection(db, 'submissions'), {
-            slug: slugify(parsed.data.title),
-            title: parsed.data.title,
-            description: parsed.data.description,
-            content: parsed.data.description,
-            tags: parsed.data.tags,
-            url: parsed.data.authorUrl || undefined,
-            author: {
-              name: 'Community Creator',
-              ...(parsed.data.authorUrl ? { url: parsed.data.authorUrl } : {}),
-            },
-            status: 'pending',
-            createdAt: serverTimestamp(),
-          })
-          setResult({ ok: true, submissionId: created.id, status: 'pending' })
-          window.scrollTo({ top: 0, behavior: 'smooth' })
-          return
-        } catch (dbErr) {
-          console.warn('Firestore write failed, falling back to local queue:', dbErr)
+        const auth = getFirebaseClientAuth()
+        if (!signedInUser && !auth.currentUser) {
+          try {
+            const provider = new GithubAuthProvider()
+            provider.addScope('read:user')
+            const authResult = await signInWithPopup(auth, provider)
+            signedInUser = authResult.user
+            setUser(signedInUser)
+          } catch (popupErr: unknown) {
+            const code = (popupErr as { code?: string })?.code
+            if (code === 'auth/popup-closed-by-user') {
+              setError('GitHub sign-in was closed before completion. Please sign in to submit your tool.')
+              setPending(false)
+              return
+            }
+            if (code === 'auth/popup-blocked') {
+              setError('The GitHub sign-in popup was blocked by your browser. Please allow popups for this site and try again.')
+              setPending(false)
+              return
+            }
+            throw popupErr
+          }
+        } else if (!signedInUser && auth.currentUser) {
+          signedInUser = auth.currentUser
+          setUser(signedInUser)
         }
       }
 
-      // Seamless submission queue
+      await getFirebaseAppCheckToken().catch(() => '')
+
+      if (isFirebaseConfigured() && signedInUser) {
+        const db = getFirebaseClientFirestore()
+        const rawName =
+          signedInUser.displayName ||
+          (signedInUser as { reloadUserInfo?: { screenName?: string } }).reloadUserInfo?.screenName ||
+          'developer'
+        const safeName = rawName.slice(0, 39).replace(/[^A-Za-z0-9-]/g, '') || 'developer'
+
+        const created = await addDoc(collection(db, 'submissions'), {
+          slug: slugify(parsed.data.title),
+          title: parsed.data.title,
+          description: parsed.data.description,
+          content: parsed.data.content,
+          tags: parsed.data.tags,
+          author: {
+            name: safeName,
+            ...(parsed.data.authorUrl ? { url: parsed.data.authorUrl } : {}),
+          },
+          status: 'pending',
+          submitterUid: signedInUser.uid,
+          createdAt: serverTimestamp(),
+        })
+        setResult({ ok: true, submissionId: created.id, status: 'pending' })
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+        return
+      }
+
+      // Local resilient fallback if credentials not present in host environment
       const submissionId = `sub_${Date.now()}`
       try {
         const stored = window.localStorage.getItem('rehubber:queued-submissions')
         const list = stored ? JSON.parse(stored) : []
-        list.push({ id: submissionId, ...parsed.data, submittedAt: new Date().toISOString() })
+        list.push({
+          id: submissionId,
+          ...parsed.data,
+          submittedBy: signedInUser?.displayName || 'GitHub user',
+          submittedAt: new Date().toISOString(),
+        })
         window.localStorage.setItem('rehubber:queued-submissions', JSON.stringify(list))
       } catch {
         // Ignore localStorage error
@@ -99,8 +142,13 @@ export function SubmitForm() {
 
       setResult({ ok: true, submissionId, status: 'pending' })
       window.scrollTo({ top: 0, behavior: 'smooth' })
-    } catch {
-      setError('Could not save your submission. Please try again or email us directly at support@rehubber.com.')
+    } catch (submitError: unknown) {
+      console.error('Submission error:', submitError)
+      setError(
+        submitError instanceof Error
+          ? submitError.message
+          : 'Could not complete your submission. Please try again or reach out to support@rehubber.com.'
+      )
     } finally {
       setPending(false)
     }
@@ -113,13 +161,15 @@ export function SubmitForm() {
     setResult(null)
   }
 
-  if (result) return <SubmitSuccess result={result} onReset={resetForm} />
+  if (result) {
+    return <SubmitSuccess result={result} initialEmail={user?.email ?? ''} onReset={resetForm} />
+  }
 
   return (
     <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
       <div className="grid gap-6 sm:grid-cols-2">
-        {/* Column 1 (Left): Name box, and Description box directly below it */}
-        <div className="flex flex-col gap-6">
+        {/* Column 1 (Left): Name box, The repository box between Name and Description, Description box, and GitHub Submit button directly below it */}
+        <div className="flex flex-col gap-5">
           <Field id="title" label="Name of your tool *" error={fieldErrors.title}>
             <input
               id="title"
@@ -128,9 +178,25 @@ export function SubmitForm() {
               maxLength={LIMITS.title.max}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Explore"
+              placeholder="e.g. Supabase, LangChain, Next.js"
               aria-invalid={Boolean(fieldErrors.title)}
               aria-describedby="title-error"
+              className={cn(inputClass, 'h-7')}
+            />
+          </Field>
+
+          {/* The repository (moved to between Name and Description) */}
+          <Field id="githubUrl" label="The repository *" error={fieldErrors.authorUrl}>
+            <input
+              id="githubUrl"
+              name="githubUrl"
+              type="url"
+              required
+              value={githubUrl}
+              onChange={(e) => setGithubUrl(e.target.value)}
+              placeholder="https://github.com/owner/repository"
+              aria-invalid={Boolean(fieldErrors.authorUrl)}
+              aria-describedby="githubUrl-error"
               className={cn(inputClass, 'h-7')}
             />
           </Field>
@@ -154,62 +220,69 @@ export function SubmitForm() {
               className={cn(inputClass, 'h-7')}
             />
           </Field>
+
+          {error && (
+            <p role="alert" className="flex items-center gap-2 rounded-lg border border-destructive/40 bg-destructive/10 px-3 py-2 text-xs text-destructive">
+              <CircleAlert className="size-4 shrink-0" aria-hidden="true" />
+              <span>{error}</span>
+            </p>
+          )}
+
+          {/* GitHub Submit Button placed directly below Description box */}
+          <div className="flex flex-col items-start gap-2 pt-1">
+            <button
+              type="submit"
+              disabled={pending}
+              className="inline-flex h-9 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-xs font-bold tracking-wider uppercase text-primary-foreground shadow-sm transition-all hover:bg-primary/90 hover:shadow-md disabled:opacity-60 cursor-pointer"
+            >
+              <GithubIcon className="size-4 shrink-0" />
+              <span>
+                {pending
+                  ? 'CONNECTING GITHUB…'
+                  : user
+                  ? 'SUBMIT TOOL FOR REVIEW'
+                  : 'SIGN IN WITH GITHUB AND SUBMIT'}
+              </span>
+            </button>
+
+            <p className="max-w-md text-[9.5px] leading-normal text-muted-foreground">
+              {user ? (
+                <span className="text-foreground">Signed in as @{user.displayName || user.email || 'developer'}. </span>
+              ) : (
+                'GitHub sign-in is required. '
+              )}
+              By submitting, you agree to list your open source tool in the directory.
+            </p>
+          </div>
         </div>
 
-        {/* Column 2 (Right): Tags, and GitHub address directly below it */}
-        <div className="flex flex-col gap-6">
+        {/* Column 2 (Right): Tags */}
+        <div className="flex flex-col gap-5">
           <Field id="tags" label="Tags" optional error={fieldErrors.tags} hint="Comma separated">
             <input
               id="tags"
               name="tags"
-              placeholder="Image, Coding"
+              placeholder="AI, Database, Developer Tools, CLI"
               aria-invalid={Boolean(fieldErrors.tags)}
               aria-describedby="tags-hint tags-error"
               className={cn(inputClass, 'h-7')}
             />
           </Field>
 
-          <Field id="githubUrl" label="Your product github address *" error={fieldErrors.authorUrl}>
-            <input
-              id="githubUrl"
-              name="githubUrl"
-              type="url"
-              value={githubUrl}
-              onChange={(e) => setGithubUrl(e.target.value)}
-              placeholder="https://github.com/explore/"
-              aria-invalid={Boolean(fieldErrors.authorUrl)}
-              aria-describedby="githubUrl-error"
-              className={cn(inputClass, 'h-7')}
-            />
-          </Field>
+          <div className="rounded-xl border border-border/80 bg-secondary/30 p-4 text-xs text-muted-foreground flex flex-col gap-2">
+            <p className="font-medium text-foreground text-[11px] font-mono uppercase tracking-wider">
+              Submission Guidelines
+            </p>
+            <p className="text-[11px] leading-relaxed">
+              Open source tools submitted to Rehubber are curated and verified before publication. Ensure your GitHub repository is public and active.
+            </p>
+          </div>
         </div>
       </div>
 
       <div aria-hidden="true" className="hidden">
         <label htmlFor="website">Website</label>
         <input id="website" name="website" tabIndex={-1} autoComplete="off" />
-      </div>
-
-      {error && (
-        <p role="alert" className="flex items-center gap-2 rounded-lg border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-          <CircleAlert className="size-4 shrink-0" aria-hidden="true" />
-          {error}
-        </p>
-      )}
-
-      {/* Submit button */}
-      <div className="flex flex-col items-start gap-2 sm:items-end">
-        <button
-          type="submit"
-          disabled={pending}
-          className="h-8 shrink-0 rounded-lg bg-primary px-4 text-xs font-bold tracking-wider uppercase text-primary-foreground shadow-md transition-all hover:bg-primary/90 hover:shadow-lg disabled:opacity-60 cursor-pointer"
-        >
-          {pending ? 'SUBMITTING…' : 'SUBMIT TOOL FOR REVIEW'}
-        </button>
-
-        <p className="max-w-md text-[9px] leading-normal text-muted-foreground text-start sm:text-right">
-          By submitting, you agree to list your open source tool in the directory.
-        </p>
       </div>
     </form>
   )
@@ -218,34 +291,33 @@ export function SubmitForm() {
 function Field({
   id,
   label,
-  hint,
-  error,
-  optional,
   children,
+  error,
+  hint,
+  optional,
 }: {
   id: string
   label: string
-  hint?: string
-  error?: string
-  optional?: boolean
   children: React.ReactNode
+  error?: string
+  hint?: string
+  optional?: boolean
 }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <div className="flex items-baseline justify-between gap-2">
-        <label htmlFor={id} className="text-sm font-medium">
-          {label}
-          {optional && <span className="ml-1.5 font-normal text-muted-foreground">optional</span>}
+      <div className="flex items-center justify-between">
+        <label htmlFor={id} className="text-xs font-medium text-foreground">
+          {label} {optional && <span className="text-muted-foreground font-normal">optional</span>}
         </label>
         {hint && (
-          <span id={`${id}-hint`} className="truncate font-mono text-xs text-muted-foreground">
+          <span id={`${id}-hint`} className="font-mono text-[10px] text-muted-foreground">
             {hint}
           </span>
         )}
       </div>
       {children}
       {error && (
-        <p id={`${id}-error`} className="text-sm text-destructive">
+        <p id={`${id}-error`} role="alert" className="text-xs text-destructive">
           {error}
         </p>
       )}

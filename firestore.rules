@@ -39,7 +39,7 @@ service cloud.firestore {
         && data.description.size() >= 20
         && data.description.size() <= 280
         && data.content is string
-        && data.content.size() >= 50
+        && data.content.size() >= 10
         && data.content.size() <= 20000
         && data.tags is list
         && data.tags.size() <= 5
@@ -157,6 +157,15 @@ service cloud.firestore {
           == get(/databases/$(database)/documents/rules/$(request.resource.data.slug)).data.upvotes + 1;
 
       allow update, delete: if false;
+    }
+
+    match /subscribers/{subscriberId} {
+      allow create: if request.resource.data.keys().hasAll(['email', 'createdAt'])
+        && request.resource.data.email is string
+        && request.resource.data.email.size() >= 5
+        && request.resource.data.email.size() <= 150
+        && request.resource.data.createdAt == request.time;
+      allow read, update, delete: if isModerator();
     }
 
     match /support_messages/{messageId} {
