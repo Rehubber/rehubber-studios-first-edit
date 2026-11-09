@@ -64,8 +64,11 @@ export function parseSubmission(
     try {
       const url = new URL(authorUrl)
       if (url.protocol !== 'https:' && url.protocol !== 'http:') throw new Error()
+      if (!url.hostname.includes('github.com') && !url.hostname.includes('gitlab.com')) {
+        fieldErrors.authorUrl = 'Repository must be a valid GitHub or GitLab URL.'
+      }
     } catch {
-      fieldErrors.authorUrl = 'Link must be a valid URL.'
+      fieldErrors.authorUrl = 'Link must be a valid repository URL.'
     }
   }
 

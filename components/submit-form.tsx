@@ -245,6 +245,27 @@ export function SubmitForm() {
               </span>
             </button>
 
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault()
+                setTitle('Tauri')
+                setGithubUrl('https://github.com/tauri-apps/tauri')
+                setDescription('Build smaller, faster, and more secure desktop applications with web frontend.')
+                setPending(true)
+                setError(null)
+                setFieldErrors({})
+                setTimeout(() => {
+                  setResult({ ok: true, submissionId: `test_${Date.now()}`, status: 'pending' })
+                  setPending(false)
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }, 300)
+              }}
+              className="inline-flex items-center gap-1.5 text-[10.5px] font-medium text-muted-foreground/80 hover:text-primary transition-colors cursor-pointer pt-1"
+            >
+              <span>⚡ Test submission flow (skip GitHub login)</span>
+            </button>
+
             <p className="max-w-md text-[9.5px] leading-normal text-muted-foreground">
               {user ? (
                 <span className="text-foreground">Signed in as @{user.displayName || user.email || 'developer'}. </span>

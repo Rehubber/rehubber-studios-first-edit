@@ -174,7 +174,7 @@ export function SubmitSuccess({
 
           <div className="flex flex-col items-start gap-4 py-2">
             <a
-              href="https://x.com/oddysseusnt"
+              href="https://x.com/odysseus"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex h-11 items-center justify-center gap-2.5 rounded-xl bg-foreground px-6 text-xs sm:text-sm font-semibold text-background shadow-md transition-all hover:bg-foreground/90 active:scale-[0.98]"
@@ -182,7 +182,7 @@ export function SubmitSuccess({
               <svg className="size-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
               </svg>
-              <span>Follow us on X (@oddysseusnt)</span>
+              <span>Follow us on X (@odysseus)</span>
               <ExternalLink className="size-3.5 opacity-60" aria-hidden="true" />
             </a>
           </div>

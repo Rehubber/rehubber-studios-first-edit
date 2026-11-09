@@ -52,13 +52,13 @@ export default function SubmitPage() {
                 </span>
                 <div className="flex flex-col gap-0.5">
                   <a
-                    href="https://x.com/oddysseusnt"
+                    href="https://x.com/odysseus"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-xs font-medium text-foreground hover:text-primary transition-colors flex items-center gap-1.5"
                   >
                     <span>Follow us on X</span>
-                    <span className="text-muted-foreground">(@oddysseusnt)</span>
+                    <span className="text-muted-foreground">(@odysseus)</span>
                   </a>
                   <p className="text-[11px] leading-relaxed text-muted-foreground">
                     Get updates, releases, and announcements
