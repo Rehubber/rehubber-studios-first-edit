@@ -14,6 +14,8 @@ import { LIMITS, parseSubmission, slugify } from '@/lib/validation'
 type FieldErrors = Partial<Record<keyof SubmissionInput, string>>
 type Success = Extract<SubmitResponse, { ok: true }>
 
+type FlowView = 'form' | 'notify' | 'social'
+
 const inputClass =
   'w-full rounded-md border border-input bg-card px-3 text-xs placeholder:text-muted-foreground/70 focus-visible:border-primary/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring aria-[invalid=true]:border-destructive/60'
 
@@ -26,6 +28,7 @@ export function SubmitForm() {
   const [error, setError] = useState<string | null>(null)
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
   const [result, setResult] = useState<Success | null>(null)
+  const [previewStage, setPreviewStage] = useState<FlowView>('form')
 
   useEffect(() => {
     if (!isFirebaseConfigured()) return
@@ -159,14 +162,62 @@ export function SubmitForm() {
     setGithubUrl('')
     setDescription('')
     setResult(null)
+    setPreviewStage('form')
   }
 
   if (result) {
-    return <SubmitSuccess result={result} initialEmail={user?.email ?? ''} onReset={resetForm} />
+    return (
+      <SubmitSuccess
+        result={result}
+        initialEmail={user?.email ?? ''}
+        initialStep={previewStage === 'social' ? 'social' : 'notify'}
+        onReset={resetForm}
+        onStepChange={(newStep) => setPreviewStage(newStep)}
+      />
+    )
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
+    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
+      {/* Interactive flow stages bar to preview every step without login or submission */}
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/80 bg-card/60 p-2.5 px-3.5 shadow-2xs">
+        <span className="text-[11px] font-medium text-muted-foreground flex items-center gap-1.5">
+          <span>Flow preview (no login or submission required):</span>
+        </span>
+        <div className="flex items-center gap-1 rounded-lg border border-border/80 bg-secondary/50 p-1 text-xs">
+          <button
+            type="button"
+            onClick={() => {
+              setPreviewStage('form')
+              setResult(null)
+            }}
+            className="rounded-md bg-primary px-2.5 py-1 text-[11px] font-semibold text-primary-foreground shadow-xs cursor-pointer"
+          >
+            1. Submit Form
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setPreviewStage('notify')
+              setResult({ ok: true, submissionId: 'preview_demo', status: 'pending' })
+            }}
+            className="rounded-md px-2.5 py-1 text-[11px] font-medium text-muted-foreground hover:text-foreground hover:bg-background/60 transition-colors cursor-pointer"
+          >
+            2. Email & Beta
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setPreviewStage('social')
+              setResult({ ok: true, submissionId: 'preview_demo', status: 'pending' })
+            }}
+            className="rounded-md px-2.5 py-1 text-[11px] font-medium text-muted-foreground hover:text-foreground hover:bg-background/60 transition-colors cursor-pointer"
+          >
+            3. Follow on X
+          </button>
+        </div>
+      </div>
+
       <div className="grid gap-6 sm:grid-cols-2">
         {/* Column 1 (Left): Name box, The repository box between Name and Description, Description box, and GitHub Submit button directly below it */}
         <div className="flex flex-col gap-5">

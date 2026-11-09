@@ -12,13 +12,17 @@ type Success = Extract<SubmitResponse, { ok: true }>
 export function SubmitSuccess({
   result,
   initialEmail = '',
+  initialStep = 'notify',
   onReset,
+  onStepChange,
 }: {
   result: Success
   initialEmail?: string
+  initialStep?: 'notify' | 'social'
   onReset: () => void
+  onStepChange?: (step: 'notify' | 'social') => void
 }) {
-  const [step, setStep] = useState<'notify' | 'social'>('notify')
+  const [step, setStep] = useState<'notify' | 'social'>(initialStep)
   const [email, setEmail] = useState(initialEmail)
   const [isBetaUser, setIsBetaUser] = useState(false)
   const [saving, setSaving] = useState(false)
@@ -85,12 +89,52 @@ export function SubmitSuccess({
     }
   }
 
+  function changeStep(nextStep: 'notify' | 'social') {
+    setStep(nextStep)
+    onStepChange?.(nextStep)
+  }
+
   return (
     <section aria-live="polite" className="flex flex-col gap-6 rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-sm">
-      {/* Top confirmed badge */}
-      <div className="flex items-center gap-2 text-xs font-medium text-emerald-400">
-        <CheckCircle2 className="size-4 shrink-0 text-emerald-400" aria-hidden="true" />
-        <span>Tool submitted for review (ID: {result.submissionId.slice(0, 14)})</span>
+      {/* Top flow preview switcher bar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/70 pb-4">
+        <div className="flex items-center gap-2 text-xs font-medium text-emerald-400">
+          <CheckCircle2 className="size-4 shrink-0 text-emerald-400" aria-hidden="true" />
+          <span>Tool submitted for review (ID: {result.submissionId.slice(0, 14)})</span>
+        </div>
+
+        <div className="flex items-center gap-1.5 rounded-lg border border-border/80 bg-secondary/40 p-1 text-xs">
+          <button
+            type="button"
+            onClick={onReset}
+            className="rounded-md px-2.5 py-1 text-[11px] font-medium text-muted-foreground hover:text-foreground hover:bg-background/60 transition-colors cursor-pointer"
+            title="Return to the submission form"
+          >
+            ← Form
+          </button>
+          <button
+            type="button"
+            onClick={() => changeStep('notify')}
+            className={`rounded-md px-2.5 py-1 text-[11px] font-medium transition-colors cursor-pointer ${
+              step === 'notify'
+                ? 'bg-primary text-primary-foreground font-semibold shadow-xs'
+                : 'text-muted-foreground hover:text-foreground hover:bg-background/60'
+            }`}
+          >
+            1. Email & Beta
+          </button>
+          <button
+            type="button"
+            onClick={() => changeStep('social')}
+            className={`rounded-md px-2.5 py-1 text-[11px] font-medium transition-colors cursor-pointer ${
+              step === 'social'
+                ? 'bg-primary text-primary-foreground font-semibold shadow-xs'
+                : 'text-muted-foreground hover:text-foreground hover:bg-background/60'
+            }`}
+          >
+            2. Follow on X
+          </button>
+        </div>
       </div>
 
       {step === 'notify' ? (
