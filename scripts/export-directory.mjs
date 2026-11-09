@@ -9,7 +9,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const { loadEnvConfig } = nextEnv
 loadEnvConfig(root)
 
-const pageSize = 24
+const pageSize = 8
 const rulesDirectory = path.join(root, 'content', 'rules')
 const outputDirectory = path.join(root, 'public', 'directory')
 const outputPagesDirectory = path.join(outputDirectory, 'pages')

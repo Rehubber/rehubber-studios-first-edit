@@ -7,7 +7,6 @@ export function Hero() {
       <h1 className="tracking-tight text-foreground">
         <span className="block text-xl font-extrabold tracking-tight sm:text-[28px] lg:text-[32px] sm:whitespace-nowrap">
           Discover open source tools updated daily
-          <span aria-hidden="true" className="animate-caret ml-1.5 inline-block h-[0.85em] w-[0.08em] translate-y-[0.08em] bg-foreground/80" />
         </span>
       </h1>
 
