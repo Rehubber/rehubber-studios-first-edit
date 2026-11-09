@@ -9,6 +9,8 @@ import type { SubmitResponse } from '@/lib/types'
 
 type Success = Extract<SubmitResponse, { ok: true }>
 
+type FlowStep = 'notify' | 'social' | 'submitted'
+
 export function SubmitSuccess({
   result,
   initialEmail = '',
@@ -18,28 +20,28 @@ export function SubmitSuccess({
 }: {
   result: Success
   initialEmail?: string
-  initialStep?: 'notify' | 'social'
+  initialStep?: FlowStep
   onReset: () => void
-  onStepChange?: (step: 'notify' | 'social') => void
+  onStepChange?: (step: FlowStep) => void
 }) {
-  const [step, setStep] = useState<'notify' | 'social'>(initialStep)
+  const [step, setStep] = useState<FlowStep>(initialStep)
   const [email, setEmail] = useState(initialEmail)
   const [isBetaUser, setIsBetaUser] = useState(false)
   const [saving, setSaving] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  async function handleNotificationSubmit(e: React.FormEvent) {
-    e.preventDefault()
+  async function handleNotificationSubmit(e?: React.FormEvent) {
+    if (e) e.preventDefault()
     const trimmedEmail = email.trim().toLowerCase()
 
     if (trimmedEmail && !trimmedEmail.includes('@')) {
-      setErrorMessage('Please enter a valid email address.')
+      setErrorMessage('Please enter a valid email address (e.g. you@gmail.com).')
       return
     }
 
     if (!trimmedEmail) {
       // User didn't type an email, simply proceed to social step
-      setStep('social')
+      changeStep('social')
       return
     }
 
@@ -80,16 +82,16 @@ export function SubmitSuccess({
         // Ignore localStorage error
       }
 
-      setStep('social')
+      changeStep('social')
     } catch {
       // Non-blocking, continue to social step
-      setStep('social')
+      changeStep('social')
     } finally {
       setSaving(false)
     }
   }
 
-  function changeStep(nextStep: 'notify' | 'social') {
+  function changeStep(nextStep: FlowStep) {
     setStep(nextStep)
     onStepChange?.(nextStep)
   }
@@ -103,11 +105,11 @@ export function SubmitSuccess({
           <span>Tool submitted for review (ID: {result.submissionId.slice(0, 14)})</span>
         </div>
 
-        <div className="flex items-center gap-1.5 rounded-lg border border-border/80 bg-secondary/40 p-1 text-xs">
+        <div className="flex items-center gap-1 rounded-lg border border-border/80 bg-secondary/40 p-1 text-xs">
           <button
             type="button"
             onClick={onReset}
-            className="rounded-md px-2.5 py-1 text-[11px] font-medium text-muted-foreground hover:text-foreground hover:bg-background/60 transition-colors cursor-pointer"
+            className="rounded-md px-2 py-1 text-[11px] font-medium text-muted-foreground hover:text-foreground hover:bg-background/60 transition-colors cursor-pointer"
             title="Return to the submission form"
           >
             ← Form
@@ -115,18 +117,18 @@ export function SubmitSuccess({
           <button
             type="button"
             onClick={() => changeStep('notify')}
-            className={`rounded-md px-2.5 py-1 text-[11px] font-medium transition-colors cursor-pointer ${
+            className={`rounded-md px-2 py-1 text-[11px] font-medium transition-colors cursor-pointer ${
               step === 'notify'
                 ? 'bg-primary text-primary-foreground font-semibold shadow-xs'
                 : 'text-muted-foreground hover:text-foreground hover:bg-background/60'
             }`}
           >
-            1. Email & Beta
+            1. Email
           </button>
           <button
             type="button"
             onClick={() => changeStep('social')}
-            className={`rounded-md px-2.5 py-1 text-[11px] font-medium transition-colors cursor-pointer ${
+            className={`rounded-md px-2 py-1 text-[11px] font-medium transition-colors cursor-pointer ${
               step === 'social'
                 ? 'bg-primary text-primary-foreground font-semibold shadow-xs'
                 : 'text-muted-foreground hover:text-foreground hover:bg-background/60'
@@ -134,25 +136,34 @@ export function SubmitSuccess({
           >
             2. Follow on X
           </button>
+          <button
+            type="button"
+            onClick={() => changeStep('submitted')}
+            className={`rounded-md px-2 py-1 text-[11px] font-medium transition-colors cursor-pointer ${
+              step === 'submitted'
+                ? 'bg-primary text-primary-foreground font-semibold shadow-xs'
+                : 'text-muted-foreground hover:text-foreground hover:bg-background/60'
+            }`}
+          >
+            3. Submitted
+          </button>
         </div>
       </div>
 
-      {step === 'notify' ? (
+      {step === 'notify' && (
         <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground leading-snug">
-              Get notified right when your site goes live and status, days left updates
-            </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              We&apos;ll notify you directly once your tool listing is approved and ready in the directory.
-            </p>
-          </div>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Get notified directly once your tool is live, approved and listed on Rehubber.
+          </p>
 
           <form onSubmit={handleNotificationSubmit} className="flex flex-col gap-4">
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="notify-email" className="text-xs font-medium text-foreground">
-                Email address (optional)
-              </label>
+              <div className="flex items-center justify-between">
+                <label htmlFor="notify-email" className="text-xs font-medium text-foreground">
+                  Email address <span className="text-muted-foreground font-normal">optional</span>
+                </label>
+                <span className="text-[10.5px] text-muted-foreground">Personal or work (e.g. Gmail)</span>
+              </div>
               <div className="relative">
                 <Mail className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" aria-hidden="true" />
                 <input
@@ -163,7 +174,7 @@ export function SubmitSuccess({
                     setEmail(e.target.value)
                     if (errorMessage) setErrorMessage(null)
                   }}
-                  placeholder="name@example.com"
+                  placeholder="you@gmail.com"
                   className="h-10 w-full rounded-lg border border-input bg-secondary/40 pl-9 pr-3 text-xs text-foreground placeholder:text-muted-foreground focus-visible:border-primary/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                 />
               </div>
@@ -184,37 +195,27 @@ export function SubmitSuccess({
               </span>
             </label>
 
-            {/* Skip and Next buttons underneath */}
+            {/* Underneath: Skip button (Next button removed) */}
             <div className="flex items-center justify-between gap-3 pt-3 border-t border-border/70">
               <button
                 type="button"
-                onClick={() => setStep('social')}
-                className="h-9 px-4 rounded-lg text-xs font-medium text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors cursor-pointer"
-              >
-                Skip
-              </button>
-
-              <button
-                type="submit"
+                onClick={() => handleNotificationSubmit()}
                 disabled={saving}
-                className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-primary px-5 text-xs font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90 disabled:opacity-60 cursor-pointer"
+                className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg px-4 text-xs font-medium text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors cursor-pointer"
               >
                 {saving && <LoaderCircle className="size-3.5 animate-spin" aria-hidden="true" />}
-                <span>{saving ? 'Saving…' : 'Next'}</span>
+                <span>{email.trim() ? (saving ? 'Saving…' : 'Skip') : 'Skip'}</span>
               </button>
             </div>
           </form>
         </div>
-      ) : (
+      )}
+
+      {step === 'social' && (
         <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground leading-snug">
-              Follow us on X to get updates and major announcements
-            </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Stay in the loop with open source tool highlights, creator spotlights, and community release news.
-            </p>
-          </div>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Follow us on X to get updates and major announcements
+          </p>
 
           <div className="flex flex-col items-start gap-4 py-2">
             <a
@@ -231,10 +232,62 @@ export function SubmitSuccess({
             </a>
           </div>
 
+          {/* Finish button underneath (Back to directory and Submit another tool removed) */}
+          <div className="flex items-center justify-start gap-3 pt-4 border-t border-border/70">
+            <button
+              type="button"
+              onClick={() => changeStep('submitted')}
+              className="inline-flex h-9 items-center justify-center rounded-lg bg-primary px-5 text-xs font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90 cursor-pointer"
+            >
+              Finish
+            </button>
+          </div>
+        </div>
+      )}
+
+      {step === 'submitted' && (
+        <div className="flex flex-col gap-6">
+          <div className="flex items-center gap-3">
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400">
+              <CheckCircle2 className="size-6 text-emerald-400" aria-hidden="true" />
+            </div>
+            <div className="flex flex-col">
+              <h2 className="text-2xl font-bold tracking-tight text-foreground leading-tight">
+                Submitted
+              </h2>
+              <p className="text-xs text-muted-foreground">
+                Your tool has been received and queued for review.
+              </p>
+            </div>
+          </div>
+
+          <div className="rounded-xl border border-border/80 bg-secondary/30 p-4 text-xs flex flex-col gap-2.5">
+            <div className="flex items-center justify-between text-muted-foreground">
+              <span>Status</span>
+              <span className="font-mono font-medium text-emerald-400 uppercase tracking-wider text-[11px]">
+                Pending Moderation
+              </span>
+            </div>
+            <div className="flex items-center justify-between text-muted-foreground">
+              <span>Submission ID</span>
+              <span className="font-mono text-foreground text-[11px]">
+                {result.submissionId}
+              </span>
+            </div>
+            <div className="flex items-center justify-between text-muted-foreground">
+              <span>Destination</span>
+              <span className="text-foreground text-[11px]">Rehubber Open Source Directory</span>
+            </div>
+          </div>
+
+          <p className="text-xs leading-relaxed text-muted-foreground">
+            We review every repository to ensure it meets our open source criteria. You will be notified as soon as your listing is approved.
+          </p>
+
           <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-border/70">
             <Link
               href="/"
-              className="inline-flex h-9 items-center justify-center rounded-lg bg-secondary px-4 text-xs font-medium text-foreground hover:bg-secondary/80 transition-colors"
+              className="inline-flex h-9 items-center justify-center rounded-lg bg-primary px-4 text-xs font-semibold text-primary-foreground hover:bg-primary/90 transition-colors"
             >
               Back to directory
             </Link>

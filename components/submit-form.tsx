@@ -14,7 +14,7 @@ import { LIMITS, parseSubmission, slugify } from '@/lib/validation'
 type FieldErrors = Partial<Record<keyof SubmissionInput, string>>
 type Success = Extract<SubmitResponse, { ok: true }>
 
-type FlowView = 'form' | 'notify' | 'social'
+type FlowView = 'form' | 'notify' | 'social' | 'submitted'
 
 const inputClass =
   'w-full rounded-md border border-input bg-card px-3 text-xs placeholder:text-muted-foreground/70 focus-visible:border-primary/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring aria-[invalid=true]:border-destructive/60'
@@ -170,7 +170,7 @@ export function SubmitForm() {
       <SubmitSuccess
         result={result}
         initialEmail={user?.email ?? ''}
-        initialStep={previewStage === 'social' ? 'social' : 'notify'}
+        initialStep={previewStage === 'form' ? 'notify' : previewStage}
         onReset={resetForm}
         onStepChange={(newStep) => setPreviewStage(newStep)}
       />
@@ -203,7 +203,7 @@ export function SubmitForm() {
             }}
             className="rounded-md px-2.5 py-1 text-[11px] font-medium text-muted-foreground hover:text-foreground hover:bg-background/60 transition-colors cursor-pointer"
           >
-            2. Email & Beta
+            2. Email
           </button>
           <button
             type="button"
@@ -214,6 +214,16 @@ export function SubmitForm() {
             className="rounded-md px-2.5 py-1 text-[11px] font-medium text-muted-foreground hover:text-foreground hover:bg-background/60 transition-colors cursor-pointer"
           >
             3. Follow on X
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setPreviewStage('submitted')
+              setResult({ ok: true, submissionId: 'preview_demo', status: 'pending' })
+            }}
+            className="rounded-md px-2.5 py-1 text-[11px] font-medium text-muted-foreground hover:text-foreground hover:bg-background/60 transition-colors cursor-pointer"
+          >
+            4. Submitted
           </button>
         </div>
       </div>

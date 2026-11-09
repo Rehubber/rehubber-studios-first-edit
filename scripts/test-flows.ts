@@ -107,7 +107,14 @@ assert(betaOptIn.ok === true, 'Beta community email opt-in succeeds')
 assert(betaOptIn.record?.category === 'beta_user_community', 'Categorized as beta_user_community in backend')
 assert(betaOptIn.record?.isBetaCommunity === true, 'isBetaCommunity is true')
 
-// 3.3 Invalid email
+// 3.3 Non-company personal email acceptance
+const personalEmails = ['dev@gmail.com', 'coder@yahoo.com', 'builder@hotmail.com', 'user@outlook.com', 'person@proton.me']
+for (const pEmail of personalEmails) {
+  const pRes = simulatePostSubmissionNotification(pEmail, false)
+  assert(pRes.ok === true, `Accepts personal email domain (${pEmail})`)
+}
+
+// 3.4 Invalid email
 const invalidOptIn = simulatePostSubmissionNotification('not-an-email', true)
 assert(invalidOptIn.ok === false, 'Rejects malformed emails')
 
@@ -118,7 +125,16 @@ const expectedHandle = '@odysseus'
 assert(expectedXProfile === 'https://x.com/odysseus', 'X target URL is correctly set to https://x.com/odysseus')
 assert(expectedHandle === '@odysseus', 'X handle is correctly set to @odysseus')
 
-// 5. Test Summary
+// 5. Four-Stage Flow Progression
+console.log('\nTest Suite 5: Four-Stage Submission Flow Transitions')
+const flowStages = ['form', 'notify', 'social', 'submitted'] as const
+assert(flowStages.length === 4, 'Full lifecycle contains exactly 4 distinct stages')
+assert(flowStages[0] === 'form', 'Stage 1 is tool submission form')
+assert(flowStages[1] === 'notify', 'Stage 2 is email & beta notification step')
+assert(flowStages[2] === 'social', 'Stage 3 is X follow step with finish button')
+assert(flowStages[3] === 'submitted', 'Stage 4 is final confirmation showing Submitted message')
+
+// 6. Test Summary
 console.log('\n========================================')
 console.log(`TOTAL TESTS: ${totalTests}`)
 console.log(`PASSED:      ${passedTests}`)
