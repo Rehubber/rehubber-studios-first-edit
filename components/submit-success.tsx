@@ -274,14 +274,10 @@ export function SubmitSuccess({
                 {result.submissionId}
               </span>
             </div>
-            <div className="flex items-center justify-between text-muted-foreground">
-              <span>Destination</span>
-              <span className="text-foreground text-[11px]">Rehubber Open Source Directory</span>
-            </div>
           </div>
 
           <p className="text-xs leading-relaxed text-muted-foreground">
-            We review every repository to ensure it meets our open source criteria. You will be notified as soon as your listing is approved.
+            We review every repository to ensure it meets our open source criteria. You will be notified as soon as your listing is approved if you provided your email.
           </p>
 
           <div className="flex flex-wrap items-center gap-3 pt-4 border-t border-border/70">
@@ -291,13 +287,6 @@ export function SubmitSuccess({
             >
               Back to directory
             </Link>
-            <button
-              type="button"
-              onClick={onReset}
-              className="inline-flex h-9 items-center justify-center rounded-lg border border-border px-4 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-colors cursor-pointer"
-            >
-              Submit another tool
-            </button>
           </div>
         </div>
       )}
