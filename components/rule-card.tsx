@@ -93,7 +93,7 @@ export function RuleCard({
       }
 
   return (
-    <article className="group relative flex h-full min-h-[120px] flex-col justify-between overflow-hidden rounded-xl border border-border bg-card px-4 pt-2 pb-3 transition-all duration-150 hover:border-primary/40 hover:bg-card/90">
+    <article className="group relative flex h-full min-h-[105px] flex-col justify-between overflow-hidden rounded-xl border border-border bg-card px-4 pt-2 pb-1.5 transition-all duration-150 hover:border-primary/40 hover:bg-card/90">
       <CardWrapper {...wrapperProps} className="flex flex-1 flex-col gap-1.5 focus:outline-none cursor-pointer">
         <div className="flex items-start justify-between gap-2">
           <h3 className="text-pretty text-[11px] font-semibold leading-snug tracking-tight text-foreground group-hover:text-primary transition-colors">
@@ -113,7 +113,7 @@ export function RuleCard({
         </div>
       </CardWrapper>
 
-      <footer className="mt-4 flex items-center justify-between gap-2 pt-1 text-muted-foreground">
+      <footer className="mt-2 flex items-center justify-between gap-1 text-muted-foreground">
         <div className="flex items-center gap-1.5 font-mono text-[8px] font-medium text-muted-foreground/80">
           <div className="flex items-center gap-1" title={`Added on ${dateText}`}>
             <History className="size-2.5 text-muted-foreground/60" aria-hidden="true" />
