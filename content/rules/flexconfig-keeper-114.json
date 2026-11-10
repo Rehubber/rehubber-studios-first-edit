@@ -1,0 +1,18 @@
+{
+  "slug": "flexconfig-keeper-114",
+  "title": "FlexConfig Keeper",
+  "description": "Open-source config keeper built for high-performance devops & containers workflows.",
+  "tags": [
+    "Config",
+    "DevOps"
+  ],
+  "author": {
+    "name": "open-flex",
+    "url": "https://github.com/open-flex"
+  },
+  "url": "https://github.com/rehubber-catalog/flexconfig-keeper-114",
+  "upvotes": 63,
+  "views": 1552,
+  "date": "2024-04-10",
+  "content": "FlexConfig Keeper is a dedicated open-source utility designed to optimize devops & containers development."
+}

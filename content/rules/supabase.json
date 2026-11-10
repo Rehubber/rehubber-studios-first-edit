@@ -1,0 +1,19 @@
+{
+  "slug": "supabase",
+  "title": "Supabase",
+  "description": "The open source Firebase alternative. Build with Postgres, Auth, Realtime, and Storage.",
+  "tags": [
+    "Database",
+    "Postgres",
+    "Backend"
+  ],
+  "author": {
+    "name": "supabase",
+    "url": "https://github.com/supabase/supabase"
+  },
+  "url": "https://supabase.com",
+  "upvotes": 450,
+  "views": 12136,
+  "date": "28 Mar 2024",
+  "content": "The open source Firebase alternative. Build with Postgres, Auth, Realtime, and Storage."
+}

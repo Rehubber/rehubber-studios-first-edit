@@ -1,0 +1,18 @@
+{
+  "slug": "gobinary-inspector-251",
+  "title": "GoBinary Inspector",
+  "description": "Open-source binary inspector built for high-performance developer cli & tools workflows.",
+  "tags": [
+    "Binary",
+    "Developer"
+  ],
+  "author": {
+    "name": "open-go",
+    "url": "https://github.com/open-go"
+  },
+  "url": "https://github.com/rehubber-catalog/gobinary-inspector-251",
+  "upvotes": 232,
+  "views": 5373,
+  "date": "2024-04-10",
+  "content": "GoBinary Inspector is a dedicated open-source utility designed to optimize developer cli & tools development."
+}

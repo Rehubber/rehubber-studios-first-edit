@@ -1,0 +1,18 @@
+{
+  "slug": "rustcolumnar-241",
+  "title": "RustColumnar",
+  "description": "Open-source columnar built for high-performance databases & storage workflows.",
+  "tags": [
+    "Columnar",
+    "Databases"
+  ],
+  "author": {
+    "name": "open-rust",
+    "url": "https://github.com/open-rust"
+  },
+  "url": "https://github.com/rehubber-catalog/rustcolumnar-241",
+  "upvotes": 212,
+  "views": 4743,
+  "date": "2024-04-10",
+  "content": "RustColumnar is a dedicated open-source utility designed to optimize databases & storage development."
+}

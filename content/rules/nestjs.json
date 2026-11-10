@@ -1,0 +1,18 @@
+{
+  "slug": "nestjs",
+  "title": "NestJS",
+  "description": "Progressive Node.js framework for building efficient, reliable and scalable enterprise server apps.",
+  "tags": [
+    "Enterprise",
+    "Backend"
+  ],
+  "author": {
+    "name": "nestjs",
+    "url": "https://github.com/nestjs"
+  },
+  "url": "https://github.com/nestjs/nestjs",
+  "upvotes": 324,
+  "views": 9130,
+  "date": "2024-03-20",
+  "content": "NestJS: Progressive Node.js framework for building efficient, reliable and scalable enterprise server apps."
+}

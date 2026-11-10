@@ -1,0 +1,18 @@
+{
+  "slug": "caprover",
+  "title": "CapRover",
+  "description": "Extremely easy app/database deployment & web server manager for NodeJS, Python, PHP, Ruby, etc.",
+  "tags": [
+    "PaaS",
+    "DevOps"
+  ],
+  "author": {
+    "name": "caprover",
+    "url": "https://github.com/caprover"
+  },
+  "url": "https://github.com/caprover/caprover",
+  "upvotes": 261,
+  "views": 8075,
+  "date": "2024-03-20",
+  "content": "CapRover: Extremely easy app/database deployment & web server manager for NodeJS, Python, PHP, Ruby, etc."
+}

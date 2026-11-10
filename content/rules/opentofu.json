@@ -1,0 +1,18 @@
+{
+  "slug": "opentofu",
+  "title": "OpenTofu",
+  "description": "Open source tool for building, changing, and versioning infrastructure safely and efficiently.",
+  "tags": [
+    "IaC",
+    "DevOps"
+  ],
+  "author": {
+    "name": "opentofu",
+    "url": "https://github.com/opentofu"
+  },
+  "url": "https://github.com/opentofu/opentofu",
+  "upvotes": 199,
+  "views": 5125,
+  "date": "2024-03-20",
+  "content": "OpenTofu: Open source tool for building, changing, and versioning infrastructure safely and efficiently."
+}

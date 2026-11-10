@@ -1,0 +1,18 @@
+{
+  "slug": "puregatekeeper-228",
+  "title": "PureGatekeeper",
+  "description": "Open-source gatekeeper built for high-performance security & auth workflows.",
+  "tags": [
+    "Gatekeeper",
+    "Security"
+  ],
+  "author": {
+    "name": "open-pure",
+    "url": "https://github.com/open-pure"
+  },
+  "url": "https://github.com/rehubber-catalog/puregatekeeper-228",
+  "upvotes": 81,
+  "views": 2114,
+  "date": "2024-04-10",
+  "content": "PureGatekeeper is a dedicated open-source utility designed to optimize security & auth development."
+}

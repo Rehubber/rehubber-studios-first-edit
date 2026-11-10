@@ -1,0 +1,19 @@
+{
+  "slug": "stable-diffusion-webui",
+  "title": "Stable Diffusion WebUI",
+  "description": "Browser interface based on Gradio library for Stable Diffusion text-to-image.",
+  "tags": [
+    "AI",
+    "Diffusion",
+    "Image Gen"
+  ],
+  "author": {
+    "name": "AUTOMATIC1111",
+    "url": "https://github.com/AUTOMATIC1111/stable-diffusion-webui"
+  },
+  "url": "https://github.com/AUTOMATIC1111/stable-diffusion-webui",
+  "upvotes": 420,
+  "views": 11249,
+  "date": "28 Mar 2024",
+  "content": "Browser interface based on Gradio library for Stable Diffusion text-to-image."
+}

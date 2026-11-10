@@ -1,0 +1,18 @@
+{
+  "slug": "qwik",
+  "title": "Qwik",
+  "description": "Instant-loading web applications with resumability rather than hydration.",
+  "tags": [
+    "Performance",
+    "Frontend"
+  ],
+  "author": {
+    "name": "BuilderIO",
+    "url": "https://github.com/BuilderIO"
+  },
+  "url": "https://github.com/BuilderIO/qwik",
+  "upvotes": 222,
+  "views": 5987,
+  "date": "2024-03-20",
+  "content": "Qwik: Instant-loading web applications with resumability rather than hydration."
+}

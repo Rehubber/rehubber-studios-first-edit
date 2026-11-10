@@ -1,0 +1,18 @@
+{
+  "slug": "edgegit-sync-99",
+  "title": "EdgeGit Sync",
+  "description": "Open-source git sync built for high-performance developer cli & tools workflows.",
+  "tags": [
+    "Git",
+    "Developer"
+  ],
+  "author": {
+    "name": "open-edge",
+    "url": "https://github.com/open-edge"
+  },
+  "url": "https://github.com/rehubber-catalog/edgegit-sync-99",
+  "upvotes": 208,
+  "views": 4957,
+  "date": "2024-04-10",
+  "content": "EdgeGit Sync is a dedicated open-source utility designed to optimize developer cli & tools development."
+}

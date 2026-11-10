@@ -1,0 +1,18 @@
+{
+  "slug": "openfirewall-agent-172",
+  "title": "OpenFirewall Agent",
+  "description": "Open-source firewall agent built for high-performance security & auth workflows.",
+  "tags": [
+    "Firewall",
+    "Security"
+  ],
+  "author": {
+    "name": "open-open",
+    "url": "https://github.com/open-open"
+  },
+  "url": "https://github.com/rehubber-catalog/openfirewall-agent-172",
+  "upvotes": 109,
+  "views": 2666,
+  "date": "2024-04-10",
+  "content": "OpenFirewall Agent is a dedicated open-source utility designed to optimize security & auth development."
+}

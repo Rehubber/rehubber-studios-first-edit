@@ -1,0 +1,18 @@
+{
+  "slug": "hyperconfig-keeper-18",
+  "title": "HyperConfig Keeper",
+  "description": "Open-source config keeper built for high-performance devops & containers workflows.",
+  "tags": [
+    "Config",
+    "DevOps"
+  ],
+  "author": {
+    "name": "open-hyper",
+    "url": "https://github.com/open-hyper"
+  },
+  "url": "https://github.com/rehubber-catalog/hyperconfig-keeper-18",
+  "upvotes": 361,
+  "views": 8284,
+  "date": "2024-04-10",
+  "content": "HyperConfig Keeper is a dedicated open-source utility designed to optimize devops & containers development."
+}

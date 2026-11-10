@@ -1,0 +1,19 @@
+{
+  "slug": "pocketbase",
+  "title": "PocketBase",
+  "description": "Open source backend in 1 file consisting of embedded SQLite database with realtime subscriptions.",
+  "tags": [
+    "Database",
+    "SQLite",
+    "Embedded"
+  ],
+  "author": {
+    "name": "pocketbase",
+    "url": "https://github.com/pocketbase/pocketbase"
+  },
+  "url": "https://pocketbase.io",
+  "upvotes": 395,
+  "views": 10631,
+  "date": "28 Mar 2024",
+  "content": "Open source backend in 1 file consisting of embedded SQLite database with realtime subscriptions."
+}

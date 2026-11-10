@@ -1,0 +1,18 @@
+{
+  "slug": "rustcolor-palette-245",
+  "title": "RustColor Palette",
+  "description": "Open-source color palette built for high-performance frontend & ui workflows.",
+  "tags": [
+    "Color",
+    "Frontend"
+  ],
+  "author": {
+    "name": "open-rust",
+    "url": "https://github.com/open-rust"
+  },
+  "url": "https://github.com/rehubber-catalog/rustcolor-palette-245",
+  "upvotes": 360,
+  "views": 8075,
+  "date": "2024-04-10",
+  "content": "RustColor Palette is a dedicated open-source utility designed to optimize frontend & ui development."
+}

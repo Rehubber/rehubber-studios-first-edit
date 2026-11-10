@@ -1,0 +1,19 @@
+{
+  "slug": "prisma",
+  "title": "Prisma",
+  "description": "Next-generation ORM for Node.js & TypeScript with intuitive data modeling and migrations.",
+  "tags": [
+    "ORM",
+    "TypeScript",
+    "Database"
+  ],
+  "author": {
+    "name": "prisma",
+    "url": "https://github.com/prisma/prisma"
+  },
+  "url": "https://www.prisma.io",
+  "upvotes": 385,
+  "views": 10356,
+  "date": "28 Mar 2024",
+  "content": "Next-generation ORM for Node.js & TypeScript with intuitive data modeling and migrations."
+}

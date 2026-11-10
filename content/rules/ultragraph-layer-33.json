@@ -1,0 +1,18 @@
+{
+  "slug": "ultragraph-layer-33",
+  "title": "UltraGraph Layer",
+  "description": "Open-source graph layer built for high-performance databases & storage workflows.",
+  "tags": [
+    "Graph",
+    "Databases"
+  ],
+  "author": {
+    "name": "open-ultra",
+    "url": "https://github.com/open-ultra"
+  },
+  "url": "https://github.com/rehubber-catalog/ultragraph-layer-33",
+  "upvotes": 216,
+  "views": 4879,
+  "date": "2024-04-10",
+  "content": "UltraGraph Layer is a dedicated open-source utility designed to optimize databases & storage development."
+}

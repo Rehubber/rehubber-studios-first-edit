@@ -1,0 +1,18 @@
+{
+  "slug": "strapi",
+  "title": "Strapi",
+  "description": "The leading open-source headless CMS. 100% JavaScript / TypeScript and customizable.",
+  "tags": [
+    "Headless CMS",
+    "Backend"
+  ],
+  "author": {
+    "name": "strapi",
+    "url": "https://github.com/strapi"
+  },
+  "url": "https://github.com/strapi/strapi",
+  "upvotes": 390,
+  "views": 11904,
+  "date": "2024-03-20",
+  "content": "Strapi: The leading open-source headless CMS. 100% JavaScript / TypeScript and customizable."
+}

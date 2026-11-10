@@ -1,0 +1,18 @@
+{
+  "slug": "scylladb",
+  "title": "ScyllaDB",
+  "description": "High-performance NoSQL database compatible with Cassandra and DynamoDB in C++.",
+  "tags": [
+    "NoSQL",
+    "Databases"
+  ],
+  "author": {
+    "name": "scylladb",
+    "url": "https://github.com/scylladb"
+  },
+  "url": "https://github.com/scylladb/scylladb",
+  "upvotes": 248,
+  "views": 7646,
+  "date": "2024-03-20",
+  "content": "ScyllaDB: High-performance NoSQL database compatible with Cassandra and DynamoDB in C++."
+}

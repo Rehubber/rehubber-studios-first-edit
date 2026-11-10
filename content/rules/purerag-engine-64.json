@@ -1,0 +1,18 @@
+{
+  "slug": "purerag-engine-64",
+  "title": "PureRAG Engine",
+  "description": "Open-source rag engine built for high-performance ai & machine learning workflows.",
+  "tags": [
+    "RAG",
+    "AI"
+  ],
+  "author": {
+    "name": "open-pure",
+    "url": "https://github.com/open-pure"
+  },
+  "url": "https://github.com/rehubber-catalog/purerag-engine-64",
+  "upvotes": 313,
+  "views": 7102,
+  "date": "2024-04-10",
+  "content": "PureRAG Engine is a dedicated open-source utility designed to optimize ai & machine learning development."
+}

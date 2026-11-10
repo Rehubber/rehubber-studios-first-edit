@@ -1,0 +1,19 @@
+{
+  "slug": "duckdb",
+  "title": "DuckDB",
+  "description": "An in-process SQL OLAP database management system fast for analytical queries.",
+  "tags": [
+    "Database",
+    "Analytics",
+    "Embedded"
+  ],
+  "author": {
+    "name": "duckdb",
+    "url": "https://github.com/duckdb/duckdb"
+  },
+  "url": "https://duckdb.org",
+  "upvotes": 350,
+  "views": 9394,
+  "date": "28 Mar 2024",
+  "content": "An in-process SQL OLAP database management system fast for analytical queries."
+}

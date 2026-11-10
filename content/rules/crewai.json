@@ -1,0 +1,19 @@
+{
+  "slug": "crewai",
+  "title": "CrewAI",
+  "description": "Cutting-edge framework for orchestrating role-playing, autonomous AI agents.",
+  "tags": [
+    "AI",
+    "Agents",
+    "Multi-Agent"
+  ],
+  "author": {
+    "name": "crewAIInc",
+    "url": "https://github.com/crewAIInc/crewAI"
+  },
+  "url": "https://www.crewai.com",
+  "upvotes": 355,
+  "views": 9555,
+  "date": "28 Mar 2024",
+  "content": "Cutting-edge framework for orchestrating role-playing, autonomous AI agents."
+}

@@ -1,0 +1,18 @@
+{
+  "slug": "remix",
+  "title": "Remix",
+  "description": "Full stack web framework that lets you focus on web standards and modern user experiences.",
+  "tags": [
+    "React",
+    "Frontend"
+  ],
+  "author": {
+    "name": "remix-run",
+    "url": "https://github.com/remix-run"
+  },
+  "url": "https://github.com/remix-run/remix",
+  "upvotes": 248,
+  "views": 5519,
+  "date": "2024-03-20",
+  "content": "Remix: Full stack web framework that lets you focus on web standards and modern user experiences."
+}

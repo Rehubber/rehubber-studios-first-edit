@@ -1,0 +1,19 @@
+{
+  "slug": "llama-cpp",
+  "title": "llama.cpp",
+  "description": "LLM inference in C/C++ with zero dependencies, quantized execution on CPU and GPU.",
+  "tags": [
+    "AI",
+    "Inference",
+    "C++"
+  ],
+  "author": {
+    "name": "ggerganov",
+    "url": "https://github.com/ggerganov/llama.cpp"
+  },
+  "url": "https://github.com/ggerganov/llama.cpp",
+  "upvotes": 430,
+  "views": 11299,
+  "date": "28 Mar 2024",
+  "content": "LLM inference in C/C++ with zero dependencies, quantized execution on CPU and GPU."
+}

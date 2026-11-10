@@ -1,0 +1,18 @@
+{
+  "slug": "openevent-bus-174",
+  "title": "OpenEvent Bus",
+  "description": "Open-source event bus built for high-performance backend & apis workflows.",
+  "tags": [
+    "Event",
+    "Backend"
+  ],
+  "author": {
+    "name": "open-open",
+    "url": "https://github.com/open-open"
+  },
+  "url": "https://github.com/rehubber-catalog/openevent-bus-174",
+  "upvotes": 183,
+  "views": 4332,
+  "date": "2024-04-10",
+  "content": "OpenEvent Bus is a dedicated open-source utility designed to optimize backend & apis development."
+}

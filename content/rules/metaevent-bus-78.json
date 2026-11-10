@@ -1,0 +1,18 @@
+{
+  "slug": "metaevent-bus-78",
+  "title": "MetaEvent Bus",
+  "description": "Open-source event bus built for high-performance backend & apis workflows.",
+  "tags": [
+    "Event",
+    "Backend"
+  ],
+  "author": {
+    "name": "open-meta",
+    "url": "https://github.com/open-meta"
+  },
+  "url": "https://github.com/rehubber-catalog/metaevent-bus-78",
+  "upvotes": 131,
+  "views": 3364,
+  "date": "2024-04-10",
+  "content": "MetaEvent Bus is a dedicated open-source utility designed to optimize backend & apis development."
+}

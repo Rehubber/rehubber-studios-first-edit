@@ -1,0 +1,18 @@
+{
+  "slug": "prowebhook-dispatcher-142",
+  "title": "ProWebhook Dispatcher",
+  "description": "Open-source webhook dispatcher built for high-performance backend & apis workflows.",
+  "tags": [
+    "Webhook",
+    "Backend"
+  ],
+  "author": {
+    "name": "open-pro",
+    "url": "https://github.com/open-pro"
+  },
+  "url": "https://github.com/rehubber-catalog/prowebhook-dispatcher-142",
+  "upvotes": 49,
+  "views": 1276,
+  "date": "2024-04-10",
+  "content": "ProWebhook Dispatcher is a dedicated open-source utility designed to optimize backend & apis development."
+}

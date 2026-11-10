@@ -1,0 +1,18 @@
+{
+  "slug": "neoembedder-144",
+  "title": "NeoEmbedder",
+  "description": "Open-source embedder built for high-performance ai & machine learning workflows.",
+  "tags": [
+    "Embedder",
+    "AI"
+  ],
+  "author": {
+    "name": "open-neo",
+    "url": "https://github.com/open-neo"
+  },
+  "url": "https://github.com/rehubber-catalog/neoembedder-144",
+  "upvotes": 123,
+  "views": 2942,
+  "date": "2024-04-10",
+  "content": "NeoEmbedder is a dedicated open-source utility designed to optimize ai & machine learning development."
+}

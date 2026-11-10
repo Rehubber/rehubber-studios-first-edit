@@ -1,0 +1,19 @@
+{
+  "slug": "fastembed",
+  "title": "FastEmbed",
+  "description": "Fast, lightweight Python library built for Embedding generation without PyTorch.",
+  "tags": [
+    "AI",
+    "Embeddings",
+    "Search"
+  ],
+  "author": {
+    "name": "qdrant",
+    "url": "https://github.com/qdrant/fastembed"
+  },
+  "url": "https://qdrant.github.io/fastembed/",
+  "upvotes": 215,
+  "views": 5845,
+  "date": "28 Mar 2024",
+  "content": "Fast, lightweight Python library built for Embedding generation without PyTorch."
+}

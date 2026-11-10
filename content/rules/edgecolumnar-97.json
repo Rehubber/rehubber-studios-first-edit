@@ -1,0 +1,18 @@
+{
+  "slug": "edgecolumnar-97",
+  "title": "EdgeColumnar",
+  "description": "Open-source columnar built for high-performance databases & storage workflows.",
+  "tags": [
+    "Columnar",
+    "Databases"
+  ],
+  "author": {
+    "name": "open-edge",
+    "url": "https://github.com/open-edge"
+  },
+  "url": "https://github.com/rehubber-catalog/edgecolumnar-97",
+  "upvotes": 134,
+  "views": 3291,
+  "date": "2024-04-10",
+  "content": "EdgeColumnar is a dedicated open-source utility designed to optimize databases & storage development."
+}

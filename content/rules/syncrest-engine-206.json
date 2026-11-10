@@ -1,0 +1,18 @@
+{
+  "slug": "syncrest-engine-206",
+  "title": "SyncREST Engine",
+  "description": "Open-source rest engine built for high-performance backend & apis workflows.",
+  "tags": [
+    "REST",
+    "Backend"
+  ],
+  "author": {
+    "name": "open-sync",
+    "url": "https://github.com/open-sync"
+  },
+  "url": "https://github.com/rehubber-catalog/syncrest-engine-206",
+  "upvotes": 317,
+  "views": 7388,
+  "date": "2024-04-10",
+  "content": "SyncREST Engine is a dedicated open-source utility designed to optimize backend & apis development."
+}

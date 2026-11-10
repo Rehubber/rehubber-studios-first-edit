@@ -1,0 +1,18 @@
+{
+  "slug": "opencolumnar-169",
+  "title": "OpenColumnar",
+  "description": "Open-source columnar built for high-performance databases & storage workflows.",
+  "tags": [
+    "Columnar",
+    "Databases"
+  ],
+  "author": {
+    "name": "open-open",
+    "url": "https://github.com/open-open"
+  },
+  "url": "https://github.com/rehubber-catalog/opencolumnar-169",
+  "upvotes": 348,
+  "views": 7867,
+  "date": "2024-04-10",
+  "content": "OpenColumnar is a dedicated open-source utility designed to optimize databases & storage development."
+}

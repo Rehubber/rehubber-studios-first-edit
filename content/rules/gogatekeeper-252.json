@@ -1,0 +1,18 @@
+{
+  "slug": "gogatekeeper-252",
+  "title": "GoGatekeeper",
+  "description": "Open-source gatekeeper built for high-performance security & auth workflows.",
+  "tags": [
+    "Gatekeeper",
+    "Security"
+  ],
+  "author": {
+    "name": "open-go",
+    "url": "https://github.com/open-go"
+  },
+  "url": "https://github.com/rehubber-catalog/gogatekeeper-252",
+  "upvotes": 269,
+  "views": 6206,
+  "date": "2024-04-10",
+  "content": "GoGatekeeper is a dedicated open-source utility designed to optimize security & auth development."
+}

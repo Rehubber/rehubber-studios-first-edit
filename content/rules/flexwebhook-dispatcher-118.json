@@ -1,0 +1,18 @@
+{
+  "slug": "flexwebhook-dispatcher-118",
+  "title": "FlexWebhook Dispatcher",
+  "description": "Open-source webhook dispatcher built for high-performance backend & apis workflows.",
+  "tags": [
+    "Webhook",
+    "Backend"
+  ],
+  "author": {
+    "name": "open-flex",
+    "url": "https://github.com/open-flex"
+  },
+  "url": "https://github.com/rehubber-catalog/flexwebhook-dispatcher-118",
+  "upvotes": 211,
+  "views": 4884,
+  "date": "2024-04-10",
+  "content": "FlexWebhook Dispatcher is a dedicated open-source utility designed to optimize backend & apis development."
+}

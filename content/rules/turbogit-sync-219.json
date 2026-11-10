@@ -1,0 +1,18 @@
+{
+  "slug": "turbogit-sync-219",
+  "title": "TurboGit Sync",
+  "description": "Open-source git sync built for high-performance developer cli & tools workflows.",
+  "tags": [
+    "Git",
+    "Developer"
+  ],
+  "author": {
+    "name": "open-turbo",
+    "url": "https://github.com/open-turbo"
+  },
+  "url": "https://github.com/rehubber-catalog/turbogit-sync-219",
+  "upvotes": 98,
+  "views": 2317,
+  "date": "2024-04-10",
+  "content": "TurboGit Sync is a dedicated open-source utility designed to optimize developer cli & tools development."
+}

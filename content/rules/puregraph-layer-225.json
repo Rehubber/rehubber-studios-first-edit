@@ -1,0 +1,18 @@
+{
+  "slug": "puregraph-layer-225",
+  "title": "PureGraph Layer",
+  "description": "Open-source graph layer built for high-performance databases & storage workflows.",
+  "tags": [
+    "Graph",
+    "Databases"
+  ],
+  "author": {
+    "name": "open-pure",
+    "url": "https://github.com/open-pure"
+  },
+  "url": "https://github.com/rehubber-catalog/puregraph-layer-225",
+  "upvotes": 320,
+  "views": 7315,
+  "date": "2024-04-10",
+  "content": "PureGraph Layer is a dedicated open-source utility designed to optimize databases & storage development."
+}

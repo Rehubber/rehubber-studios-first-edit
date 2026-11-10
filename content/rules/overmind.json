@@ -1,0 +1,18 @@
+{
+  "slug": "overmind",
+  "title": "Overmind",
+  "description": "Process manager for Procfile-based applications and microservices in development.",
+  "tags": [
+    "Process Manager",
+    "Productivity"
+  ],
+  "author": {
+    "name": "DarthSim",
+    "url": "https://github.com/DarthSim"
+  },
+  "url": "https://github.com/DarthSim/overmind",
+  "upvotes": 196,
+  "views": 6395,
+  "date": "2024-03-20",
+  "content": "Overmind: Process manager for Procfile-based applications and microservices in development."
+}

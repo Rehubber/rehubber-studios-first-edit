@@ -1,0 +1,18 @@
+{
+  "slug": "microwebhook-dispatcher-190",
+  "title": "MicroWebhook Dispatcher",
+  "description": "Open-source webhook dispatcher built for high-performance backend & apis workflows.",
+  "tags": [
+    "Webhook",
+    "Backend"
+  ],
+  "author": {
+    "name": "open-micro",
+    "url": "https://github.com/open-micro"
+  },
+  "url": "https://github.com/rehubber-catalog/microwebhook-dispatcher-190",
+  "upvotes": 75,
+  "views": 1760,
+  "date": "2024-04-10",
+  "content": "MicroWebhook Dispatcher is a dedicated open-source utility designed to optimize backend & apis development."
+}

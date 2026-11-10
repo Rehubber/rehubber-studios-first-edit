@@ -1,0 +1,18 @@
+{
+  "slug": "rustbinary-inspector-83",
+  "title": "RustBinary Inspector",
+  "description": "Open-source binary inspector built for high-performance developer cli & tools workflows.",
+  "tags": [
+    "Binary",
+    "Developer"
+  ],
+  "author": {
+    "name": "open-rust",
+    "url": "https://github.com/open-rust"
+  },
+  "url": "https://github.com/rehubber-catalog/rustbinary-inspector-83",
+  "upvotes": 316,
+  "views": 7029,
+  "date": "2024-04-10",
+  "content": "RustBinary Inspector is a dedicated open-source utility designed to optimize developer cli & tools development."
+}

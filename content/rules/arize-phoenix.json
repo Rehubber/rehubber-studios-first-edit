@@ -1,0 +1,18 @@
+{
+  "slug": "arize-phoenix",
+  "title": "Arize Phoenix",
+  "description": "AI observability platform for LLMs with tracing, evaluations, and vector visualization.",
+  "tags": [
+    "Observability",
+    "AI"
+  ],
+  "author": {
+    "name": "Arize-ai",
+    "url": "https://github.com/Arize-ai"
+  },
+  "url": "https://github.com/Arize-ai/arize-phoenix",
+  "upvotes": 429,
+  "views": 11703,
+  "date": "2024-03-20",
+  "content": "Arize Phoenix: AI observability platform for LLMs with tracing, evaluations, and vector visualization."
+}

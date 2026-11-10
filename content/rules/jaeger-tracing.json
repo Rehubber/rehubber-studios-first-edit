@@ -1,0 +1,18 @@
+{
+  "slug": "jaeger-tracing",
+  "title": "Jaeger Tracing",
+  "description": "Open source, end-to-end distributed tracing monitor and troubleshoot transactions in complex systems.",
+  "tags": [
+    "Tracing",
+    "DevOps"
+  ],
+  "author": {
+    "name": "jaegertracing",
+    "url": "https://github.com/jaegertracing"
+  },
+  "url": "https://github.com/jaegertracing/jaeger-tracing",
+  "upvotes": 428,
+  "views": 11544,
+  "date": "2024-03-20",
+  "content": "Jaeger Tracing: Open source, end-to-end distributed tracing monitor and troubleshoot transactions in complex systems."
+}

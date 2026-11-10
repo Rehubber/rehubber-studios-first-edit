@@ -1,0 +1,18 @@
+{
+  "slug": "trl-transformer-rl",
+  "title": "TRL Transformer RL",
+  "description": "Train transformer language models with reinforcement learning, DPO, and PPO.",
+  "tags": [
+    "RLHF",
+    "AI"
+  ],
+  "author": {
+    "name": "huggingface",
+    "url": "https://github.com/huggingface"
+  },
+  "url": "https://github.com/huggingface/trl-transformer-rl",
+  "upvotes": 271,
+  "views": 8273,
+  "date": "2024-03-20",
+  "content": "TRL Transformer RL: Train transformer language models with reinforcement learning, DPO, and PPO."
+}

@@ -1,0 +1,18 @@
+{
+  "slug": "victoriametrics",
+  "title": "VictoriaMetrics",
+  "description": "Cost-effective and scalable monitoring solution and time series database.",
+  "tags": [
+    "Monitoring DB",
+    "Databases"
+  ],
+  "author": {
+    "name": "VictoriaMetrics",
+    "url": "https://github.com/VictoriaMetrics"
+  },
+  "url": "https://github.com/VictoriaMetrics/victoriametrics",
+  "upvotes": 206,
+  "views": 4845,
+  "date": "2024-03-20",
+  "content": "VictoriaMetrics: Cost-effective and scalable monitoring solution and time series database."
+}

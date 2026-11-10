@@ -1,0 +1,18 @@
+{
+  "slug": "omniwebhook-dispatcher-214",
+  "title": "OmniWebhook Dispatcher",
+  "description": "Open-source webhook dispatcher built for high-performance backend & apis workflows.",
+  "tags": [
+    "Webhook",
+    "Backend"
+  ],
+  "author": {
+    "name": "open-omni",
+    "url": "https://github.com/open-omni"
+  },
+  "url": "https://github.com/rehubber-catalog/omniwebhook-dispatcher-214",
+  "upvotes": 263,
+  "views": 5852,
+  "date": "2024-04-10",
+  "content": "OmniWebhook Dispatcher is a dedicated open-source utility designed to optimize backend & apis development."
+}

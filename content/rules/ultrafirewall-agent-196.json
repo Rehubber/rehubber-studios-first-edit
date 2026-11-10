@@ -1,0 +1,18 @@
+{
+  "slug": "ultrafirewall-agent-196",
+  "title": "UltraFirewall Agent",
+  "description": "Open-source firewall agent built for high-performance security & auth workflows.",
+  "tags": [
+    "Firewall",
+    "Security"
+  ],
+  "author": {
+    "name": "open-ultra",
+    "url": "https://github.com/open-ultra"
+  },
+  "url": "https://github.com/rehubber-catalog/ultrafirewall-agent-196",
+  "upvotes": 297,
+  "views": 6758,
+  "date": "2024-04-10",
+  "content": "UltraFirewall Agent is a dedicated open-source utility designed to optimize security & auth development."
+}

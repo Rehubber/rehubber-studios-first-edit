@@ -1,0 +1,18 @@
+{
+  "slug": "suno-bark-webui",
+  "title": "Suno Bark WebUI",
+  "description": "Gradio based user interface for text to audio generation with voice presets.",
+  "tags": [
+    "Audio",
+    "AI"
+  ],
+  "author": {
+    "name": "suno-ai",
+    "url": "https://github.com/suno-ai"
+  },
+  "url": "https://github.com/suno-ai/suno-bark-webui",
+  "upvotes": 382,
+  "views": 11696,
+  "date": "2024-03-20",
+  "content": "Suno Bark WebUI: Gradio based user interface for text to audio generation with voice presets."
+}

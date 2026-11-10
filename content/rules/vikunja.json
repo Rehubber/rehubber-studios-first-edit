@@ -1,0 +1,18 @@
+{
+  "slug": "vikunja",
+  "title": "Vikunja",
+  "description": "The open-source, self-hostable to-do app organizing tasks across lists and kanban boards.",
+  "tags": [
+    "To-Do",
+    "Productivity"
+  ],
+  "author": {
+    "name": "go-vikunja",
+    "url": "https://github.com/go-vikunja"
+  },
+  "url": "https://github.com/go-vikunja/vikunja",
+  "upvotes": 243,
+  "views": 7316,
+  "date": "2024-03-20",
+  "content": "Vikunja: The open-source, self-hostable to-do app organizing tasks across lists and kanban boards."
+}

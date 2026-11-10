@@ -1,0 +1,19 @@
+{
+  "slug": "posthog",
+  "title": "PostHog",
+  "description": "Open-source product analytics, session recording, feature flags, and A/B testing suite.",
+  "tags": [
+    "Analytics",
+    "Product",
+    "Session Replay"
+  ],
+  "author": {
+    "name": "PostHog",
+    "url": "https://github.com/PostHog/posthog"
+  },
+  "url": "https://posthog.com",
+  "upvotes": 405,
+  "views": 10673,
+  "date": "28 Mar 2024",
+  "content": "Open-source product analytics, session recording, feature flags, and A/B testing suite."
+}

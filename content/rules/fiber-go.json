@@ -1,0 +1,18 @@
+{
+  "slug": "fiber-go",
+  "title": "Fiber Go",
+  "description": "Express-inspired web framework written in Go on top of Fasthttp.",
+  "tags": [
+    "Go",
+    "Backend"
+  ],
+  "author": {
+    "name": "gofiber",
+    "url": "https://github.com/gofiber"
+  },
+  "url": "https://github.com/gofiber/fiber-go",
+  "upvotes": 396,
+  "views": 13082,
+  "date": "2024-03-20",
+  "content": "Fiber Go: Express-inspired web framework written in Go on top of Fasthttp."
+}

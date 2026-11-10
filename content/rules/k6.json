@@ -1,0 +1,18 @@
+{
+  "slug": "k6",
+  "title": "K6",
+  "description": "A modern load testing tool, using Go and JavaScript to test system throughput and resilience.",
+  "tags": [
+    "Load Testing",
+    "Productivity"
+  ],
+  "author": {
+    "name": "grafana",
+    "url": "https://github.com/grafana"
+  },
+  "url": "https://github.com/grafana/k6",
+  "upvotes": 293,
+  "views": 9257,
+  "date": "2024-03-20",
+  "content": "K6: A modern load testing tool, using Go and JavaScript to test system throughput and resilience."
+}

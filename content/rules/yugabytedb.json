@@ -1,0 +1,18 @@
+{
+  "slug": "yugabytedb",
+  "title": "YugabyteDB",
+  "description": "High-performance distributed SQL database compatible with PostgreSQL.",
+  "tags": [
+    "Distributed SQL",
+    "Databases"
+  ],
+  "author": {
+    "name": "yugabyte",
+    "url": "https://github.com/yugabyte"
+  },
+  "url": "https://github.com/yugabyte/yugabytedb",
+  "upvotes": 304,
+  "views": 6242,
+  "date": "2024-03-20",
+  "content": "YugabyteDB: High-performance distributed SQL database compatible with PostgreSQL."
+}

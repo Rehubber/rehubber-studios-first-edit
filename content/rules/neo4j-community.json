@@ -1,0 +1,18 @@
+{
+  "slug": "neo4j-community",
+  "title": "Neo4j Community",
+  "description": "Graph database management system designed for storing and navigating connections.",
+  "tags": [
+    "Graph DB",
+    "Databases"
+  ],
+  "author": {
+    "name": "neo4j",
+    "url": "https://github.com/neo4j"
+  },
+  "url": "https://github.com/neo4j/neo4j-community",
+  "upvotes": 213,
+  "views": 6710,
+  "date": "2024-03-20",
+  "content": "Neo4j Community: Graph database management system designed for storing and navigating connections."
+}

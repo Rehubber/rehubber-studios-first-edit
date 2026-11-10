@@ -1,0 +1,18 @@
+{
+  "slug": "neoingress-controller-146",
+  "title": "NeoIngress Controller",
+  "description": "Open-source ingress controller built for high-performance devops & containers workflows.",
+  "tags": [
+    "Ingress",
+    "DevOps"
+  ],
+  "author": {
+    "name": "open-neo",
+    "url": "https://github.com/open-neo"
+  },
+  "url": "https://github.com/rehubber-catalog/neoingress-controller-146",
+  "upvotes": 197,
+  "views": 4608,
+  "date": "2024-04-10",
+  "content": "NeoIngress Controller is a dedicated open-source utility designed to optimize devops & containers development."
+}

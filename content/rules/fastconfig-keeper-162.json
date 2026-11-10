@@ -1,0 +1,18 @@
+{
+  "slug": "fastconfig-keeper-162",
+  "title": "FastConfig Keeper",
+  "description": "Open-source config keeper built for high-performance devops & containers workflows.",
+  "tags": [
+    "Config",
+    "DevOps"
+  ],
+  "author": {
+    "name": "open-fast",
+    "url": "https://github.com/open-fast"
+  },
+  "url": "https://github.com/rehubber-catalog/fastconfig-keeper-162",
+  "upvotes": 89,
+  "views": 2036,
+  "date": "2024-04-10",
+  "content": "FastConfig Keeper is a dedicated open-source utility designed to optimize devops & containers development."
+}

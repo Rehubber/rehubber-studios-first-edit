@@ -1,0 +1,18 @@
+{
+  "slug": "dragonfly-cache",
+  "title": "Dragonfly Cache",
+  "description": "Modern in-memory datastore designed to scale horizontally with multi-threading.",
+  "tags": [
+    "Cache",
+    "Databases"
+  ],
+  "author": {
+    "name": "dragonflydb",
+    "url": "https://github.com/dragonflydb"
+  },
+  "url": "https://github.com/dragonflydb/dragonfly-cache",
+  "upvotes": 187,
+  "views": 6303,
+  "date": "2024-03-20",
+  "content": "Dragonfly Cache: Modern in-memory datastore designed to scale horizontally with multi-threading."
+}

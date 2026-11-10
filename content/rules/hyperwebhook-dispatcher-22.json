@@ -1,0 +1,18 @@
+{
+  "slug": "hyperwebhook-dispatcher-22",
+  "title": "HyperWebhook Dispatcher",
+  "description": "Open-source webhook dispatcher built for high-performance backend & apis workflows.",
+  "tags": [
+    "Webhook",
+    "Backend"
+  ],
+  "author": {
+    "name": "open-hyper",
+    "url": "https://github.com/open-hyper"
+  },
+  "url": "https://github.com/rehubber-catalog/hyperwebhook-dispatcher-22",
+  "upvotes": 159,
+  "views": 3916,
+  "date": "2024-04-10",
+  "content": "HyperWebhook Dispatcher is a dedicated open-source utility designed to optimize backend & apis development."
+}

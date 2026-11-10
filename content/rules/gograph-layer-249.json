@@ -1,0 +1,18 @@
+{
+  "slug": "gograph-layer-249",
+  "title": "GoGraph Layer",
+  "description": "Open-source graph layer built for high-performance databases & storage workflows.",
+  "tags": [
+    "Graph",
+    "Databases"
+  ],
+  "author": {
+    "name": "open-go",
+    "url": "https://github.com/open-go"
+  },
+  "url": "https://github.com/rehubber-catalog/gograph-layer-249",
+  "upvotes": 158,
+  "views": 3707,
+  "date": "2024-04-10",
+  "content": "GoGraph Layer is a dedicated open-source utility designed to optimize databases & storage development."
+}

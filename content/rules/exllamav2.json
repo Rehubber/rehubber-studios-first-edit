@@ -1,0 +1,18 @@
+{
+  "slug": "exllamav2",
+  "title": "ExLlamaV2",
+  "description": "A fast inference library for running modern LLMs locally on modern graphics cards.",
+  "tags": [
+    "Inference",
+    "AI"
+  ],
+  "author": {
+    "name": "turboderp",
+    "url": "https://github.com/turboderp"
+  },
+  "url": "https://github.com/turboderp/exllamav2",
+  "upvotes": 364,
+  "views": 10575,
+  "date": "2024-03-20",
+  "content": "ExLlamaV2: A fast inference library for running modern LLMs locally on modern graphics cards."
+}

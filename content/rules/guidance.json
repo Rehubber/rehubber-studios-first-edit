@@ -1,0 +1,18 @@
+{
+  "slug": "guidance",
+  "title": "Guidance",
+  "description": "A guidance language for controlling large language models with interleave generation.",
+  "tags": [
+    "Prompt Control",
+    "AI"
+  ],
+  "author": {
+    "name": "guidance-ai",
+    "url": "https://github.com/guidance-ai"
+  },
+  "url": "https://github.com/guidance-ai/guidance",
+  "upvotes": 225,
+  "views": 5164,
+  "date": "2024-03-20",
+  "content": "Guidance: A guidance language for controlling large language models with interleave generation."
+}

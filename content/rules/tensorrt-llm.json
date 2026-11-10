@@ -1,0 +1,18 @@
+{
+  "slug": "tensorrt-llm",
+  "title": "TensorRT-LLM",
+  "description": "NVIDIA library for optimizing LLM inference performance on GPUs.",
+  "tags": [
+    "Hardware Opt",
+    "AI"
+  ],
+  "author": {
+    "name": "NVIDIA",
+    "url": "https://github.com/NVIDIA"
+  },
+  "url": "https://github.com/NVIDIA/tensorrt-llm",
+  "upvotes": 426,
+  "views": 11552,
+  "date": "2024-03-20",
+  "content": "TensorRT-LLM: NVIDIA library for optimizing LLM inference performance on GPUs."
+}

@@ -1,0 +1,19 @@
+{
+  "slug": "meilisearch",
+  "title": "Meilisearch",
+  "description": "A lightning-fast, ultra-relevant, and typo-tolerant search engine written in Rust.",
+  "tags": [
+    "Search",
+    "Database",
+    "Rust"
+  ],
+  "author": {
+    "name": "meilisearch",
+    "url": "https://github.com/meilisearch/meilisearch"
+  },
+  "url": "https://www.meilisearch.com",
+  "upvotes": 370,
+  "views": 10002,
+  "date": "28 Mar 2024",
+  "content": "A lightning-fast, ultra-relevant, and typo-tolerant search engine written in Rust."
+}

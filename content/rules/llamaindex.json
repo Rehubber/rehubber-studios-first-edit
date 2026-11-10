@@ -1,0 +1,19 @@
+{
+  "slug": "llamaindex",
+  "title": "LlamaIndex",
+  "description": "Data framework for LLM applications to ingest, index, and query private or domain data.",
+  "tags": [
+    "AI",
+    "RAG",
+    "Search"
+  ],
+  "author": {
+    "name": "run-llama",
+    "url": "https://github.com/run-llama/llama_index"
+  },
+  "url": "https://www.llamaindex.ai",
+  "upvotes": 340,
+  "views": 9213,
+  "date": "28 Mar 2024",
+  "content": "Data framework for LLM applications to ingest, index, and query private or domain data."
+}

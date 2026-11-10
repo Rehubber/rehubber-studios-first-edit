@@ -1,0 +1,18 @@
+{
+  "slug": "text-generation-webui",
+  "title": "Text Generation WebUI",
+  "description": "Gradio web UI for Large Language Models supporting Transformers, GPTQ, AWQ, and GGUF.",
+  "tags": [
+    "LLM WebUI",
+    "AI"
+  ],
+  "author": {
+    "name": "oobabooga",
+    "url": "https://github.com/oobabooga"
+  },
+  "url": "https://github.com/oobabooga/text-generation-webui",
+  "upvotes": 409,
+  "views": 8624,
+  "date": "2024-03-20",
+  "content": "Text Generation WebUI: Gradio web UI for Large Language Models supporting Transformers, GPTQ, AWQ, and GGUF."
+}

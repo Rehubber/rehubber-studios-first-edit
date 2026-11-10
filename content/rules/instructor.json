@@ -1,0 +1,18 @@
+{
+  "slug": "instructor",
+  "title": "Instructor",
+  "description": "Structured outputs powered by Pydantic for function-calling LLMs.",
+  "tags": [
+    "Structured Data",
+    "AI"
+  ],
+  "author": {
+    "name": "jxnl",
+    "url": "https://github.com/jxnl"
+  },
+  "url": "https://github.com/jxnl/instructor",
+  "upvotes": 245,
+  "views": 5838,
+  "date": "2024-03-20",
+  "content": "Instructor: Structured outputs powered by Pydantic for function-calling LLMs."
+}

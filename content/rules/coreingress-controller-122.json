@@ -1,0 +1,18 @@
+{
+  "slug": "coreingress-controller-122",
+  "title": "CoreIngress Controller",
+  "description": "Open-source ingress controller built for high-performance devops & containers workflows.",
+  "tags": [
+    "Ingress",
+    "DevOps"
+  ],
+  "author": {
+    "name": "open-core",
+    "url": "https://github.com/open-core"
+  },
+  "url": "https://github.com/rehubber-catalog/coreingress-controller-122",
+  "upvotes": 359,
+  "views": 8216,
+  "date": "2024-04-10",
+  "content": "CoreIngress Controller is a dedicated open-source utility designed to optimize devops & containers development."
+}

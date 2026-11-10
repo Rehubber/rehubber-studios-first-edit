@@ -1,0 +1,19 @@
+{
+  "slug": "lancedb",
+  "title": "LanceDB",
+  "description": "Developer-friendly, serverless vector database for AI apps built on Lance columnar format.",
+  "tags": [
+    "AI",
+    "Vector DB",
+    "Serverless"
+  ],
+  "author": {
+    "name": "lancedb",
+    "url": "https://github.com/lancedb/lancedb"
+  },
+  "url": "https://lancedb.com",
+  "upvotes": 240,
+  "views": 6675,
+  "date": "28 Mar 2024",
+  "content": "Developer-friendly, serverless vector database for AI apps built on Lance columnar format."
+}

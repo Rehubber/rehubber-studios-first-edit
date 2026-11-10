@@ -1,0 +1,19 @@
+{
+  "slug": "dify",
+  "title": "Dify",
+  "description": "An open-source LLM app development platform combining BaaS and LLMOps.",
+  "tags": [
+    "AI",
+    "LLMOps",
+    "Workflow"
+  ],
+  "author": {
+    "name": "langgenius",
+    "url": "https://github.com/langgenius/dify"
+  },
+  "url": "https://dify.ai",
+  "upvotes": 360,
+  "views": 9634,
+  "date": "28 Mar 2024",
+  "content": "An open-source LLM app development platform combining BaaS and LLMOps."
+}

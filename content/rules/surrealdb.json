@@ -1,0 +1,19 @@
+{
+  "slug": "surrealdb",
+  "title": "SurrealDB",
+  "description": "A scalable, distributed, collaborative, document-graph database for the cloud.",
+  "tags": [
+    "Database",
+    "Graph",
+    "Multi-Model"
+  ],
+  "author": {
+    "name": "surrealdb",
+    "url": "https://github.com/surrealdb/surrealdb"
+  },
+  "url": "https://surrealdb.com",
+  "upvotes": 335,
+  "views": 9091,
+  "date": "28 Mar 2024",
+  "content": "A scalable, distributed, collaborative, document-graph database for the cloud."
+}

@@ -1,0 +1,18 @@
+{
+  "slug": "axolotl",
+  "title": "Axolotl",
+  "description": "Streamlined tool designed to streamline fine-tuning of various AI models.",
+  "tags": [
+    "Fine-Tuning",
+    "AI"
+  ],
+  "author": {
+    "name": "OpenAccess-AI-Collective",
+    "url": "https://github.com/OpenAccess-AI-Collective"
+  },
+  "url": "https://github.com/OpenAccess-AI-Collective/axolotl",
+  "upvotes": 406,
+  "views": 10898,
+  "date": "2024-03-20",
+  "content": "Axolotl: Streamlined tool designed to streamline fine-tuning of various AI models."
+}

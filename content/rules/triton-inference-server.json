@@ -1,0 +1,18 @@
+{
+  "slug": "triton-inference-server",
+  "title": "Triton Inference Server",
+  "description": "Open source inference serving software that streamlines AI inferencing at scale.",
+  "tags": [
+    "Serving",
+    "AI"
+  ],
+  "author": {
+    "name": "triton-inference-server",
+    "url": "https://github.com/triton-inference-server"
+  },
+  "url": "https://github.com/triton-inference-server/triton-inference-server",
+  "upvotes": 350,
+  "views": 9374,
+  "date": "2024-03-20",
+  "content": "Triton Inference Server: Open source inference serving software that streamlines AI inferencing at scale."
+}

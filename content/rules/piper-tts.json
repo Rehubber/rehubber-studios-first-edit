@@ -1,0 +1,18 @@
+{
+  "slug": "piper-tts",
+  "title": "Piper TTS",
+  "description": "Fast, local neural text-to-speech system that sounds great and runs on Raspberry Pi.",
+  "tags": [
+    "Speech",
+    "AI"
+  ],
+  "author": {
+    "name": "rhasspy",
+    "url": "https://github.com/rhasspy"
+  },
+  "url": "https://github.com/rhasspy/piper-tts",
+  "upvotes": 270,
+  "views": 7624,
+  "date": "2024-03-20",
+  "content": "Piper TTS: Fast, local neural text-to-speech system that sounds great and runs on Raspberry Pi."
+}

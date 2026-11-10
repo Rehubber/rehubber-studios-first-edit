@@ -1,0 +1,18 @@
+{
+  "slug": "coreevent-bus-126",
+  "title": "CoreEvent Bus",
+  "description": "Open-source event bus built for high-performance backend & apis workflows.",
+  "tags": [
+    "Event",
+    "Backend"
+  ],
+  "author": {
+    "name": "open-core",
+    "url": "https://github.com/open-core"
+  },
+  "url": "https://github.com/rehubber-catalog/coreevent-bus-126",
+  "upvotes": 157,
+  "views": 3848,
+  "date": "2024-04-10",
+  "content": "CoreEvent Bus is a dedicated open-source utility designed to optimize backend & apis development."
+}

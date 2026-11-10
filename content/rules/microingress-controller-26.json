@@ -1,0 +1,18 @@
+{
+  "slug": "microingress-controller-26",
+  "title": "MicroIngress Controller",
+  "description": "Open-source ingress controller built for high-performance devops & containers workflows.",
+  "tags": [
+    "Ingress",
+    "DevOps"
+  ],
+  "author": {
+    "name": "open-micro",
+    "url": "https://github.com/open-micro"
+  },
+  "url": "https://github.com/rehubber-catalog/microingress-controller-26",
+  "upvotes": 307,
+  "views": 7248,
+  "date": "2024-04-10",
+  "content": "MicroIngress Controller is a dedicated open-source utility designed to optimize devops & containers development."
+}

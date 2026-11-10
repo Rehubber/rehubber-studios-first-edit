@@ -1,0 +1,18 @@
+{
+  "slug": "vitest",
+  "title": "Vitest",
+  "description": "Next generation testing framework powered by Vite with native ESM, TypeScript and JSX support.",
+  "tags": [
+    "Testing",
+    "Productivity"
+  ],
+  "author": {
+    "name": "vitest-dev",
+    "url": "https://github.com/vitest-dev"
+  },
+  "url": "https://github.com/vitest-dev/vitest",
+  "upvotes": 246,
+  "views": 7836,
+  "date": "2024-03-20",
+  "content": "Vitest: Next generation testing framework powered by Vite with native ESM, TypeScript and JSX support."
+}

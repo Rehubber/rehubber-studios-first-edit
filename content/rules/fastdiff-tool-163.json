@@ -1,0 +1,18 @@
+{
+  "slug": "fastdiff-tool-163",
+  "title": "FastDiff Tool",
+  "description": "Open-source diff tool built for high-performance developer cli & tools workflows.",
+  "tags": [
+    "Diff",
+    "Developer"
+  ],
+  "author": {
+    "name": "open-fast",
+    "url": "https://github.com/open-fast"
+  },
+  "url": "https://github.com/rehubber-catalog/fastdiff-tool-163",
+  "upvotes": 126,
+  "views": 2869,
+  "date": "2024-04-10",
+  "content": "FastDiff Tool is a dedicated open-source utility designed to optimize developer cli & tools development."
+}

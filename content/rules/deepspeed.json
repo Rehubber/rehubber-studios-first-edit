@@ -1,0 +1,18 @@
+{
+  "slug": "deepspeed",
+  "title": "DeepSpeed",
+  "description": "Deep learning optimization library that makes distributed training and inference efficient.",
+  "tags": [
+    "HPC",
+    "AI"
+  ],
+  "author": {
+    "name": "microsoft",
+    "url": "https://github.com/microsoft"
+  },
+  "url": "https://github.com/microsoft/deepspeed",
+  "upvotes": 290,
+  "views": 7489,
+  "date": "2024-03-20",
+  "content": "DeepSpeed: Deep learning optimization library that makes distributed training and inference efficient."
+}

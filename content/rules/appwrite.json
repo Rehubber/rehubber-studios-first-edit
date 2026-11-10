@@ -1,0 +1,19 @@
+{
+  "slug": "appwrite",
+  "title": "Appwrite",
+  "description": "End-to-end backend platform for web, mobile, native, and server developers.",
+  "tags": [
+    "Database",
+    "Backend",
+    "Auth"
+  ],
+  "author": {
+    "name": "appwrite",
+    "url": "https://github.com/appwrite/appwrite"
+  },
+  "url": "https://appwrite.io",
+  "upvotes": 380,
+  "views": 10202,
+  "date": "28 Mar 2024",
+  "content": "End-to-end backend platform for web, mobile, native, and server developers."
+}

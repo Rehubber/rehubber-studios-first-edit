@@ -1,0 +1,19 @@
+{
+  "slug": "privategpt",
+  "title": "PrivateGPT",
+  "description": "Interact with your documents using the power of GPT, 100% privately, without internet.",
+  "tags": [
+    "AI",
+    "Privacy",
+    "Offline"
+  ],
+  "author": {
+    "name": "zylon-ai",
+    "url": "https://github.com/zylon-ai/private-gpt"
+  },
+  "url": "https://privategpt.dev",
+  "upvotes": 315,
+  "views": 8580,
+  "date": "28 Mar 2024",
+  "content": "Interact with your documents using the power of GPT, 100% privately, without internet."
+}

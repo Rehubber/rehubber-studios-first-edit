@@ -1,0 +1,18 @@
+{
+  "slug": "turborepo",
+  "title": "Turborepo",
+  "description": "The high-performance build system for JavaScript and TypeScript monorepos.",
+  "tags": [
+    "Build System",
+    "Productivity"
+  ],
+  "author": {
+    "name": "vercel",
+    "url": "https://github.com/vercel"
+  },
+  "url": "https://github.com/vercel/turborepo",
+  "upvotes": 400,
+  "views": 10401,
+  "date": "2024-03-20",
+  "content": "Turborepo: The high-performance build system for JavaScript and TypeScript monorepos."
+}

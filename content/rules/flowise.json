@@ -1,0 +1,19 @@
+{
+  "slug": "flowise",
+  "title": "Flowise",
+  "description": "Drag & drop UI to build your customized LLM flows using LangchainJS.",
+  "tags": [
+    "AI",
+    "No-Code",
+    "Agents"
+  ],
+  "author": {
+    "name": "FlowiseAI",
+    "url": "https://github.com/FlowiseAI/Flowise"
+  },
+  "url": "https://flowiseai.com",
+  "upvotes": 310,
+  "views": 8339,
+  "date": "28 Mar 2024",
+  "content": "Drag & drop UI to build your customized LLM flows using LangchainJS."
+}

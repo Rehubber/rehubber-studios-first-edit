@@ -1,0 +1,18 @@
+{
+  "slug": "gorest-engine-254",
+  "title": "GoREST Engine",
+  "description": "Open-source rest engine built for high-performance backend & apis workflows.",
+  "tags": [
+    "REST",
+    "Backend"
+  ],
+  "author": {
+    "name": "open-go",
+    "url": "https://github.com/open-go"
+  },
+  "url": "https://github.com/rehubber-catalog/gorest-engine-254",
+  "upvotes": 343,
+  "views": 7872,
+  "date": "2024-04-10",
+  "content": "GoREST Engine is a dedicated open-source utility designed to optimize backend & apis development."
+}

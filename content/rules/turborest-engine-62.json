@@ -1,0 +1,18 @@
+{
+  "slug": "turborest-engine-62",
+  "title": "TurboREST Engine",
+  "description": "Open-source rest engine built for high-performance backend & apis workflows.",
+  "tags": [
+    "REST",
+    "Backend"
+  ],
+  "author": {
+    "name": "open-turbo",
+    "url": "https://github.com/open-turbo"
+  },
+  "url": "https://github.com/rehubber-catalog/turborest-engine-62",
+  "upvotes": 239,
+  "views": 5436,
+  "date": "2024-04-10",
+  "content": "TurboREST Engine is a dedicated open-source utility designed to optimize backend & apis development."
+}

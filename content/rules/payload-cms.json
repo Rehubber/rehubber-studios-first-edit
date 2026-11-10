@@ -1,0 +1,18 @@
+{
+  "slug": "payload-cms",
+  "title": "Payload CMS",
+  "description": "The premier open-source headless CMS and application framework built on Next.js and React.",
+  "tags": [
+    "Headless CMS",
+    "Backend"
+  ],
+  "author": {
+    "name": "payloadcms",
+    "url": "https://github.com/payloadcms"
+  },
+  "url": "https://github.com/payloadcms/payload-cms",
+  "upvotes": 344,
+  "views": 10743,
+  "date": "2024-03-20",
+  "content": "Payload CMS: The premier open-source headless CMS and application framework built on Next.js and React."
+}

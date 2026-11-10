@@ -1,0 +1,19 @@
+{
+  "slug": "zed",
+  "title": "Zed",
+  "description": "High-performance, multiplayer code editor from the creators of Atom and Tree-sitter in Rust.",
+  "tags": [
+    "Editor",
+    "Rust",
+    "Productivity"
+  ],
+  "author": {
+    "name": "zed-industries",
+    "url": "https://github.com/zed-industries/zed"
+  },
+  "url": "https://zed.dev",
+  "upvotes": 410,
+  "views": 10725,
+  "date": "28 Mar 2024",
+  "content": "High-performance, multiplayer code editor from the creators of Atom and Tree-sitter in Rust."
+}

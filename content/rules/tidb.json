@@ -1,0 +1,18 @@
+{
+  "slug": "tidb",
+  "title": "TiDB",
+  "description": "Open-source Distributed SQL Database that supports Hybrid Transactional and Analytical processing.",
+  "tags": [
+    "NewSQL",
+    "Databases"
+  ],
+  "author": {
+    "name": "pingcap",
+    "url": "https://github.com/pingcap"
+  },
+  "url": "https://github.com/pingcap/tidb",
+  "upvotes": 280,
+  "views": 7815,
+  "date": "2024-03-20",
+  "content": "TiDB: Open-source Distributed SQL Database that supports Hybrid Transactional and Analytical processing."
+}

@@ -1,0 +1,19 @@
+{
+  "slug": "clickhouse",
+  "title": "ClickHouse",
+  "description": "Fast, resource-efficient open-source column-oriented database for real-time analytics.",
+  "tags": [
+    "Database",
+    "Analytics",
+    "OLAP"
+  ],
+  "author": {
+    "name": "ClickHouse",
+    "url": "https://github.com/ClickHouse/ClickHouse"
+  },
+  "url": "https://clickhouse.com",
+  "upvotes": 360,
+  "views": 9634,
+  "date": "28 Mar 2024",
+  "content": "Fast, resource-efficient open-source column-oriented database for real-time analytics."
+}

@@ -1,0 +1,18 @@
+{
+  "slug": "docmost",
+  "title": "Docmost",
+  "description": "Open-source collaborative wiki and documentation software for engineering teams.",
+  "tags": [
+    "Wiki",
+    "Productivity"
+  ],
+  "author": {
+    "name": "docmost",
+    "url": "https://github.com/docmost"
+  },
+  "url": "https://github.com/docmost/docmost",
+  "upvotes": 426,
+  "views": 9337,
+  "date": "2024-03-20",
+  "content": "Docmost: Open-source collaborative wiki and documentation software for engineering teams."
+}

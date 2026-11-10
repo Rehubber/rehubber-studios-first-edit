@@ -1,0 +1,18 @@
+{
+  "slug": "pivotal-greenplum",
+  "title": "Pivotal Greenplum",
+  "description": "Massively parallel processing analytical database based on PostgreSQL.",
+  "tags": [
+    "Data Warehouse",
+    "Databases"
+  ],
+  "author": {
+    "name": "greenplum-db",
+    "url": "https://github.com/greenplum-db"
+  },
+  "url": "https://github.com/greenplum-db/pivotal-greenplum",
+  "upvotes": 235,
+  "views": 5570,
+  "date": "2024-03-20",
+  "content": "Pivotal Greenplum: Massively parallel processing analytical database based on PostgreSQL."
+}

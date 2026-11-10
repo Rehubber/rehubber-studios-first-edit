@@ -1,0 +1,18 @@
+{
+  "slug": "authentik",
+  "title": "Authentik",
+  "description": "An open-source Identity Provider focused on flexibility and versatility with flows and stages.",
+  "tags": [
+    "Auth",
+    "Security"
+  ],
+  "author": {
+    "name": "goauthentik",
+    "url": "https://github.com/goauthentik"
+  },
+  "url": "https://github.com/goauthentik/authentik",
+  "upvotes": 185,
+  "views": 4824,
+  "date": "2024-03-20",
+  "content": "Authentik: An open-source Identity Provider focused on flexibility and versatility with flows and stages."
+}

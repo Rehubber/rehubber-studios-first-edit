@@ -1,0 +1,19 @@
+{
+  "slug": "autogen",
+  "title": "AutoGen",
+  "description": "Multi-agent conversation framework to enable next-generation LLM applications.",
+  "tags": [
+    "AI",
+    "Agents",
+    "Collaboration"
+  ],
+  "author": {
+    "name": "microsoft",
+    "url": "https://github.com/microsoft/autogen"
+  },
+  "url": "https://microsoft.github.io/autogen/",
+  "upvotes": 345,
+  "views": 9091,
+  "date": "28 Mar 2024",
+  "content": "Multi-agent conversation framework to enable next-generation LLM applications."
+}

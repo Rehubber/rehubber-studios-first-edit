@@ -1,0 +1,18 @@
+{
+  "slug": "chakra-ui",
+  "title": "Chakra UI",
+  "description": "Simple, modular and accessible component library that gives you the building blocks for React apps.",
+  "tags": [
+    "Design System",
+    "Frontend"
+  ],
+  "author": {
+    "name": "chakra-ui",
+    "url": "https://github.com/chakra-ui"
+  },
+  "url": "https://github.com/chakra-ui/chakra-ui",
+  "upvotes": 315,
+  "views": 7806,
+  "date": "2024-03-20",
+  "content": "Chakra UI: Simple, modular and accessible component library that gives you the building blocks for React apps."
+}

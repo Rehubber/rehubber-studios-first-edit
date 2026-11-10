@@ -1,0 +1,18 @@
+{
+  "slug": "gooauth-broker-92",
+  "title": "GoOAuth Broker",
+  "description": "Open-source oauth broker built for high-performance security & auth workflows.",
+  "tags": [
+    "OAuth",
+    "Security"
+  ],
+  "author": {
+    "name": "open-go",
+    "url": "https://github.com/open-go"
+  },
+  "url": "https://github.com/rehubber-catalog/gooauth-broker-92",
+  "upvotes": 299,
+  "views": 6826,
+  "date": "2024-04-10",
+  "content": "GoOAuth Broker is a dedicated open-source utility designed to optimize security & auth development."
+}

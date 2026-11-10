@@ -1,0 +1,19 @@
+{
+  "slug": "localai",
+  "title": "LocalAI",
+  "description": "Free, Open Source OpenAI alternative running local LLMs, audio, and image generation.",
+  "tags": [
+    "AI",
+    "Self-Hosted",
+    "API"
+  ],
+  "author": {
+    "name": "mudler",
+    "url": "https://github.com/mudler/LocalAI"
+  },
+  "url": "https://localai.io",
+  "upvotes": 275,
+  "views": 7332,
+  "date": "28 Mar 2024",
+  "content": "Free, Open Source OpenAI alternative running local LLMs, audio, and image generation."
+}

@@ -1,0 +1,18 @@
+{
+  "slug": "vaultwarden",
+  "title": "Vaultwarden",
+  "description": "Unofficial Bitwarden compatible server written in Rust, lightweight and ideal for self-hosting.",
+  "tags": [
+    "Password Manager",
+    "Security"
+  ],
+  "author": {
+    "name": "dani-garcia",
+    "url": "https://github.com/dani-garcia"
+  },
+  "url": "https://github.com/dani-garcia/vaultwarden",
+  "upvotes": 330,
+  "views": 10019,
+  "date": "2024-03-20",
+  "content": "Vaultwarden: Unofficial Bitwarden compatible server written in Rust, lightweight and ideal for self-hosting."
+}

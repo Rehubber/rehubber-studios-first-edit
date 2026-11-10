@@ -1,0 +1,18 @@
+{
+  "slug": "apexgraph-layer-153",
+  "title": "ApexGraph Layer",
+  "description": "Open-source graph layer built for high-performance databases & storage workflows.",
+  "tags": [
+    "Graph",
+    "Databases"
+  ],
+  "author": {
+    "name": "open-apex",
+    "url": "https://github.com/open-apex"
+  },
+  "url": "https://github.com/rehubber-catalog/apexgraph-layer-153",
+  "upvotes": 106,
+  "views": 2739,
+  "date": "2024-04-10",
+  "content": "ApexGraph Layer is a dedicated open-source utility designed to optimize databases & storage development."
+}

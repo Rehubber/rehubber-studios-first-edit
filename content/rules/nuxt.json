@@ -1,0 +1,18 @@
+{
+  "slug": "nuxt",
+  "title": "Nuxt",
+  "description": "The intuitive Vue framework for creating modern, fast, and full-stack web applications.",
+  "tags": [
+    "Vue",
+    "Frontend"
+  ],
+  "author": {
+    "name": "nuxt",
+    "url": "https://github.com/nuxt"
+  },
+  "url": "https://github.com/nuxt/nuxt",
+  "upvotes": 213,
+  "views": 5864,
+  "date": "2024-03-20",
+  "content": "Nuxt: The intuitive Vue framework for creating modern, fast, and full-stack web applications."
+}

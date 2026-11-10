@@ -1,0 +1,19 @@
+{
+  "slug": "unsloth",
+  "title": "Unsloth",
+  "description": "Finetune Llama 3, Mistral, and Gemma 2-5x faster with 70% less memory.",
+  "tags": [
+    "AI",
+    "Fine-Tuning",
+    "Performance"
+  ],
+  "author": {
+    "name": "unslothai",
+    "url": "https://github.com/unslothai/unsloth"
+  },
+  "url": "https://unsloth.ai",
+  "upvotes": 320,
+  "views": 8510,
+  "date": "28 Mar 2024",
+  "content": "Finetune Llama 3, Mistral, and Gemma 2-5x faster with 70% less memory."
+}

@@ -1,0 +1,18 @@
+{
+  "slug": "mantine",
+  "title": "Mantine",
+  "description": "A fully featured React components library with 100+ customizable components and 50+ hooks.",
+  "tags": [
+    "React Components",
+    "Frontend"
+  ],
+  "author": {
+    "name": "mantinedev",
+    "url": "https://github.com/mantinedev"
+  },
+  "url": "https://github.com/mantinedev/mantine",
+  "upvotes": 239,
+  "views": 6984,
+  "date": "2024-03-20",
+  "content": "Mantine: A fully featured React components library with 100+ customizable components and 50+ hooks."
+}

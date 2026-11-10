@@ -1,0 +1,19 @@
+{
+  "slug": "valkey",
+  "title": "Valkey",
+  "description": "An open source, high-performance in-memory key/value datastore continuation of Redis.",
+  "tags": [
+    "Database",
+    "In-Memory",
+    "Cache"
+  ],
+  "author": {
+    "name": "valkey-io",
+    "url": "https://github.com/valkey-io/valkey"
+  },
+  "url": "https://valkey.io",
+  "upvotes": 290,
+  "views": 7858,
+  "date": "28 Mar 2024",
+  "content": "An open source, high-performance in-memory key/value datastore continuation of Redis."
+}

@@ -1,0 +1,19 @@
+{
+  "slug": "tauri",
+  "title": "Tauri",
+  "description": "Build smaller, faster, and more secure desktop and mobile applications with web frontend.",
+  "tags": [
+    "Desktop",
+    "Rust",
+    "Framework"
+  ],
+  "author": {
+    "name": "tauri-apps",
+    "url": "https://github.com/tauri-apps/tauri"
+  },
+  "url": "https://tauri.app",
+  "upvotes": 430,
+  "views": 11663,
+  "date": "28 Mar 2024",
+  "content": "Build smaller, faster, and more secure desktop and mobile applications with web frontend."
+}

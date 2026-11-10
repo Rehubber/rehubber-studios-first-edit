@@ -1,0 +1,18 @@
+{
+  "slug": "metacolumnar-73",
+  "title": "MetaColumnar",
+  "description": "Open-source columnar built for high-performance databases & storage workflows.",
+  "tags": [
+    "Columnar",
+    "Databases"
+  ],
+  "author": {
+    "name": "open-meta",
+    "url": "https://github.com/open-meta"
+  },
+  "url": "https://github.com/rehubber-catalog/metacolumnar-73",
+  "upvotes": 296,
+  "views": 6899,
+  "date": "2024-04-10",
+  "content": "MetaColumnar is a dedicated open-source utility designed to optimize databases & storage development."
+}

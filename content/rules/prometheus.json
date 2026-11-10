@@ -1,0 +1,18 @@
+{
+  "slug": "prometheus",
+  "title": "Prometheus",
+  "description": "Systems monitoring and alerting toolkit with dimensional data model and PromQL.",
+  "tags": [
+    "Monitoring",
+    "DevOps"
+  ],
+  "author": {
+    "name": "prometheus",
+    "url": "https://github.com/prometheus"
+  },
+  "url": "https://github.com/prometheus/prometheus",
+  "upvotes": 413,
+  "views": 13853,
+  "date": "2024-03-20",
+  "content": "Prometheus: Systems monitoring and alerting toolkit with dimensional data model and PromQL."
+}

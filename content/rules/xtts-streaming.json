@@ -1,0 +1,18 @@
+{
+  "slug": "xtts-streaming",
+  "title": "XTTS Streaming",
+  "description": "Voice cloning text-to-speech with low latency streaming in multiple languages.",
+  "tags": [
+    "Voice Cloning",
+    "AI"
+  ],
+  "author": {
+    "name": "coqui-ai",
+    "url": "https://github.com/coqui-ai"
+  },
+  "url": "https://github.com/coqui-ai/xtts-streaming",
+  "upvotes": 276,
+  "views": 7530,
+  "date": "2024-03-20",
+  "content": "XTTS Streaming: Voice cloning text-to-speech with low latency streaming in multiple languages."
+}

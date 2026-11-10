@@ -1,0 +1,19 @@
+{
+  "slug": "helix",
+  "title": "Helix",
+  "description": "A post-modern modal text editor written in Rust with built-in Tree-sitter syntax analysis.",
+  "tags": [
+    "Editor",
+    "Rust",
+    "Modal"
+  ],
+  "author": {
+    "name": "helix-editor",
+    "url": "https://github.com/helix-editor/helix"
+  },
+  "url": "https://helix-editor.com",
+  "upvotes": 330,
+  "views": 8919,
+  "date": "28 Mar 2024",
+  "content": "A post-modern modal text editor written in Rust with built-in Tree-sitter syntax analysis."
+}

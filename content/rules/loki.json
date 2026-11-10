@@ -1,0 +1,18 @@
+{
+  "slug": "loki",
+  "title": "Loki",
+  "description": "Horizontally-scalable, highly-available, multi-tenant log aggregation system inspired by Prometheus.",
+  "tags": [
+    "Logs",
+    "DevOps"
+  ],
+  "author": {
+    "name": "grafana",
+    "url": "https://github.com/grafana"
+  },
+  "url": "https://github.com/grafana/loki",
+  "upvotes": 217,
+  "views": 5007,
+  "date": "2024-03-20",
+  "content": "Loki: Horizontally-scalable, highly-available, multi-tenant log aggregation system inspired by Prometheus."
+}

@@ -1,0 +1,18 @@
+{
+  "slug": "rustingress-controller-242",
+  "title": "RustIngress Controller",
+  "description": "Open-source ingress controller built for high-performance devops & containers workflows.",
+  "tags": [
+    "Ingress",
+    "DevOps"
+  ],
+  "author": {
+    "name": "open-rust",
+    "url": "https://github.com/open-rust"
+  },
+  "url": "https://github.com/rehubber-catalog/rustingress-controller-242",
+  "upvotes": 249,
+  "views": 5576,
+  "date": "2024-04-10",
+  "content": "RustIngress Controller is a dedicated open-source utility designed to optimize devops & containers development."
+}

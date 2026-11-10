@@ -1,0 +1,18 @@
+{
+  "slug": "diffusers",
+  "title": "Diffusers",
+  "description": "State-of-the-art pretrained diffusion models for generating images, audio, and 3D.",
+  "tags": [
+    "Diffusion",
+    "AI"
+  ],
+  "author": {
+    "name": "huggingface",
+    "url": "https://github.com/huggingface"
+  },
+  "url": "https://github.com/huggingface/diffusers",
+  "upvotes": 263,
+  "views": 7193,
+  "date": "2024-03-20",
+  "content": "Diffusers: State-of-the-art pretrained diffusion models for generating images, audio, and 3D."
+}

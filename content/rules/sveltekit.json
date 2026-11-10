@@ -1,0 +1,18 @@
+{
+  "slug": "sveltekit",
+  "title": "SvelteKit",
+  "description": "The fastest way to build web apps using Svelte. High performance with zero bundle bloat.",
+  "tags": [
+    "Svelte",
+    "Frontend"
+  ],
+  "author": {
+    "name": "sveltejs",
+    "url": "https://github.com/sveltejs"
+  },
+  "url": "https://github.com/sveltejs/sveltekit",
+  "upvotes": 395,
+  "views": 10707,
+  "date": "2024-03-20",
+  "content": "SvelteKit: The fastest way to build web apps using Svelte. High performance with zero bundle bloat."
+}

@@ -1,0 +1,19 @@
+{
+  "slug": "dragonfly",
+  "title": "Dragonfly",
+  "description": "A modern in-memory datastore, fully compatible with Redis and Memcached APIs.",
+  "tags": [
+    "Database",
+    "Cache",
+    "Performance"
+  ],
+  "author": {
+    "name": "dragonflydb",
+    "url": "https://github.com/dragonflydb/dragonfly"
+  },
+  "url": "https://dragonflydb.io",
+  "upvotes": 280,
+  "views": 7507,
+  "date": "28 Mar 2024",
+  "content": "A modern in-memory datastore, fully compatible with Redis and Memcached APIs."
+}

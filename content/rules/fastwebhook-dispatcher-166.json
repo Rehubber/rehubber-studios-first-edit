@@ -1,0 +1,18 @@
+{
+  "slug": "fastwebhook-dispatcher-166",
+  "title": "FastWebhook Dispatcher",
+  "description": "Open-source webhook dispatcher built for high-performance backend & apis workflows.",
+  "tags": [
+    "Webhook",
+    "Backend"
+  ],
+  "author": {
+    "name": "open-fast",
+    "url": "https://github.com/open-fast"
+  },
+  "url": "https://github.com/rehubber-catalog/fastwebhook-dispatcher-166",
+  "upvotes": 237,
+  "views": 5368,
+  "date": "2024-04-10",
+  "content": "FastWebhook Dispatcher is a dedicated open-source utility designed to optimize backend & apis development."
+}

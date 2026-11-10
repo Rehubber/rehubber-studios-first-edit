@@ -1,0 +1,18 @@
+{
+  "slug": "openingress-controller-170",
+  "title": "OpenIngress Controller",
+  "description": "Open-source ingress controller built for high-performance devops & containers workflows.",
+  "tags": [
+    "Ingress",
+    "DevOps"
+  ],
+  "author": {
+    "name": "open-open",
+    "url": "https://github.com/open-open"
+  },
+  "url": "https://github.com/rehubber-catalog/openingress-controller-170",
+  "upvotes": 385,
+  "views": 8700,
+  "date": "2024-04-10",
+  "content": "OpenIngress Controller is a dedicated open-source utility designed to optimize devops & containers development."
+}

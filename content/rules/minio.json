@@ -1,0 +1,19 @@
+{
+  "slug": "minio",
+  "title": "MinIO",
+  "description": "High Performance Object Storage compatible with Amazon S3 API, cloud-native and resilient.",
+  "tags": [
+    "Storage",
+    "S3",
+    "Cloud"
+  ],
+  "author": {
+    "name": "minio",
+    "url": "https://github.com/minio/minio"
+  },
+  "url": "https://min.io",
+  "upvotes": 340,
+  "views": 8966,
+  "date": "28 Mar 2024",
+  "content": "High Performance Object Storage compatible with Amazon S3 API, cloud-native and resilient."
+}

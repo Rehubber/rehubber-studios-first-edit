@@ -1,0 +1,19 @@
+{
+  "slug": "aider",
+  "title": "Aider",
+  "description": "AI pair programming in your terminal, editing code in your local git repository.",
+  "tags": [
+    "AI",
+    "CLI",
+    "Coding"
+  ],
+  "author": {
+    "name": "paul-gauthier",
+    "url": "https://github.com/paul-gauthier/aider"
+  },
+  "url": "https://aider.chat",
+  "upvotes": 360,
+  "views": 9857,
+  "date": "28 Mar 2024",
+  "content": "AI pair programming in your terminal, editing code in your local git repository."
+}

@@ -1,0 +1,18 @@
+{
+  "slug": "rustevent-bus-246",
+  "title": "RustEvent Bus",
+  "description": "Open-source event bus built for high-performance backend & apis workflows.",
+  "tags": [
+    "Event",
+    "Backend"
+  ],
+  "author": {
+    "name": "open-rust",
+    "url": "https://github.com/open-rust"
+  },
+  "url": "https://github.com/rehubber-catalog/rustevent-bus-246",
+  "upvotes": 47,
+  "views": 1208,
+  "date": "2024-04-10",
+  "content": "RustEvent Bus is a dedicated open-source utility designed to optimize backend & apis development."
+}

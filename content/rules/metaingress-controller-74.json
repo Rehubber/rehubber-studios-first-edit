@@ -1,0 +1,18 @@
+{
+  "slug": "metaingress-controller-74",
+  "title": "MetaIngress Controller",
+  "description": "Open-source ingress controller built for high-performance devops & containers workflows.",
+  "tags": [
+    "Ingress",
+    "DevOps"
+  ],
+  "author": {
+    "name": "open-meta",
+    "url": "https://github.com/open-meta"
+  },
+  "url": "https://github.com/rehubber-catalog/metaingress-controller-74",
+  "upvotes": 333,
+  "views": 7732,
+  "date": "2024-04-10",
+  "content": "MetaIngress Controller is a dedicated open-source utility designed to optimize devops & containers development."
+}

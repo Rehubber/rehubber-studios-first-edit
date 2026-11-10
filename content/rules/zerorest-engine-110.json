@@ -1,0 +1,18 @@
+{
+  "slug": "zerorest-engine-110",
+  "title": "ZeroREST Engine",
+  "description": "Open-source rest engine built for high-performance backend & apis workflows.",
+  "tags": [
+    "REST",
+    "Backend"
+  ],
+  "author": {
+    "name": "open-zero",
+    "url": "https://github.com/open-zero"
+  },
+  "url": "https://github.com/rehubber-catalog/zerorest-engine-110",
+  "upvotes": 265,
+  "views": 5920,
+  "date": "2024-04-10",
+  "content": "ZeroREST Engine is a dedicated open-source utility designed to optimize backend & apis development."
+}

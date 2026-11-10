@@ -1,0 +1,18 @@
+{
+  "slug": "timescaledb",
+  "title": "TimescaleDB",
+  "description": "PostgreSQL extension optimized for time-series data, events, and analytics.",
+  "tags": [
+    "Time-Series",
+    "Databases"
+  ],
+  "author": {
+    "name": "timescale",
+    "url": "https://github.com/timescale"
+  },
+  "url": "https://github.com/timescale/timescaledb",
+  "upvotes": 379,
+  "views": 12300,
+  "date": "2024-03-20",
+  "content": "TimescaleDB: PostgreSQL extension optimized for time-series data, events, and analytics."
+}

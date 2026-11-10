@@ -1,0 +1,19 @@
+{
+  "slug": "vllm",
+  "title": "vLLM",
+  "description": "A high-throughput and memory-efficient inference and serving engine for LLMs.",
+  "tags": [
+    "AI",
+    "Inference",
+    "Serving"
+  ],
+  "author": {
+    "name": "vllm-project",
+    "url": "https://github.com/vllm-project/vllm"
+  },
+  "url": "https://vllm.ai",
+  "upvotes": 388,
+  "views": 10136,
+  "date": "28 Mar 2024",
+  "content": "A high-throughput and memory-efficient inference and serving engine for LLMs."
+}

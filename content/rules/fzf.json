@@ -1,0 +1,19 @@
+{
+  "slug": "fzf",
+  "title": "fzf",
+  "description": "General-purpose interactive command-line fuzzy finder for files, history, and processes.",
+  "tags": [
+    "CLI",
+    "Fuzzy Search",
+    "Terminal"
+  ],
+  "author": {
+    "name": "junegunn",
+    "url": "https://github.com/junegunn/fzf"
+  },
+  "url": "https://github.com/junegunn/fzf",
+  "upvotes": 390,
+  "views": 10598,
+  "date": "28 Mar 2024",
+  "content": "General-purpose interactive command-line fuzzy finder for files, history, and processes."
+}

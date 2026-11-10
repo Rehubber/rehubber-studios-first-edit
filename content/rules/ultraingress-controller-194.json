@@ -1,0 +1,18 @@
+{
+  "slug": "ultraingress-controller-194",
+  "title": "UltraIngress Controller",
+  "description": "Open-source ingress controller built for high-performance devops & containers workflows.",
+  "tags": [
+    "Ingress",
+    "DevOps"
+  ],
+  "author": {
+    "name": "open-ultra",
+    "url": "https://github.com/open-ultra"
+  },
+  "url": "https://github.com/rehubber-catalog/ultraingress-controller-194",
+  "upvotes": 223,
+  "views": 5092,
+  "date": "2024-04-10",
+  "content": "UltraIngress Controller is a dedicated open-source utility designed to optimize devops & containers development."
+}

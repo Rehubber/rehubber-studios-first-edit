@@ -1,0 +1,19 @@
+{
+  "slug": "langchain",
+  "title": "LangChain",
+  "description": "Framework for developing applications powered by language models with agents and memory.",
+  "tags": [
+    "AI",
+    "Framework",
+    "Agents"
+  ],
+  "author": {
+    "name": "langchain-ai",
+    "url": "https://github.com/langchain-ai/langchain"
+  },
+  "url": "https://www.langchain.com",
+  "upvotes": 395,
+  "views": 10485,
+  "date": "28 Mar 2024",
+  "content": "Framework for developing applications powered by language models with agents and memory."
+}

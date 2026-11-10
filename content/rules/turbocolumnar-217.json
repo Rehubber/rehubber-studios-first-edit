@@ -1,0 +1,18 @@
+{
+  "slug": "turbocolumnar-217",
+  "title": "TurboColumnar",
+  "description": "Open-source columnar built for high-performance databases & storage workflows.",
+  "tags": [
+    "Columnar",
+    "Databases"
+  ],
+  "author": {
+    "name": "open-turbo",
+    "url": "https://github.com/open-turbo"
+  },
+  "url": "https://github.com/rehubber-catalog/turbocolumnar-217",
+  "upvotes": 374,
+  "views": 8351,
+  "date": "2024-04-10",
+  "content": "TurboColumnar is a dedicated open-source utility designed to optimize databases & storage development."
+}

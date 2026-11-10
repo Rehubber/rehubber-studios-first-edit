@@ -1,0 +1,18 @@
+{
+  "slug": "astro",
+  "title": "Astro",
+  "description": "The web framework for content-driven websites. Zero JS by default with Islands architecture.",
+  "tags": [
+    "SSG",
+    "Frontend"
+  ],
+  "author": {
+    "name": "withastro",
+    "url": "https://github.com/withastro"
+  },
+  "url": "https://github.com/withastro/astro",
+  "upvotes": 224,
+  "views": 7806,
+  "date": "2024-03-20",
+  "content": "Astro: The web framework for content-driven websites. Zero JS by default with Islands architecture."
+}

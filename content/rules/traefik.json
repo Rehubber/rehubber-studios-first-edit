@@ -1,0 +1,18 @@
+{
+  "slug": "traefik",
+  "title": "Traefik",
+  "description": "The cloud native application proxy that automatically discovers routes and certificates.",
+  "tags": [
+    "Reverse Proxy",
+    "DevOps"
+  ],
+  "author": {
+    "name": "traefik",
+    "url": "https://github.com/traefik"
+  },
+  "url": "https://github.com/traefik/traefik",
+  "upvotes": 194,
+  "views": 5015,
+  "date": "2024-03-20",
+  "content": "Traefik: The cloud native application proxy that automatically discovers routes and certificates."
+}

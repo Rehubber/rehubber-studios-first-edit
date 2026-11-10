@@ -1,0 +1,18 @@
+{
+  "slug": "logto",
+  "title": "Logto",
+  "description": "Modern open source identity solution for consumer apps and SaaS with passwordless and social sign-in.",
+  "tags": [
+    "Auth",
+    "Security"
+  ],
+  "author": {
+    "name": "logto-io",
+    "url": "https://github.com/logto-io"
+  },
+  "url": "https://github.com/logto-io/logto",
+  "upvotes": 363,
+  "views": 7305,
+  "date": "2024-03-20",
+  "content": "Logto: Modern open source identity solution for consumer apps and SaaS with passwordless and social sign-in."
+}

@@ -1,0 +1,18 @@
+{
+  "slug": "htmx",
+  "title": "HTMX",
+  "description": "High power tools for HTML. Access AJAX, WebSockets and Server Sent Events directly in HTML.",
+  "tags": [
+    "Hypermedia",
+    "Frontend"
+  ],
+  "author": {
+    "name": "bigskysoftware",
+    "url": "https://github.com/bigskysoftware"
+  },
+  "url": "https://github.com/bigskysoftware/htmx",
+  "upvotes": 328,
+  "views": 7903,
+  "date": "2024-03-20",
+  "content": "HTMX: High power tools for HTML. Access AJAX, WebSockets and Server Sent Events directly in HTML."
+}

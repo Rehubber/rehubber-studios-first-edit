@@ -1,0 +1,18 @@
+{
+  "slug": "cockroachdb-core",
+  "title": "CockroachDB Core",
+  "description": "Cloud-native distributed SQL database designed for resilience and consistency.",
+  "tags": [
+    "Distributed SQL",
+    "Databases"
+  ],
+  "author": {
+    "name": "cockroachdb",
+    "url": "https://github.com/cockroachdb"
+  },
+  "url": "https://github.com/cockroachdb/cockroachdb-core",
+  "upvotes": 182,
+  "views": 5068,
+  "date": "2024-03-20",
+  "content": "CockroachDB Core: Cloud-native distributed SQL database designed for resilience and consistency."
+}

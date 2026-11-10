@@ -1,0 +1,19 @@
+{
+  "slug": "dspy",
+  "title": "DSPy",
+  "description": "Framework for programmatically solving advanced tasks with language models and retrievers.",
+  "tags": [
+    "AI",
+    "Prompt Engineering",
+    "Optimization"
+  ],
+  "author": {
+    "name": "stanfordnlp",
+    "url": "https://github.com/stanfordnlp/dspy"
+  },
+  "url": "https://dspy-docs.vercel.app",
+  "upvotes": 280,
+  "views": 7358,
+  "date": "28 Mar 2024",
+  "content": "Framework for programmatically solving advanced tasks with language models and retrievers."
+}

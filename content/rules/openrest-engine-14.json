@@ -1,0 +1,18 @@
+{
+  "slug": "openrest-engine-14",
+  "title": "OpenREST Engine",
+  "description": "Open-source rest engine built for high-performance backend & apis workflows.",
+  "tags": [
+    "REST",
+    "Backend"
+  ],
+  "author": {
+    "name": "open-open",
+    "url": "https://github.com/open-open"
+  },
+  "url": "https://github.com/rehubber-catalog/openrest-engine-14",
+  "upvotes": 213,
+  "views": 4952,
+  "date": "2024-04-10",
+  "content": "OpenREST Engine is a dedicated open-source utility designed to optimize backend & apis development."
+}

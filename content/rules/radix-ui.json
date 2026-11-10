@@ -1,0 +1,18 @@
+{
+  "slug": "radix-ui",
+  "title": "Radix UI",
+  "description": "Unstyled, accessible components for building high-quality design systems and web apps.",
+  "tags": [
+    "Primitives",
+    "Frontend"
+  ],
+  "author": {
+    "name": "radix-ui",
+    "url": "https://github.com/radix-ui"
+  },
+  "url": "https://github.com/radix-ui/radix-ui",
+  "upvotes": 289,
+  "views": 8889,
+  "date": "2024-03-20",
+  "content": "Radix UI: Unstyled, accessible components for building high-quality design systems and web apps."
+}

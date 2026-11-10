@@ -1,0 +1,18 @@
+{
+  "slug": "microoauth-broker-188",
+  "title": "MicroOAuth Broker",
+  "description": "Open-source oauth broker built for high-performance security & auth workflows.",
+  "tags": [
+    "OAuth",
+    "Security"
+  ],
+  "author": {
+    "name": "open-micro",
+    "url": "https://github.com/open-micro"
+  },
+  "url": "https://github.com/rehubber-catalog/microoauth-broker-188",
+  "upvotes": 351,
+  "views": 7794,
+  "date": "2024-04-10",
+  "content": "MicroOAuth Broker is a dedicated open-source utility designed to optimize security & auth development."
+}

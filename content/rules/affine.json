@@ -1,0 +1,18 @@
+{
+  "slug": "affine",
+  "title": "AFFiNE",
+  "description": "All-in-one workspace with unbounded canvas, docs, and multimodal AI integration.",
+  "tags": [
+    "Workspace",
+    "Productivity"
+  ],
+  "author": {
+    "name": "toeverything",
+    "url": "https://github.com/toeverything"
+  },
+  "url": "https://github.com/toeverything/affine",
+  "upvotes": 371,
+  "views": 11614,
+  "date": "2024-03-20",
+  "content": "AFFiNE: All-in-one workspace with unbounded canvas, docs, and multimodal AI integration."
+}

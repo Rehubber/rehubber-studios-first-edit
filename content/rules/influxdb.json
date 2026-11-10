@@ -1,0 +1,18 @@
+{
+  "slug": "influxdb",
+  "title": "InfluxDB",
+  "description": "Time series platform designed to handle high write and query loads of metrics.",
+  "tags": [
+    "Time-Series",
+    "Databases"
+  ],
+  "author": {
+    "name": "influxdata",
+    "url": "https://github.com/influxdata"
+  },
+  "url": "https://github.com/influxdata/influxdb",
+  "upvotes": 434,
+  "views": 11209,
+  "date": "2024-03-20",
+  "content": "InfluxDB: Time series platform designed to handle high write and query loads of metrics."
+}

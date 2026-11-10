@@ -1,0 +1,19 @@
+{
+  "slug": "shadcn-ui",
+  "title": "shadcn/ui",
+  "description": "Beautifully designed components that you can copy and paste into your apps. Accessible. Customizable.",
+  "tags": [
+    "UI",
+    "React",
+    "Tailwind"
+  ],
+  "author": {
+    "name": "shadcn",
+    "url": "https://github.com/shadcn-ui/ui"
+  },
+  "url": "https://ui.shadcn.com",
+  "upvotes": 460,
+  "views": 12218,
+  "date": "28 Mar 2024",
+  "content": "Beautifully designed components that you can copy and paste into your apps. Accessible. Customizable."
+}

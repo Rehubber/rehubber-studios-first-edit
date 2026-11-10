@@ -1,0 +1,18 @@
+{
+  "slug": "metafirewall-agent-76",
+  "title": "MetaFirewall Agent",
+  "description": "Open-source firewall agent built for high-performance security & auth workflows.",
+  "tags": [
+    "Firewall",
+    "Security"
+  ],
+  "author": {
+    "name": "open-meta",
+    "url": "https://github.com/open-meta"
+  },
+  "url": "https://github.com/rehubber-catalog/metafirewall-agent-76",
+  "upvotes": 57,
+  "views": 1698,
+  "date": "2024-04-10",
+  "content": "MetaFirewall Agent is a dedicated open-source utility designed to optimize security & auth development."
+}

@@ -1,0 +1,18 @@
+{
+  "slug": "keydb",
+  "title": "KeyDB",
+  "description": "Multithreaded Redis alternative delivering up to 5x higher throughput.",
+  "tags": [
+    "Key-Value",
+    "Databases"
+  ],
+  "author": {
+    "name": "Snapchat",
+    "url": "https://github.com/Snapchat"
+  },
+  "url": "https://github.com/Snapchat/keydb",
+  "upvotes": 271,
+  "views": 8134,
+  "date": "2024-03-20",
+  "content": "KeyDB: Multithreaded Redis alternative delivering up to 5x higher throughput."
+}

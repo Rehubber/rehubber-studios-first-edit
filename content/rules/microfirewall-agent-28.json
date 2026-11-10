@@ -1,0 +1,18 @@
+{
+  "slug": "microfirewall-agent-28",
+  "title": "MicroFirewall Agent",
+  "description": "Open-source firewall agent built for high-performance security & auth workflows.",
+  "tags": [
+    "Firewall",
+    "Security"
+  ],
+  "author": {
+    "name": "open-micro",
+    "url": "https://github.com/open-micro"
+  },
+  "url": "https://github.com/rehubber-catalog/microfirewall-agent-28",
+  "upvotes": 381,
+  "views": 8414,
+  "date": "2024-04-10",
+  "content": "MicroFirewall Agent is a dedicated open-source utility designed to optimize security & auth development."
+}

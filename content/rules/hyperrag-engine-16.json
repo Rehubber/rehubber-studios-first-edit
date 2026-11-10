@@ -1,0 +1,18 @@
+{
+  "slug": "hyperrag-engine-16",
+  "title": "HyperRAG Engine",
+  "description": "Open-source rag engine built for high-performance ai & machine learning workflows.",
+  "tags": [
+    "RAG",
+    "AI"
+  ],
+  "author": {
+    "name": "open-hyper",
+    "url": "https://github.com/open-hyper"
+  },
+  "url": "https://github.com/rehubber-catalog/hyperrag-engine-16",
+  "upvotes": 287,
+  "views": 6618,
+  "date": "2024-04-10",
+  "content": "HyperRAG Engine is a dedicated open-source utility designed to optimize ai & machine learning development."
+}

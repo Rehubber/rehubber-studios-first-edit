@@ -1,0 +1,18 @@
+{
+  "slug": "headless-ui",
+  "title": "Headless UI",
+  "description": "Completely unstyled, fully accessible UI components designed to integrate with Tailwind CSS.",
+  "tags": [
+    "Tailwind",
+    "Frontend"
+  ],
+  "author": {
+    "name": "tailwindlabs",
+    "url": "https://github.com/tailwindlabs"
+  },
+  "url": "https://github.com/tailwindlabs/headless-ui",
+  "upvotes": 385,
+  "views": 8014,
+  "date": "2024-03-20",
+  "content": "Headless UI: Completely unstyled, fully accessible UI components designed to integrate with Tailwind CSS."
+}

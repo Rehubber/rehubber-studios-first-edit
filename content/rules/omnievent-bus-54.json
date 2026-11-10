@@ -1,0 +1,18 @@
+{
+  "slug": "omnievent-bus-54",
+  "title": "OmniEvent Bus",
+  "description": "Open-source event bus built for high-performance backend & apis workflows.",
+  "tags": [
+    "Event",
+    "Backend"
+  ],
+  "author": {
+    "name": "open-omni",
+    "url": "https://github.com/open-omni"
+  },
+  "url": "https://github.com/rehubber-catalog/omnievent-bus-54",
+  "upvotes": 293,
+  "views": 6472,
+  "date": "2024-04-10",
+  "content": "OmniEvent Bus is a dedicated open-source utility designed to optimize backend & apis development."
+}

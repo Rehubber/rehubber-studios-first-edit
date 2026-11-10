@@ -1,0 +1,19 @@
+{
+  "slug": "dokku",
+  "title": "Dokku",
+  "description": "A docker-powered PaaS that helps you build and manage the lifecycle of applications.",
+  "tags": [
+    "DevOps",
+    "PaaS",
+    "Docker"
+  ],
+  "author": {
+    "name": "dokku",
+    "url": "https://github.com/dokku/dokku"
+  },
+  "url": "https://dokku.com",
+  "upvotes": 320,
+  "views": 8601,
+  "date": "28 Mar 2024",
+  "content": "A docker-powered PaaS that helps you build and manage the lifecycle of applications."
+}

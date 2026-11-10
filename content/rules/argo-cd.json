@@ -1,0 +1,18 @@
+{
+  "slug": "argo-cd",
+  "title": "Argo CD",
+  "description": "Declarative, GitOps continuous delivery tool for Kubernetes deployment workflows.",
+  "tags": [
+    "GitOps",
+    "DevOps"
+  ],
+  "author": {
+    "name": "argoproj",
+    "url": "https://github.com/argoproj"
+  },
+  "url": "https://github.com/argoproj/argo-cd",
+  "upvotes": 392,
+  "views": 10878,
+  "date": "2024-03-20",
+  "content": "Argo CD: Declarative, GitOps continuous delivery tool for Kubernetes deployment workflows."
+}

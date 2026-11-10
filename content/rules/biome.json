@@ -1,0 +1,18 @@
+{
+  "slug": "biome",
+  "title": "Biome",
+  "description": "One toolchain for your web project. Format and lint your code in a fraction of a second in Rust.",
+  "tags": [
+    "Linter",
+    "Productivity"
+  ],
+  "author": {
+    "name": "biomejs",
+    "url": "https://github.com/biomejs"
+  },
+  "url": "https://github.com/biomejs/biome",
+  "upvotes": 304,
+  "views": 9426,
+  "date": "2024-03-20",
+  "content": "Biome: One toolchain for your web project. Format and lint your code in a fraction of a second in Rust."
+}

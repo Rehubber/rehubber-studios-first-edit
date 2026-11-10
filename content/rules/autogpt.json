@@ -1,0 +1,19 @@
+{
+  "slug": "autogpt",
+  "title": "AutoGPT",
+  "description": "Autonomous agent toolkit enabling developers to build, test, and deploy AI agents.",
+  "tags": [
+    "AI",
+    "Agents",
+    "Autonomous"
+  ],
+  "author": {
+    "name": "Significant-Gravitas",
+    "url": "https://github.com/Significant-Gravitas/AutoGPT"
+  },
+  "url": "https://agpt.co",
+  "upvotes": 390,
+  "views": 10591,
+  "date": "28 Mar 2024",
+  "content": "Autonomous agent toolkit enabling developers to build, test, and deploy AI agents."
+}

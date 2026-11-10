@@ -1,0 +1,18 @@
+{
+  "slug": "headscale",
+  "title": "Headscale",
+  "description": "An open source, self-hosted implementation of the Tailscale coordination server.",
+  "tags": [
+    "VPN",
+    "Security"
+  ],
+  "author": {
+    "name": "juanfont",
+    "url": "https://github.com/juanfont"
+  },
+  "url": "https://github.com/juanfont/headscale",
+  "upvotes": 306,
+  "views": 6397,
+  "date": "2024-03-20",
+  "content": "Headscale: An open source, self-hosted implementation of the Tailscale coordination server."
+}

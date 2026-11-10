@@ -1,0 +1,19 @@
+{
+  "slug": "portainer",
+  "title": "Portainer",
+  "description": "Powerful container management GUI for Docker, Kubernetes, and Swarm environments.",
+  "tags": [
+    "Docker",
+    "DevOps",
+    "GUI"
+  ],
+  "author": {
+    "name": "portainer",
+    "url": "https://github.com/portainer/portainer"
+  },
+  "url": "https://www.portainer.io",
+  "upvotes": 345,
+  "views": 9150,
+  "date": "28 Mar 2024",
+  "content": "Powerful container management GUI for Docker, Kubernetes, and Swarm environments."
+}

@@ -1,0 +1,19 @@
+{
+  "slug": "ollama",
+  "title": "Ollama",
+  "description": "Get up and running with Llama 3, Mistral, Gemma, and other large language models locally.",
+  "tags": [
+    "AI",
+    "LLM",
+    "Local Models"
+  ],
+  "author": {
+    "name": "ollama",
+    "url": "https://github.com/ollama/ollama"
+  },
+  "url": "https://ollama.com",
+  "upvotes": 412,
+  "views": 11185,
+  "date": "28 Mar 2024",
+  "content": "Get up and running with Llama 3, Mistral, Gemma, and other large language models locally."
+}

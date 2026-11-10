@@ -1,0 +1,18 @@
+{
+  "slug": "just-command-runner",
+  "title": "Just Command Runner",
+  "description": "Handy command runner for organizing project recipes with clean cross-platform syntax.",
+  "tags": [
+    "Task Runner",
+    "Productivity"
+  ],
+  "author": {
+    "name": "casey",
+    "url": "https://github.com/casey"
+  },
+  "url": "https://github.com/casey/just-command-runner",
+  "upvotes": 381,
+  "views": 10477,
+  "date": "2024-03-20",
+  "content": "Just Command Runner: Handy command runner for organizing project recipes with clean cross-platform syntax."
+}

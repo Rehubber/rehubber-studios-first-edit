@@ -1,0 +1,18 @@
+{
+  "slug": "elysia",
+  "title": "Elysia",
+  "description": "Ergonomic web framework for Bun with end-to-end type safety and speed.",
+  "tags": [
+    "Bun",
+    "Backend"
+  ],
+  "author": {
+    "name": "elysiajs",
+    "url": "https://github.com/elysiajs"
+  },
+  "url": "https://github.com/elysiajs/elysia",
+  "upvotes": 397,
+  "views": 13833,
+  "date": "2024-03-20",
+  "content": "Elysia: Ergonomic web framework for Bun with end-to-end type safety and speed."
+}

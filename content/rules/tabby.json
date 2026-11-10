@@ -1,0 +1,19 @@
+{
+  "slug": "tabby",
+  "title": "Tabby",
+  "description": "Self-hosted AI coding assistant offering an open source alternative to GitHub Copilot.",
+  "tags": [
+    "AI",
+    "Self-Hosted",
+    "Coding"
+  ],
+  "author": {
+    "name": "TabbyML",
+    "url": "https://github.com/TabbyML/tabby"
+  },
+  "url": "https://tabby.tabbyml.com",
+  "upvotes": 260,
+  "views": 6818,
+  "date": "28 Mar 2024",
+  "content": "Self-hosted AI coding assistant offering an open source alternative to GitHub Copilot."
+}

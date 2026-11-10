@@ -1,0 +1,18 @@
+{
+  "slug": "directus",
+  "title": "Directus",
+  "description": "Open-source data platform that wraps any SQL database with dynamic GraphQL and REST APIs.",
+  "tags": [
+    "Data Platform",
+    "Backend"
+  ],
+  "author": {
+    "name": "directus",
+    "url": "https://github.com/directus"
+  },
+  "url": "https://github.com/directus/directus",
+  "upvotes": 352,
+  "views": 8509,
+  "date": "2024-03-20",
+  "content": "Directus: Open-source data platform that wraps any SQL database with dynamic GraphQL and REST APIs."
+}

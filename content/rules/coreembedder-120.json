@@ -1,0 +1,18 @@
+{
+  "slug": "coreembedder-120",
+  "title": "CoreEmbedder",
+  "description": "Open-source embedder built for high-performance ai & machine learning workflows.",
+  "tags": [
+    "Embedder",
+    "AI"
+  ],
+  "author": {
+    "name": "open-core",
+    "url": "https://github.com/open-core"
+  },
+  "url": "https://github.com/rehubber-catalog/coreembedder-120",
+  "upvotes": 285,
+  "views": 6550,
+  "date": "2024-04-10",
+  "content": "CoreEmbedder is a dedicated open-source utility designed to optimize ai & machine learning development."
+}

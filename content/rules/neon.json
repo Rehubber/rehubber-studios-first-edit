@@ -1,0 +1,19 @@
+{
+  "slug": "neon",
+  "title": "Neon",
+  "description": "Serverless, fault-tolerant open-source alternative to AWS Aurora Postgres.",
+  "tags": [
+    "Database",
+    "Postgres",
+    "Serverless"
+  ],
+  "author": {
+    "name": "neondatabase",
+    "url": "https://github.com/neondatabase/neon"
+  },
+  "url": "https://neon.tech",
+  "upvotes": 325,
+  "views": 8587,
+  "date": "28 Mar 2024",
+  "content": "Serverless, fault-tolerant open-source alternative to AWS Aurora Postgres."
+}

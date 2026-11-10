@@ -1,0 +1,18 @@
+{
+  "slug": "caddy-server",
+  "title": "Caddy Server",
+  "description": "Enterprise-ready, open source web server with automatic HTTPS written in Go.",
+  "tags": [
+    "Web Server",
+    "DevOps"
+  ],
+  "author": {
+    "name": "caddyserver",
+    "url": "https://github.com/caddyserver"
+  },
+  "url": "https://github.com/caddyserver/caddy-server",
+  "upvotes": 407,
+  "views": 12147,
+  "date": "2024-03-20",
+  "content": "Caddy Server: Enterprise-ready, open source web server with automatic HTTPS written in Go."
+}

@@ -1,0 +1,18 @@
+{
+  "slug": "syncgatekeeper-204",
+  "title": "SyncGatekeeper",
+  "description": "Open-source gatekeeper built for high-performance security & auth workflows.",
+  "tags": [
+    "Gatekeeper",
+    "Security"
+  ],
+  "author": {
+    "name": "open-sync",
+    "url": "https://github.com/open-sync"
+  },
+  "url": "https://github.com/rehubber-catalog/syncgatekeeper-204",
+  "upvotes": 243,
+  "views": 5722,
+  "date": "2024-04-10",
+  "content": "SyncGatekeeper is a dedicated open-source utility designed to optimize security & auth development."
+}

@@ -1,0 +1,19 @@
+{
+  "slug": "zoxide",
+  "title": "zoxide",
+  "description": "A smarter cd command, inspired by z and autojump. Remembers which directories you use most.",
+  "tags": [
+    "CLI",
+    "Productivity",
+    "Shell"
+  ],
+  "author": {
+    "name": "ajeetdsouza",
+    "url": "https://github.com/ajeetdsouza/zoxide"
+  },
+  "url": "https://github.com/ajeetdsouza/zoxide",
+  "upvotes": 325,
+  "views": 8754,
+  "date": "28 Mar 2024",
+  "content": "A smarter cd command, inspired by z and autojump. Remembers which directories you use most."
+}

@@ -1,0 +1,19 @@
+{
+  "slug": "ripgrep",
+  "title": "ripgrep",
+  "description": "Fast line-oriented search tool that recursively searches current directory for a regex pattern.",
+  "tags": [
+    "CLI",
+    "Search",
+    "Rust"
+  ],
+  "author": {
+    "name": "BurntSushi",
+    "url": "https://github.com/BurntSushi/ripgrep"
+  },
+  "url": "https://github.com/BurntSushi/ripgrep",
+  "upvotes": 380,
+  "views": 10249,
+  "date": "28 Mar 2024",
+  "content": "Fast line-oriented search tool that recursively searches current directory for a regex pattern."
+}

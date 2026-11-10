@@ -1,0 +1,18 @@
+{
+  "slug": "syncwebhook-dispatcher-46",
+  "title": "SyncWebhook Dispatcher",
+  "description": "Open-source webhook dispatcher built for high-performance backend & apis workflows.",
+  "tags": [
+    "Webhook",
+    "Backend"
+  ],
+  "author": {
+    "name": "open-sync",
+    "url": "https://github.com/open-sync"
+  },
+  "url": "https://github.com/rehubber-catalog/syncwebhook-dispatcher-46",
+  "upvotes": 347,
+  "views": 8008,
+  "date": "2024-04-10",
+  "content": "SyncWebhook Dispatcher is a dedicated open-source utility designed to optimize backend & apis development."
+}

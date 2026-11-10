@@ -1,0 +1,19 @@
+{
+  "slug": "langfuse",
+  "title": "Langfuse",
+  "description": "Open source LLM engineering platform for tracing, evaluations, prompt management, and metrics.",
+  "tags": [
+    "AI",
+    "Observability",
+    "LLMOps"
+  ],
+  "author": {
+    "name": "langfuse",
+    "url": "https://github.com/langfuse/langfuse"
+  },
+  "url": "https://langfuse.com",
+  "upvotes": 285,
+  "views": 7538,
+  "date": "28 Mar 2024",
+  "content": "Open source LLM engineering platform for tracing, evaluations, prompt management, and metrics."
+}

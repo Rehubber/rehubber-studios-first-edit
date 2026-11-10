@@ -1,0 +1,18 @@
+{
+  "slug": "syncrag-engine-40",
+  "title": "SyncRAG Engine",
+  "description": "Open-source rag engine built for high-performance ai & machine learning workflows.",
+  "tags": [
+    "RAG",
+    "AI"
+  ],
+  "author": {
+    "name": "open-sync",
+    "url": "https://github.com/open-sync"
+  },
+  "url": "https://github.com/rehubber-catalog/syncrag-engine-40",
+  "upvotes": 125,
+  "views": 3010,
+  "date": "2024-04-10",
+  "content": "SyncRAG Engine is a dedicated open-source utility designed to optimize ai & machine learning development."
+}

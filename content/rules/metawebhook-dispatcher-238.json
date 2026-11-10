@@ -1,0 +1,18 @@
+{
+  "slug": "metawebhook-dispatcher-238",
+  "title": "MetaWebhook Dispatcher",
+  "description": "Open-source webhook dispatcher built for high-performance backend & apis workflows.",
+  "tags": [
+    "Webhook",
+    "Backend"
+  ],
+  "author": {
+    "name": "open-meta",
+    "url": "https://github.com/open-meta"
+  },
+  "url": "https://github.com/rehubber-catalog/metawebhook-dispatcher-238",
+  "upvotes": 101,
+  "views": 2244,
+  "date": "2024-04-10",
+  "content": "MetaWebhook Dispatcher is a dedicated open-source utility designed to optimize backend & apis development."
+}

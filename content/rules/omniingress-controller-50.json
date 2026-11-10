@@ -1,0 +1,18 @@
+{
+  "slug": "omniingress-controller-50",
+  "title": "OmniIngress Controller",
+  "description": "Open-source ingress controller built for high-performance devops & containers workflows.",
+  "tags": [
+    "Ingress",
+    "DevOps"
+  ],
+  "author": {
+    "name": "open-omni",
+    "url": "https://github.com/open-omni"
+  },
+  "url": "https://github.com/rehubber-catalog/omniingress-controller-50",
+  "upvotes": 145,
+  "views": 3640,
+  "date": "2024-04-10",
+  "content": "OmniIngress Controller is a dedicated open-source utility designed to optimize devops & containers development."
+}

@@ -1,0 +1,18 @@
+{
+  "slug": "proconfig-keeper-138",
+  "title": "ProConfig Keeper",
+  "description": "Open-source config keeper built for high-performance devops & containers workflows.",
+  "tags": [
+    "Config",
+    "DevOps"
+  ],
+  "author": {
+    "name": "open-pro",
+    "url": "https://github.com/open-pro"
+  },
+  "url": "https://github.com/rehubber-catalog/proconfig-keeper-138",
+  "upvotes": 251,
+  "views": 5644,
+  "date": "2024-04-10",
+  "content": "ProConfig Keeper is a dedicated open-source utility designed to optimize devops & containers development."
+}

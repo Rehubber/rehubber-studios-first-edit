@@ -1,0 +1,18 @@
+{
+  "slug": "fastfirewall-agent-4",
+  "title": "FastFirewall Agent",
+  "description": "Open-source firewall agent built for high-performance security & auth workflows.",
+  "tags": [
+    "Firewall",
+    "Security"
+  ],
+  "author": {
+    "name": "open-fast",
+    "url": "https://github.com/open-fast"
+  },
+  "url": "https://github.com/rehubber-catalog/fastfirewall-agent-4",
+  "upvotes": 193,
+  "views": 4322,
+  "date": "2024-04-10",
+  "content": "FastFirewall Agent is a dedicated open-source utility designed to optimize security & auth development."
+}

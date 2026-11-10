@@ -1,0 +1,18 @@
+{
+  "slug": "fastcolumnar-1",
+  "title": "FastColumnar",
+  "description": "Open-source columnar built for high-performance databases & storage workflows.",
+  "tags": [
+    "Columnar",
+    "Databases"
+  ],
+  "author": {
+    "name": "open-fast",
+    "url": "https://github.com/open-fast"
+  },
+  "url": "https://github.com/rehubber-catalog/fastcolumnar-1",
+  "upvotes": 82,
+  "views": 1823,
+  "date": "2024-04-10",
+  "content": "FastColumnar is a dedicated open-source utility designed to optimize databases & storage development."
+}

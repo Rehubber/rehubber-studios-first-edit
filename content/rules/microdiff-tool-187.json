@@ -1,0 +1,18 @@
+{
+  "slug": "microdiff-tool-187",
+  "title": "MicroDiff Tool",
+  "description": "Open-source diff tool built for high-performance developer cli & tools workflows.",
+  "tags": [
+    "Diff",
+    "Developer"
+  ],
+  "author": {
+    "name": "open-micro",
+    "url": "https://github.com/open-micro"
+  },
+  "url": "https://github.com/rehubber-catalog/microdiff-tool-187",
+  "upvotes": 314,
+  "views": 6961,
+  "date": "2024-04-10",
+  "content": "MicroDiff Tool is a dedicated open-source utility designed to optimize developer cli & tools development."
+}

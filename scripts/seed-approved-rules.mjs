@@ -27,31 +27,39 @@ const db = getFirestore(app)
 const collectionName = process.env.FIRESTORE_RULES_COLLECTION?.trim() || 'rules'
 const rulesDirectory = path.join(root, 'content', 'rules')
 const files = (await readdir(rulesDirectory)).filter((file) => file.endsWith('.json'))
+
+console.log(`Starting seed of ${files.length} tools into Firestore collection '${collectionName}'...`)
+
+const BATCH_SIZE = 400
 let imported = 0
-let skipped = 0
 
-for (const file of files) {
-  const slug = file.replace(/\.json$/, '')
-  const data = JSON.parse(await readFile(path.join(rulesDirectory, file), 'utf8'))
-  const ruleRef = db.collection(collectionName).doc(slug)
+for (let i = 0; i < files.length; i += BATCH_SIZE) {
+  const chunk = files.slice(i, i + BATCH_SIZE)
+  const batch = db.batch()
 
-  const wasCreated = await db.runTransaction(async (transaction) => {
-    const existing = await transaction.get(ruleRef)
-    if (existing.exists) return false
+  for (const file of chunk) {
+    const slug = file.replace(/\.json$/, '')
+    const data = JSON.parse(await readFile(path.join(rulesDirectory, file), 'utf8'))
+    const ruleRef = db.collection(collectionName).doc(slug)
 
-    transaction.create(ruleRef, {
-      ...data,
-      slug,
-      status: 'published',
-      upvotes: 0,
-      source: 'local-seed',
-      createdAt: FieldValue.serverTimestamp(),
-    })
-    return true
-  })
+    batch.set(
+      ruleRef,
+      {
+        ...data,
+        slug,
+        status: 'published',
+        upvotes: typeof data.upvotes === 'number' ? data.upvotes : 0,
+        views: typeof data.views === 'number' ? data.views : 0,
+        source: 'local-seed',
+        updatedAt: FieldValue.serverTimestamp(),
+      },
+      { merge: true },
+    )
+    imported += 1
+  }
 
-  if (wasCreated) imported += 1
-  else skipped += 1
+  await batch.commit()
+  console.log(`Committed batch: ${imported}/${files.length} tools.`)
 }
 
-console.log(`Seed complete: ${imported} imported, ${skipped} already existed.`)
+console.log(`Seed complete: successfully imported ${imported} tools into Firestore!`)

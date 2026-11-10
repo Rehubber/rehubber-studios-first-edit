@@ -1,0 +1,18 @@
+{
+  "slug": "ark-ui",
+  "title": "Ark UI",
+  "description": "Universal headless UI components for React, Vue, and Svelte powered by state machines.",
+  "tags": [
+    "Headless",
+    "Frontend"
+  ],
+  "author": {
+    "name": "chakra-ui",
+    "url": "https://github.com/chakra-ui"
+  },
+  "url": "https://github.com/chakra-ui/ark-ui",
+  "upvotes": 296,
+  "views": 10243,
+  "date": "2024-03-20",
+  "content": "Ark UI: Universal headless UI components for React, Vue, and Svelte powered by state machines."
+}

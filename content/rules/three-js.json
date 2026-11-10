@@ -1,0 +1,18 @@
+{
+  "slug": "three-js",
+  "title": "Three.js",
+  "description": "JavaScript 3D library for creating GPU-accelerated interactive 3D web animations.",
+  "tags": [
+    "3D Graphics",
+    "Frontend"
+  ],
+  "author": {
+    "name": "mrdoob",
+    "url": "https://github.com/mrdoob"
+  },
+  "url": "https://github.com/mrdoob/three-js",
+  "upvotes": 224,
+  "views": 7510,
+  "date": "2024-03-20",
+  "content": "Three.js: JavaScript 3D library for creating GPU-accelerated interactive 3D web animations."
+}

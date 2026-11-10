@@ -1,0 +1,18 @@
+{
+  "slug": "semantic-kernel",
+  "title": "Semantic Kernel",
+  "description": "SDK that integrates conventional programming languages with the latest in AI models.",
+  "tags": [
+    "SDK",
+    "AI"
+  ],
+  "author": {
+    "name": "microsoft",
+    "url": "https://github.com/microsoft"
+  },
+  "url": "https://github.com/microsoft/semantic-kernel",
+  "upvotes": 218,
+  "views": 5962,
+  "date": "2024-03-20",
+  "content": "Semantic Kernel: SDK that integrates conventional programming languages with the latest in AI models."
+}

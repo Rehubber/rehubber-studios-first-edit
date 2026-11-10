@@ -1,0 +1,18 @@
+{
+  "slug": "grafana",
+  "title": "Grafana",
+  "description": "The open observability platform for visualizing metrics, logs, and traces from any source.",
+  "tags": [
+    "Visualization",
+    "DevOps"
+  ],
+  "author": {
+    "name": "grafana",
+    "url": "https://github.com/grafana"
+  },
+  "url": "https://github.com/grafana/grafana",
+  "upvotes": 330,
+  "views": 6908,
+  "date": "2024-03-20",
+  "content": "Grafana: The open observability platform for visualizing metrics, logs, and traces from any source."
+}

@@ -1,0 +1,18 @@
+{
+  "slug": "playwright",
+  "title": "Playwright",
+  "description": "Fast and reliable end-to-end testing for modern web apps across Chromium, Firefox and WebKit.",
+  "tags": [
+    "E2E Testing",
+    "Productivity"
+  ],
+  "author": {
+    "name": "microsoft",
+    "url": "https://github.com/microsoft"
+  },
+  "url": "https://github.com/microsoft/playwright",
+  "upvotes": 286,
+  "views": 6591,
+  "date": "2024-03-20",
+  "content": "Playwright: Fast and reliable end-to-end testing for modern web apps across Chromium, Firefox and WebKit."
+}

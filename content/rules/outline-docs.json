@@ -1,0 +1,18 @@
+{
+  "slug": "outline-docs",
+  "title": "Outline Docs",
+  "description": "Fast, collaborative, beautiful team knowledge base built with React and Node.",
+  "tags": [
+    "Knowledge Base",
+    "Productivity"
+  ],
+  "author": {
+    "name": "outline",
+    "url": "https://github.com/outline"
+  },
+  "url": "https://github.com/outline/outline-docs",
+  "upvotes": 408,
+  "views": 14221,
+  "date": "2024-03-20",
+  "content": "Outline Docs: Fast, collaborative, beautiful team knowledge base built with React and Node."
+}

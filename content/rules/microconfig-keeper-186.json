@@ -1,0 +1,18 @@
+{
+  "slug": "microconfig-keeper-186",
+  "title": "MicroConfig Keeper",
+  "description": "Open-source config keeper built for high-performance devops & containers workflows.",
+  "tags": [
+    "Config",
+    "DevOps"
+  ],
+  "author": {
+    "name": "open-micro",
+    "url": "https://github.com/open-micro"
+  },
+  "url": "https://github.com/rehubber-catalog/microconfig-keeper-186",
+  "upvotes": 277,
+  "views": 6128,
+  "date": "2024-04-10",
+  "content": "MicroConfig Keeper is a dedicated open-source utility designed to optimize devops & containers development."
+}

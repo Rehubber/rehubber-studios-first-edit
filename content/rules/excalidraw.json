@@ -1,0 +1,19 @@
+{
+  "slug": "excalidraw",
+  "title": "Excalidraw",
+  "description": "Virtual whiteboard for sketching hand-drawn like diagrams with end-to-end encryption.",
+  "tags": [
+    "Design",
+    "Canvas",
+    "Collaboration"
+  ],
+  "author": {
+    "name": "excalidraw",
+    "url": "https://github.com/excalidraw/excalidraw"
+  },
+  "url": "https://excalidraw.com",
+  "upvotes": 420,
+  "views": 11221,
+  "date": "28 Mar 2024",
+  "content": "Virtual whiteboard for sketching hand-drawn like diagrams with end-to-end encryption."
+}

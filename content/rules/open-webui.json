@@ -1,0 +1,19 @@
+{
+  "slug": "open-webui",
+  "title": "Open WebUI",
+  "description": "User-friendly WebUI for LLMs supporting Ollama and OpenAI-compatible APIs.",
+  "tags": [
+    "AI",
+    "WebUI",
+    "Chat"
+  ],
+  "author": {
+    "name": "open-webui",
+    "url": "https://github.com/open-webui/open-webui"
+  },
+  "url": "https://openwebui.com",
+  "upvotes": 380,
+  "views": 10083,
+  "date": "28 Mar 2024",
+  "content": "User-friendly WebUI for LLMs supporting Ollama and OpenAI-compatible APIs."
+}

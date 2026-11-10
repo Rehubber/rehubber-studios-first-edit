@@ -1,0 +1,18 @@
+{
+  "slug": "neoevent-bus-150",
+  "title": "NeoEvent Bus",
+  "description": "Open-source event bus built for high-performance backend & apis workflows.",
+  "tags": [
+    "Event",
+    "Backend"
+  ],
+  "author": {
+    "name": "open-neo",
+    "url": "https://github.com/open-neo"
+  },
+  "url": "https://github.com/rehubber-catalog/neoevent-bus-150",
+  "upvotes": 345,
+  "views": 7940,
+  "date": "2024-04-10",
+  "content": "NeoEvent Bus is a dedicated open-source utility designed to optimize backend & apis development."
+}

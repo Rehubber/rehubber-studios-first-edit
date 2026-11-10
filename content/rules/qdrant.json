@@ -1,0 +1,19 @@
+{
+  "slug": "qdrant",
+  "title": "Qdrant",
+  "description": "Vector Search Engine and Vector Database with extended filtering support in Rust.",
+  "tags": [
+    "AI",
+    "Vector DB",
+    "Search"
+  ],
+  "author": {
+    "name": "qdrant",
+    "url": "https://github.com/qdrant/qdrant"
+  },
+  "url": "https://qdrant.tech",
+  "upvotes": 330,
+  "views": 8881,
+  "date": "28 Mar 2024",
+  "content": "Vector Search Engine and Vector Database with extended filtering support in Rust."
+}

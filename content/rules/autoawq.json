@@ -1,0 +1,18 @@
+{
+  "slug": "autoawq",
+  "title": "AutoAWQ",
+  "description": "Fast, accurate 4-bit quantization package for transformer models on consumer GPUs.",
+  "tags": [
+    "Quantization",
+    "AI"
+  ],
+  "author": {
+    "name": "casper-hansen",
+    "url": "https://github.com/casper-hansen"
+  },
+  "url": "https://github.com/casper-hansen/autoawq",
+  "upvotes": 204,
+  "views": 4462,
+  "date": "2024-03-20",
+  "content": "AutoAWQ: Fast, accurate 4-bit quantization package for transformer models on consumer GPUs."
+}

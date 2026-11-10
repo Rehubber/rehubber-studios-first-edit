@@ -1,0 +1,18 @@
+{
+  "slug": "edgedb",
+  "title": "EdgeDB",
+  "description": "The graph-relational database with declarative schemas and type-safe query syntax.",
+  "tags": [
+    "Graph-Relational",
+    "Databases"
+  ],
+  "author": {
+    "name": "edgedb",
+    "url": "https://github.com/edgedb"
+  },
+  "url": "https://github.com/edgedb/edgedb",
+  "upvotes": 228,
+  "views": 4709,
+  "date": "2024-03-20",
+  "content": "EdgeDB: The graph-relational database with declarative schemas and type-safe query syntax."
+}

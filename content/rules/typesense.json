@@ -1,0 +1,19 @@
+{
+  "slug": "typesense",
+  "title": "Typesense",
+  "description": "Fast, typo-tolerant search engine optimized for instant search-as-you-type experiences.",
+  "tags": [
+    "Search",
+    "Database",
+    "Performance"
+  ],
+  "author": {
+    "name": "typesense",
+    "url": "https://github.com/typesense/typesense"
+  },
+  "url": "https://typesense.org",
+  "upvotes": 310,
+  "views": 8085,
+  "date": "28 Mar 2024",
+  "content": "Fast, typo-tolerant search engine optimized for instant search-as-you-type experiences."
+}

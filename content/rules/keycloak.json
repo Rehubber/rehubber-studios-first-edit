@@ -1,0 +1,18 @@
+{
+  "slug": "keycloak",
+  "title": "Keycloak",
+  "description": "Open Source Identity and Access Management for modern applications and services with OAuth2/SAML.",
+  "tags": [
+    "Identity",
+    "Security"
+  ],
+  "author": {
+    "name": "keycloak",
+    "url": "https://github.com/keycloak"
+  },
+  "url": "https://github.com/keycloak/keycloak",
+  "upvotes": 405,
+  "views": 9152,
+  "date": "2024-03-20",
+  "content": "Keycloak: Open Source Identity and Access Management for modern applications and services with OAuth2/SAML."
+}

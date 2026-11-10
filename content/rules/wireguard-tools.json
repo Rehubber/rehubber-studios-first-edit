@@ -1,0 +1,18 @@
+{
+  "slug": "wireguard-tools",
+  "title": "WireGuard Tools",
+  "description": "Extremely simple yet fast and modern VPN that utilizes state-of-the-art cryptography.",
+  "tags": [
+    "VPN",
+    "Security"
+  ],
+  "author": {
+    "name": "WireGuard",
+    "url": "https://github.com/WireGuard"
+  },
+  "url": "https://github.com/WireGuard/wireguard-tools",
+  "upvotes": 206,
+  "views": 6521,
+  "date": "2024-03-20",
+  "content": "WireGuard Tools: Extremely simple yet fast and modern VPN that utilizes state-of-the-art cryptography."
+}

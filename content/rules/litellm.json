@@ -1,0 +1,19 @@
+{
+  "slug": "litellm",
+  "title": "LiteLLM",
+  "description": "Call 100+ LLMs using the OpenAI input/output format with load balancing and proxy.",
+  "tags": [
+    "AI",
+    "Proxy",
+    "Gateway"
+  ],
+  "author": {
+    "name": "BerriAI",
+    "url": "https://github.com/BerriAI/litellm"
+  },
+  "url": "https://litellm.ai",
+  "upvotes": 295,
+  "views": 7875,
+  "date": "28 Mar 2024",
+  "content": "Call 100+ LLMs using the OpenAI input/output format with load balancing and proxy."
+}

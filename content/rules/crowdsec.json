@@ -1,0 +1,18 @@
+{
+  "slug": "crowdsec",
+  "title": "CrowdSec",
+  "description": "Open source, lightweight agent to detect and remediate bad behaviors on Linux servers and APIs.",
+  "tags": [
+    "Intrusion Detection",
+    "Security"
+  ],
+  "author": {
+    "name": "crowdsecurity",
+    "url": "https://github.com/crowdsecurity"
+  },
+  "url": "https://github.com/crowdsecurity/crowdsec",
+  "upvotes": 185,
+  "views": 4375,
+  "date": "2024-03-20",
+  "content": "CrowdSec: Open source, lightweight agent to detect and remediate bad behaviors on Linux servers and APIs."
+}

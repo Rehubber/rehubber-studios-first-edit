@@ -1,0 +1,19 @@
+{
+  "slug": "neovim",
+  "title": "Neovim",
+  "description": "Vim-fork focused on extensibility and usability, with native Lua scripting and LSP client.",
+  "tags": [
+    "Editor",
+    "CLI",
+    "Vim"
+  ],
+  "author": {
+    "name": "neovim",
+    "url": "https://github.com/neovim/neovim"
+  },
+  "url": "https://neovim.io",
+  "upvotes": 435,
+  "views": 11599,
+  "date": "28 Mar 2024",
+  "content": "Vim-fork focused on extensibility and usability, with native Lua scripting and LSP client."
+}

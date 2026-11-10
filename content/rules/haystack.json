@@ -1,0 +1,18 @@
+{
+  "slug": "haystack",
+  "title": "Haystack",
+  "description": "End-to-end LLM framework that enables you to build customized search systems and RAG.",
+  "tags": [
+    "Search",
+    "AI"
+  ],
+  "author": {
+    "name": "deepset-ai",
+    "url": "https://github.com/deepset-ai"
+  },
+  "url": "https://github.com/deepset-ai/haystack",
+  "upvotes": 277,
+  "views": 6554,
+  "date": "2024-03-20",
+  "content": "Haystack: End-to-end LLM framework that enables you to build customized search systems and RAG."
+}

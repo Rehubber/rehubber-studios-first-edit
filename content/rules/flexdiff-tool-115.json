@@ -1,0 +1,18 @@
+{
+  "slug": "flexdiff-tool-115",
+  "title": "FlexDiff Tool",
+  "description": "Open-source diff tool built for high-performance developer cli & tools workflows.",
+  "tags": [
+    "Diff",
+    "Developer"
+  ],
+  "author": {
+    "name": "open-flex",
+    "url": "https://github.com/open-flex"
+  },
+  "url": "https://github.com/rehubber-catalog/flexdiff-tool-115",
+  "upvotes": 100,
+  "views": 2385,
+  "date": "2024-04-10",
+  "content": "FlexDiff Tool is a dedicated open-source utility designed to optimize developer cli & tools development."
+}

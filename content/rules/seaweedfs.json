@@ -1,0 +1,18 @@
+{
+  "slug": "seaweedfs",
+  "title": "SeaweedFS",
+  "description": "Fast distributed storage system for blobs, objects, files, and data lake buckets.",
+  "tags": [
+    "Object Storage",
+    "Databases"
+  ],
+  "author": {
+    "name": "seaweedfs",
+    "url": "https://github.com/seaweedfs"
+  },
+  "url": "https://github.com/seaweedfs/seaweedfs",
+  "upvotes": 336,
+  "views": 8610,
+  "date": "2024-03-20",
+  "content": "SeaweedFS: Fast distributed storage system for blobs, objects, files, and data lake buckets."
+}

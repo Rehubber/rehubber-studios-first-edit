@@ -1,0 +1,18 @@
+{
+  "slug": "fastify",
+  "title": "Fastify",
+  "description": "Extremely fast and low overhead web framework for Node.js with built-in schema validation.",
+  "tags": [
+    "Node.js",
+    "Backend"
+  ],
+  "author": {
+    "name": "fastify",
+    "url": "https://github.com/fastify"
+  },
+  "url": "https://github.com/fastify/fastify",
+  "upvotes": 327,
+  "views": 7354,
+  "date": "2024-03-20",
+  "content": "Fastify: Extremely fast and low overhead web framework for Node.js with built-in schema validation."
+}

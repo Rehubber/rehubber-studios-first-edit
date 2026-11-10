@@ -1,0 +1,18 @@
+{
+  "slug": "openllm",
+  "title": "OpenLLM",
+  "description": "Run any open-source LLM as an OpenAI-compatible API server in production.",
+  "tags": [
+    "Serving",
+    "AI"
+  ],
+  "author": {
+    "name": "bentoml",
+    "url": "https://github.com/bentoml"
+  },
+  "url": "https://github.com/bentoml/openllm",
+  "upvotes": 284,
+  "views": 8588,
+  "date": "2024-03-20",
+  "content": "OpenLLM: Run any open-source LLM as an OpenAI-compatible API server in production."
+}

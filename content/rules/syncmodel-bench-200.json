@@ -1,0 +1,18 @@
+{
+  "slug": "syncmodel-bench-200",
+  "title": "SyncModel Bench",
+  "description": "Open-source model bench built for high-performance ai & machine learning workflows.",
+  "tags": [
+    "Model",
+    "AI"
+  ],
+  "author": {
+    "name": "open-sync",
+    "url": "https://github.com/open-sync"
+  },
+  "url": "https://github.com/rehubber-catalog/syncmodel-bench-200",
+  "upvotes": 95,
+  "views": 2390,
+  "date": "2024-04-10",
+  "content": "SyncModel Bench is a dedicated open-source utility designed to optimize ai & machine learning development."
+}

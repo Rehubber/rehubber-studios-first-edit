@@ -1,0 +1,18 @@
+{
+  "slug": "apache-cassandra",
+  "title": "Apache Cassandra",
+  "description": "Distributed wide-column store designed to handle large amounts of data across servers.",
+  "tags": [
+    "Wide-Column",
+    "Databases"
+  ],
+  "author": {
+    "name": "apache",
+    "url": "https://github.com/apache"
+  },
+  "url": "https://github.com/apache/apache-cassandra",
+  "upvotes": 402,
+  "views": 9987,
+  "date": "2024-03-20",
+  "content": "Apache Cassandra: Distributed wide-column store designed to handle large amounts of data across servers."
+}

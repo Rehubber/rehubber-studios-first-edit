@@ -1,0 +1,19 @@
+{
+  "slug": "lazygit",
+  "title": "lazygit",
+  "description": "Simple terminal UI for git commands, written in Go with the gocui library.",
+  "tags": [
+    "CLI",
+    "Git",
+    "Terminal"
+  ],
+  "author": {
+    "name": "jesseduffield",
+    "url": "https://github.com/jesseduffield/lazygit"
+  },
+  "url": "https://github.com/jesseduffield/lazygit",
+  "upvotes": 395,
+  "views": 10272,
+  "date": "28 Mar 2024",
+  "content": "Simple terminal UI for git commands, written in Go with the gocui library."
+}

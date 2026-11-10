@@ -1,0 +1,18 @@
+{
+  "slug": "fastgit-sync-3",
+  "title": "FastGit Sync",
+  "description": "Open-source git sync built for high-performance developer cli & tools workflows.",
+  "tags": [
+    "Git",
+    "Developer"
+  ],
+  "author": {
+    "name": "open-fast",
+    "url": "https://github.com/open-fast"
+  },
+  "url": "https://github.com/rehubber-catalog/fastgit-sync-3",
+  "upvotes": 156,
+  "views": 3489,
+  "date": "2024-04-10",
+  "content": "FastGit Sync is a dedicated open-source utility designed to optimize developer cli & tools development."
+}

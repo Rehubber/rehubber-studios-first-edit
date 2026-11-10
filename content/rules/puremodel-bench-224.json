@@ -1,0 +1,18 @@
+{
+  "slug": "puremodel-bench-224",
+  "title": "PureModel Bench",
+  "description": "Open-source model bench built for high-performance ai & machine learning workflows.",
+  "tags": [
+    "Model",
+    "AI"
+  ],
+  "author": {
+    "name": "open-pure",
+    "url": "https://github.com/open-pure"
+  },
+  "url": "https://github.com/rehubber-catalog/puremodel-bench-224",
+  "upvotes": 283,
+  "views": 6482,
+  "date": "2024-04-10",
+  "content": "PureModel Bench is a dedicated open-source utility designed to optimize ai & machine learning development."
+}

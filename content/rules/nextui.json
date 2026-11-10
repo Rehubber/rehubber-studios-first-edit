@@ -1,0 +1,18 @@
+{
+  "slug": "nextui",
+  "title": "NextUI",
+  "description": "Beautiful, fast and modern React UI library built on top of Tailwind CSS and React Aria.",
+  "tags": [
+    "Tailwind React",
+    "Frontend"
+  ],
+  "author": {
+    "name": "nextui-org",
+    "url": "https://github.com/nextui-org"
+  },
+  "url": "https://github.com/nextui-org/nextui",
+  "upvotes": 193,
+  "views": 6703,
+  "date": "2024-03-20",
+  "content": "NextUI: Beautiful, fast and modern React UI library built on top of Tailwind CSS and React Aria."
+}

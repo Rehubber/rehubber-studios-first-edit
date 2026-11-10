@@ -1,0 +1,18 @@
+{
+  "slug": "velomodel-bench-128",
+  "title": "VeloModel Bench",
+  "description": "Open-source model bench built for high-performance ai & machine learning workflows.",
+  "tags": [
+    "Model",
+    "AI"
+  ],
+  "author": {
+    "name": "open-velo",
+    "url": "https://github.com/open-velo"
+  },
+  "url": "https://github.com/rehubber-catalog/velomodel-bench-128",
+  "upvotes": 231,
+  "views": 5514,
+  "date": "2024-04-10",
+  "content": "VeloModel Bench is a dedicated open-source utility designed to optimize ai & machine learning development."
+}

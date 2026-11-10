@@ -1,0 +1,18 @@
+{
+  "slug": "fastapi",
+  "title": "FastAPI",
+  "description": "Modern, fast (high-performance) web framework for building APIs with Python 3.8+ based on types.",
+  "tags": [
+    "Python",
+    "Backend"
+  ],
+  "author": {
+    "name": "tiangolo",
+    "url": "https://github.com/tiangolo"
+  },
+  "url": "https://github.com/tiangolo/fastapi",
+  "upvotes": 364,
+  "views": 11381,
+  "date": "2024-03-20",
+  "content": "FastAPI: Modern, fast (high-performance) web framework for building APIs with Python 3.8+ based on types."
+}

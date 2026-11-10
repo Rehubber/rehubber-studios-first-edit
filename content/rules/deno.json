@@ -1,0 +1,19 @@
+{
+  "slug": "deno",
+  "title": "Deno",
+  "description": "Next-generation JavaScript and TypeScript runtime built on V8 and Rust with built-in security.",
+  "tags": [
+    "TypeScript",
+    "Runtime",
+    "Web Standards"
+  ],
+  "author": {
+    "name": "denoland",
+    "url": "https://github.com/denoland/deno"
+  },
+  "url": "https://deno.com",
+  "upvotes": 360,
+  "views": 9666,
+  "date": "28 Mar 2024",
+  "content": "Next-generation JavaScript and TypeScript runtime built on V8 and Rust with built-in security."
+}

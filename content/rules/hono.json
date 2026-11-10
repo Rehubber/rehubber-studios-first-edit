@@ -1,0 +1,18 @@
+{
+  "slug": "hono",
+  "title": "Hono",
+  "description": "Ultrafast, lightweight, web-standards framework for Cloudflare Workers, Deno, Bun, and Node.",
+  "tags": [
+    "Edge",
+    "Backend"
+  ],
+  "author": {
+    "name": "honojs",
+    "url": "https://github.com/honojs"
+  },
+  "url": "https://github.com/honojs/hono",
+  "upvotes": 244,
+  "views": 6157,
+  "date": "2024-03-20",
+  "content": "Hono: Ultrafast, lightweight, web-standards framework for Cloudflare Workers, Deno, Bun, and Node."
+}

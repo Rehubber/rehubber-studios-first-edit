@@ -1,0 +1,18 @@
+{
+  "slug": "lm-studio-cli",
+  "title": "LM Studio CLI",
+  "description": "Command line power tools for discovering and managing local LLM quantizations.",
+  "tags": [
+    "CLI AI",
+    "AI"
+  ],
+  "author": {
+    "name": "lmstudio",
+    "url": "https://github.com/lmstudio"
+  },
+  "url": "https://github.com/lmstudio/lm-studio-cli",
+  "upvotes": 303,
+  "views": 10282,
+  "date": "2024-03-20",
+  "content": "LM Studio CLI: Command line power tools for discovering and managing local LLM quantizations."
+}

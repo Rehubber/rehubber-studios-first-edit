@@ -1,0 +1,18 @@
+{
+  "slug": "gowebhook-dispatcher-94",
+  "title": "GoWebhook Dispatcher",
+  "description": "Open-source webhook dispatcher built for high-performance backend & apis workflows.",
+  "tags": [
+    "Webhook",
+    "Backend"
+  ],
+  "author": {
+    "name": "open-go",
+    "url": "https://github.com/open-go"
+  },
+  "url": "https://github.com/rehubber-catalog/gowebhook-dispatcher-94",
+  "upvotes": 373,
+  "views": 8492,
+  "date": "2024-04-10",
+  "content": "GoWebhook Dispatcher is a dedicated open-source utility designed to optimize backend & apis development."
+}

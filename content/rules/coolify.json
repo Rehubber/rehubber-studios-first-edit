@@ -1,0 +1,19 @@
+{
+  "slug": "coolify",
+  "title": "Coolify",
+  "description": "An open-source & self-hostable Heroku / Netlify / Vercel alternative.",
+  "tags": [
+    "DevOps",
+    "Hosting",
+    "PaaS"
+  ],
+  "author": {
+    "name": "coollabsio",
+    "url": "https://github.com/coollabsio/coolify"
+  },
+  "url": "https://coolify.io",
+  "upvotes": 415,
+  "views": 10886,
+  "date": "28 Mar 2024",
+  "content": "An open-source & self-hostable Heroku / Netlify / Vercel alternative."
+}

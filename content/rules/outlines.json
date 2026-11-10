@@ -1,0 +1,18 @@
+{
+  "slug": "outlines",
+  "title": "Outlines",
+  "description": "Structured text generation with guarantees for JSON schemas and regular expressions.",
+  "tags": [
+    "Structured Gen",
+    "AI"
+  ],
+  "author": {
+    "name": "dottxt-ai",
+    "url": "https://github.com/dottxt-ai"
+  },
+  "url": "https://github.com/dottxt-ai/outlines",
+  "upvotes": 277,
+  "views": 6936,
+  "date": "2024-03-20",
+  "content": "Outlines: Structured text generation with guarantees for JSON schemas and regular expressions."
+}

@@ -1,0 +1,18 @@
+{
+  "slug": "kysely",
+  "title": "Kysely",
+  "description": "Type-safe and autocompletion-friendly typescript SQL query builder with zero dependencies.",
+  "tags": [
+    "SQL Builder",
+    "Backend"
+  ],
+  "author": {
+    "name": "kysely-org",
+    "url": "https://github.com/kysely-org"
+  },
+  "url": "https://github.com/kysely-org/kysely",
+  "upvotes": 384,
+  "views": 10174,
+  "date": "2024-03-20",
+  "content": "Kysely: Type-safe and autocompletion-friendly typescript SQL query builder with zero dependencies."
+}

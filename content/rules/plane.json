@@ -1,0 +1,18 @@
+{
+  "slug": "plane",
+  "title": "Plane",
+  "description": "Open source Jira alternative. Plan, track, and manage your product roadmap and sprints.",
+  "tags": [
+    "Issue Tracker",
+    "Productivity"
+  ],
+  "author": {
+    "name": "makeplane",
+    "url": "https://github.com/makeplane"
+  },
+  "url": "https://github.com/makeplane/plane",
+  "upvotes": 419,
+  "views": 14193,
+  "date": "2024-03-20",
+  "content": "Plane: Open source Jira alternative. Plan, track, and manage your product roadmap and sprints."
+}

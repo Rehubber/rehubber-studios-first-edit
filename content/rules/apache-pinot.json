@@ -1,0 +1,18 @@
+{
+  "slug": "apache-pinot",
+  "title": "Apache Pinot",
+  "description": "Realtime distributed OLAP datastore designed to execute OLAP queries with low latency.",
+  "tags": [
+    "Realtime OLAP",
+    "Databases"
+  ],
+  "author": {
+    "name": "apache",
+    "url": "https://github.com/apache"
+  },
+  "url": "https://github.com/apache/apache-pinot",
+  "upvotes": 333,
+  "views": 9044,
+  "date": "2024-03-20",
+  "content": "Apache Pinot: Realtime distributed OLAP datastore designed to execute OLAP queries with low latency."
+}

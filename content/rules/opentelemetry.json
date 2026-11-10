@@ -1,0 +1,18 @@
+{
+  "slug": "opentelemetry",
+  "title": "OpenTelemetry",
+  "description": "High-quality, ubiquitous, and portable telemetry to enable effective observability.",
+  "tags": [
+    "APM",
+    "DevOps"
+  ],
+  "author": {
+    "name": "open-telemetry",
+    "url": "https://github.com/open-telemetry"
+  },
+  "url": "https://github.com/open-telemetry/opentelemetry",
+  "upvotes": 229,
+  "views": 7317,
+  "date": "2024-03-20",
+  "content": "OpenTelemetry: High-quality, ubiquitous, and portable telemetry to enable effective observability."
+}

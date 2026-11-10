@@ -1,0 +1,18 @@
+{
+  "slug": "syncconfig-keeper-42",
+  "title": "SyncConfig Keeper",
+  "description": "Open-source config keeper built for high-performance devops & containers workflows.",
+  "tags": [
+    "Config",
+    "DevOps"
+  ],
+  "author": {
+    "name": "open-sync",
+    "url": "https://github.com/open-sync"
+  },
+  "url": "https://github.com/rehubber-catalog/syncconfig-keeper-42",
+  "upvotes": 199,
+  "views": 4676,
+  "date": "2024-04-10",
+  "content": "SyncConfig Keeper is a dedicated open-source utility designed to optimize devops & containers development."
+}

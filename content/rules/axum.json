@@ -1,0 +1,18 @@
+{
+  "slug": "axum",
+  "title": "Axum",
+  "description": "Ergonomic and modular web application framework built with Tokio and Tower in Rust.",
+  "tags": [
+    "Rust",
+    "Backend"
+  ],
+  "author": {
+    "name": "tokio-rs",
+    "url": "https://github.com/tokio-rs"
+  },
+  "url": "https://github.com/tokio-rs/axum",
+  "upvotes": 393,
+  "views": 10433,
+  "date": "2024-03-20",
+  "content": "Axum: Ergonomic and modular web application framework built with Tokio and Tower in Rust."
+}

@@ -1,0 +1,18 @@
+{
+  "slug": "jan-ai",
+  "title": "Jan AI",
+  "description": "Open source ChatGPT alternative that runs 100% offline on your computer.",
+  "tags": [
+    "Local AI",
+    "AI"
+  ],
+  "author": {
+    "name": "janhq",
+    "url": "https://github.com/janhq"
+  },
+  "url": "https://github.com/janhq/jan-ai",
+  "upvotes": 369,
+  "views": 9019,
+  "date": "2024-03-20",
+  "content": "Jan AI: Open source ChatGPT alternative that runs 100% offline on your computer."
+}

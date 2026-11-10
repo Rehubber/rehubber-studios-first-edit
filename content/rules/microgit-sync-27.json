@@ -1,0 +1,18 @@
+{
+  "slug": "microgit-sync-27",
+  "title": "MicroGit Sync",
+  "description": "Open-source git sync built for high-performance developer cli & tools workflows.",
+  "tags": [
+    "Git",
+    "Developer"
+  ],
+  "author": {
+    "name": "open-micro",
+    "url": "https://github.com/open-micro"
+  },
+  "url": "https://github.com/rehubber-catalog/microgit-sync-27",
+  "upvotes": 344,
+  "views": 7581,
+  "date": "2024-04-10",
+  "content": "MicroGit Sync is a dedicated open-source utility designed to optimize developer cli & tools development."
+}

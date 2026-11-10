@@ -1,0 +1,18 @@
+{
+  "slug": "actix-web",
+  "title": "Actix Web",
+  "description": "Powerful, pragmatic, and extremely fast web framework for Rust with actors.",
+  "tags": [
+    "Rust",
+    "Backend"
+  ],
+  "author": {
+    "name": "actix",
+    "url": "https://github.com/actix"
+  },
+  "url": "https://github.com/actix/actix-web",
+  "upvotes": 291,
+  "views": 10182,
+  "date": "2024-03-20",
+  "content": "Actix Web: Powerful, pragmatic, and extremely fast web framework for Rust with actors."
+}

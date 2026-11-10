@@ -1,0 +1,18 @@
+{
+  "slug": "zitadel",
+  "title": "Zitadel",
+  "description": "The identity infrastructure platform for developers with audit logs, multi-tenancy, and B2B auth.",
+  "tags": [
+    "IAM",
+    "Security"
+  ],
+  "author": {
+    "name": "zitadel",
+    "url": "https://github.com/zitadel"
+  },
+  "url": "https://github.com/zitadel/zitadel",
+  "upvotes": 404,
+  "views": 8493,
+  "date": "2024-03-20",
+  "content": "Zitadel: The identity infrastructure platform for developers with audit logs, multi-tenancy, and B2B auth."
+}

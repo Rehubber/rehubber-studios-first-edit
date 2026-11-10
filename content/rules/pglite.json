@@ -1,0 +1,19 @@
+{
+  "slug": "pglite",
+  "title": "PGLite",
+  "description": "Lightweight Postgres packaged as a WASM build for browsers, Node.js, and Bun with 0 dependencies.",
+  "tags": [
+    "Database",
+    "Postgres",
+    "WASM"
+  ],
+  "author": {
+    "name": "electric-sql",
+    "url": "https://github.com/electric-sql/pglite"
+  },
+  "url": "https://pglite.dev",
+  "upvotes": 295,
+  "views": 7986,
+  "date": "28 Mar 2024",
+  "content": "Lightweight Postgres packaged as a WASM build for browsers, Node.js, and Bun with 0 dependencies."
+}

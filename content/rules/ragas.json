@@ -1,0 +1,18 @@
+{
+  "slug": "ragas",
+  "title": "Ragas",
+  "description": "Supercharge your Retrieval Augmented Generation evaluation pipelines with test metrics.",
+  "tags": [
+    "RAG Eval",
+    "AI"
+  ],
+  "author": {
+    "name": "explodinggradients",
+    "url": "https://github.com/explodinggradients"
+  },
+  "url": "https://github.com/explodinggradients/ragas",
+  "upvotes": 370,
+  "views": 9602,
+  "date": "2024-03-20",
+  "content": "Ragas: Supercharge your Retrieval Augmented Generation evaluation pipelines with test metrics."
+}

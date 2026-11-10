@@ -1,0 +1,19 @@
+{
+  "slug": "continue-dev",
+  "title": "Continue",
+  "description": "The leading open-source AI code assistant for VS Code and JetBrains IDEs.",
+  "tags": [
+    "AI",
+    "IDE",
+    "Coding"
+  ],
+  "author": {
+    "name": "continuedev",
+    "url": "https://github.com/continuedev/continue"
+  },
+  "url": "https://continue.dev",
+  "upvotes": 310,
+  "views": 8157,
+  "date": "28 Mar 2024",
+  "content": "The leading open-source AI code assistant for VS Code and JetBrains IDEs."
+}

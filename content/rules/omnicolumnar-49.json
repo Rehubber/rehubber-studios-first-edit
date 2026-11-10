@@ -1,0 +1,18 @@
+{
+  "slug": "omnicolumnar-49",
+  "title": "OmniColumnar",
+  "description": "Open-source columnar built for high-performance databases & storage workflows.",
+  "tags": [
+    "Columnar",
+    "Databases"
+  ],
+  "author": {
+    "name": "open-omni",
+    "url": "https://github.com/open-omni"
+  },
+  "url": "https://github.com/rehubber-catalog/omnicolumnar-49",
+  "upvotes": 108,
+  "views": 2807,
+  "date": "2024-04-10",
+  "content": "OmniColumnar is a dedicated open-source utility designed to optimize databases & storage development."
+}
