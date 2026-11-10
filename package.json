@@ -6,6 +6,8 @@
     "dev": "node scripts/export-directory.mjs --local && next dev -p 3000 -H 0.0.0.0",
     "export:directory": "node scripts/export-directory.mjs",
     "build": "npm run export:directory && next build",
+    "import:directory": "node scripts/import-directory-csv.mjs",
+    "test:import": "node --test scripts/directory-import-csv.test.mjs",
     "test": "npx tsx scripts/test-flows.ts",
     "lint": "tsc --noEmit"
   },
