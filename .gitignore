@@ -7,6 +7,8 @@ __v0_jsx-dev-runtime.ts
 .v0-trash/
 .vercel/
 public/directory/
+import-reports/
+backups/
 
 # Environment variables
 .env

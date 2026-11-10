@@ -39,6 +39,32 @@ A static, paginated directory hosted on Cloudflare Pages, with Firebase Authenti
    This one-time script requires `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, and `FIREBASE_PRIVATE_KEY` in `.env.local`. Never use these credentials in frontend variables or commit them.
 7. Open `/admin` and sign in with GitHub. The page shows the account's Firebase UID. In the Firebase Console, create `moderators/<UID>` with the boolean field `enabled: true`. Only accounts with this Firestore document can read the queue or moderate.
 
+## Bulk importing directory tools
+
+The CSV importer is a local Node.js script. It does not add an upload route to the public site and never puts Firebase Admin credentials in browser code. It replaces only documents with `status: "published"` in the configured rules collection; pending submissions and moderator records are not modified.
+
+1. Copy the CSV into the repository root or pass its full path. The file must contain exactly the `name`, `description`, and `repository` columns. Names must be 2–60 characters; descriptions must be 3–80 characters; repository URLs must point to a GitHub repository. Duplicate repositories and generated slugs are rejected. The `repository` URL becomes the tool's public link, descriptions are retained as content, and imported tools start with zero votes and views.
+2. Ensure `.env.local` contains `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, and `FIREBASE_PRIVATE_KEY`, or `FIREBASE_SERVICE_ACCOUNT_JSON`. Use a service account with access to the rules collection, and verify the project ID carefully. Never commit `.env.local`.
+3. Run a dry run first. Dry run is the default, does not load Firebase credentials or contact Firestore, and writes a row-level JSON report under the ignored `import-reports/` directory:
+
+   ```bash
+   npm run import:directory -- --file "vs tools - Sheet1-import-ready.csv"
+   ```
+
+4. Review the report and counts. Only after verifying the CSV, project, and impact, run the replacement with the exact Firebase project ID as confirmation. The script first exports all currently published documents to an ignored, timestamped JSON backup under `backups/`. It writes the incoming documents in batches of 400, then deletes old published documents not in the CSV. Firestore does not support one atomic batch for a collection larger than 500 operations, so a failed run may have committed some batches; the report identifies the backup and failure status.
+
+   ```bash
+   npm run import:directory -- --file "vs tools - Sheet1-import-ready.csv" --apply --confirm-replace YOUR_FIREBASE_PROJECT_ID
+   ```
+
+5. To restore a backup, first inspect the target project and choose the backup file. Restore also snapshots the current published documents before replacing them:
+
+   ```bash
+   npm run import:directory -- --restore-backup "backups/published-rules-TIMESTAMP.json" --apply --confirm-replace YOUR_FIREBASE_PROJECT_ID
+   ```
+
+The importer never deploys the static site. After verifying the Firestore contents, publish them separately using the documented Cloudflare Pages workflow.
+
 ## Cloudflare Pages deployment
 
 1. Install Wrangler and create a Cloudflare Pages project using Direct Upload. From a terminal, run `npx wrangler pages project create`, then enter `rehubber-directory` as the project name and `main` as the production branch. Direct Upload projects cannot later be converted to Git-integrated Pages projects. Do not configure Pages to run its own Next.js build; GitHub Actions builds the static `out/` directory and uploads it.
