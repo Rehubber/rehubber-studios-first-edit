@@ -12,6 +12,13 @@ export function SiteFooter() {
         >
           Partner with us
         </Link>
+        <span className="text-muted-foreground/40" aria-hidden="true">•</span>
+        <Link
+          href="/admin"
+          className="text-muted-foreground transition-colors hover:text-primary hover:underline underline-offset-4"
+        >
+          Admin
+        </Link>
       </div>
     </footer>
   )
