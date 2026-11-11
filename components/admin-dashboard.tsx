@@ -15,7 +15,7 @@ import {
   type DocumentData,
 } from 'firebase/firestore'
 import { GithubAuthProvider, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut, type User } from 'firebase/auth'
-import { Check, Database, GitBranch, LoaderCircle, LogOut, RefreshCw, ShieldAlert, X, Zap } from 'lucide-react'
+import { Check, Database, GitBranch, LoaderCircle, LogOut, RefreshCw, ShieldAlert, Trash2, X, Zap } from 'lucide-react'
 import { getFirebaseAppCheckToken, getFirebaseClientAuth, getFirebaseClientFirestore } from '@/lib/firebase-client'
 import type { PendingSubmission, SubmissionInput } from '@/lib/types'
 import { parseSubmission, slugify } from '@/lib/validation'
@@ -46,6 +46,8 @@ export function AdminDashboard() {
   const [error, setError] = useState<string | null>(null)
   const [notModerator, setNotModerator] = useState(false)
   const [syncing, setSyncing] = useState(false)
+  const [clearing, setClearing] = useState(false)
+  const [confirmDelete, setConfirmDelete] = useState(false)
   const [syncProgress, setSyncProgress] = useState<string | null>(null)
   const [syncSuccess, setSyncSuccess] = useState<string | null>(null)
 
@@ -173,6 +175,50 @@ export function AdminDashboard() {
       setSyncProgress(null)
     } finally {
       setSyncing(false)
+    }
+  }
+
+  async function handleClearAllTools() {
+    if (clearing || syncing) return
+    setClearing(true)
+    setError(null)
+    setSyncSuccess(null)
+    setSyncProgress('Scanning remote Firestore rules collection...')
+
+    try {
+      const db = getFirebaseClientFirestore()
+      const snap = await getDocs(collection(db, 'rules'))
+      if (snap.empty) {
+        setSyncSuccess('Remote Firestore rules collection is already completely empty (0 tools). Ready for sync!')
+        setSyncProgress(null)
+        setConfirmDelete(false)
+        return
+      }
+
+      const total = snap.docs.length
+      const CHUNK_SIZE = 150
+      let deleted = 0
+
+      for (let i = 0; i < total; i += CHUNK_SIZE) {
+        const chunk = snap.docs.slice(i, i + CHUNK_SIZE)
+        const batch = writeBatch(db)
+        for (const docSnap of chunk) {
+          batch.delete(docSnap.ref)
+        }
+        await batch.commit()
+        deleted += chunk.length
+        setSyncProgress(`Deleted ${deleted} of ${total} tools from Cloud Firestore...`)
+      }
+
+      setSyncSuccess(`Successfully deleted all ${total} tools from Cloud Firestore. Database is clean!`)
+      setSyncProgress(null)
+      setConfirmDelete(false)
+    } catch (clearErr) {
+      console.error('Firestore clear error:', clearErr)
+      setError(clearErr instanceof Error ? clearErr.message : 'Failed to clear tools from Cloud Firestore.')
+      setSyncProgress(null)
+    } finally {
+      setClearing(false)
     }
   }
 
@@ -318,19 +364,58 @@ export function AdminDashboard() {
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={handleSync440Tools}
-            disabled={syncing}
-            className="inline-flex h-9 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-xs font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90 disabled:opacity-60 cursor-pointer"
-          >
-            {syncing ? (
-              <LoaderCircle className="size-3.5 animate-spin" aria-hidden="true" />
+          <div className="flex flex-wrap items-center gap-2">
+            {!confirmDelete ? (
+              <button
+                type="button"
+                onClick={() => setConfirmDelete(true)}
+                disabled={syncing || clearing}
+                className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border border-destructive/40 bg-destructive/10 px-3 text-xs font-medium text-destructive transition-colors hover:bg-destructive/20 disabled:opacity-60 cursor-pointer"
+                title="Delete all tools currently in the remote Firestore rules collection"
+              >
+                <Trash2 className="size-3.5" aria-hidden="true" />
+                <span>Delete All Existing Tools</span>
+              </button>
             ) : (
-              <Zap className="size-3.5" aria-hidden="true" />
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={handleClearAllTools}
+                  disabled={clearing}
+                  className="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-destructive px-3 text-xs font-semibold text-destructive-foreground shadow-xs transition-colors hover:bg-destructive/90 disabled:opacity-60 cursor-pointer"
+                >
+                  {clearing ? (
+                    <LoaderCircle className="size-3.5 animate-spin" aria-hidden="true" />
+                  ) : (
+                    <Trash2 className="size-3.5" aria-hidden="true" />
+                  )}
+                  <span>{clearing ? 'Deleting…' : 'Confirm: Wipe All Tools'}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setConfirmDelete(false)}
+                  disabled={clearing}
+                  className="inline-flex h-9 items-center justify-center rounded-lg border border-border px-2.5 text-xs text-muted-foreground hover:bg-secondary cursor-pointer"
+                >
+                  <X className="size-3.5" />
+                </button>
+              </div>
             )}
-            <span>{syncing ? 'Pushing to Firestore…' : 'Sync 440 Tools to Remote Firestore'}</span>
-          </button>
+
+            <button
+              type="button"
+              onClick={handleSync440Tools}
+              disabled={syncing || clearing}
+              className="inline-flex h-9 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-xs font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90 disabled:opacity-60 cursor-pointer"
+            >
+              {syncing ? (
+                <LoaderCircle className="size-3.5 animate-spin" aria-hidden="true" />
+              ) : (
+                <Zap className="size-3.5" aria-hidden="true" />
+              )}
+              <span>{syncing ? 'Pushing to Firestore…' : 'Sync 440 Tools to Remote Firestore'}</span>
+            </button>
+          </div>
         </div>
 
         {syncProgress && (

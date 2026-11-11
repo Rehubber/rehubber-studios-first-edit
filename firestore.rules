@@ -120,7 +120,7 @@ service cloud.firestore {
           && request.resource.data.status == 'published'
         ) || validVoteForRule(slug) || validRuleVoteOrView();
 
-      allow delete: if false;
+      allow delete: if true;
     }
 
     match /submissions/{submissionId} {
