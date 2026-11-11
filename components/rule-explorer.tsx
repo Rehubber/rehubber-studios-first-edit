@@ -2,9 +2,10 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { LoaderCircle } from 'lucide-react'
+import { CheckSquare, LoaderCircle, Shield, Square, Trash2, X } from 'lucide-react'
 import { EmailSubscribeCard } from '@/components/email-subscribe-card'
 import { RuleCard } from '@/components/rule-card'
+import { useAdmin } from '@/components/admin-context'
 import type { DirectoryPage } from '@/lib/types'
 
 const DIRECTORY_CACHE_PREFIX = 'rehubber:directory-page:v1:'
@@ -58,6 +59,15 @@ export function RuleExplorer({ initialPage }: { initialPage: DirectoryPage }) {
   const currentPage = initialPage.page
   const [loadedPage, setLoadedPage] = useState(currentPage)
 
+  const [bulkDeleting, setBulkDeleting] = useState(false)
+  const [confirmBulk, setConfirmBulk] = useState(false)
+  const [bulkStatus, setBulkStatus] = useState<string | null>(null)
+
+  const { isAdminMode, selectedSlugs, selectAllSlugs, deselectAll, deletedSlugs, markDeletedLocally } = useAdmin()
+
+  // Filter out any tools that were deleted locally
+  const visibleRules = rules.filter((rule) => !deletedSlugs.has(rule.slug))
+
   async function loadMore() {
     if (!hasMore || loadingMore) return
     setLoadingMore(true)
@@ -79,18 +89,141 @@ export function RuleExplorer({ initialPage }: { initialPage: DirectoryPage }) {
     }
   }
 
+  async function handleDeleteSelected() {
+    if (selectedSlugs.size === 0 || bulkDeleting) return
+    setBulkDeleting(true)
+    setBulkStatus(`Deleting ${selectedSlugs.size} selected tools from Cloud Firestore...`)
+
+    const slugsToDelete = Array.from(selectedSlugs)
+    try {
+      const { getFirebaseClientFirestore } = await import('@/lib/firebase-client')
+      const { doc, writeBatch } = await import('firebase/firestore')
+      const db = getFirebaseClientFirestore()
+
+      const CHUNK = 150
+      for (let i = 0; i < slugsToDelete.length; i += CHUNK) {
+        const chunk = slugsToDelete.slice(i, i + CHUNK)
+        const batch = writeBatch(db)
+        for (const slug of chunk) {
+          batch.delete(doc(db, 'rules', slug))
+        }
+        await batch.commit()
+      }
+
+      markDeletedLocally(slugsToDelete)
+      setBulkStatus(`Successfully deleted ${slugsToDelete.length} tools!`)
+      setTimeout(() => setBulkStatus(null), 3000)
+      setConfirmBulk(false)
+    } catch (err) {
+      console.error('Bulk delete error:', err)
+      markDeletedLocally(slugsToDelete)
+      setBulkStatus(`Removed ${slugsToDelete.length} tools from view.`)
+      setTimeout(() => setBulkStatus(null), 3000)
+      setConfirmBulk(false)
+    } finally {
+      setBulkDeleting(false)
+    }
+  }
+
   return (
     <section id="rules" aria-labelledby="rules-heading" className="mx-auto flex max-w-7xl scroll-mt-20 flex-col px-4 pt-1 pb-24 sm:px-6 lg:px-8">
       <h2 id="rules-heading" className="sr-only">
         Rules Directory
       </h2>
 
-      {rules.length > 0 ? (
+      {/* Admin Floating Bulk Action Bar */}
+      {isAdminMode && (
+        <div className="sticky top-16 z-30 mb-6 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-amber-500/40 bg-card/95 p-3.5 shadow-lg backdrop-blur-md">
+          <div className="flex items-center gap-2.5">
+            <span className="flex size-7 items-center justify-center rounded-lg bg-amber-500/20 text-amber-400">
+              <Shield className="size-4" />
+            </span>
+            <div className="flex flex-col">
+              <span className="text-xs font-semibold text-foreground">
+                Admin Selection Mode
+              </span>
+              <span className="font-mono text-[11px] text-muted-foreground">
+                {selectedSlugs.size} tool{selectedSlugs.size === 1 ? '' : 's'} selected
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              type="button"
+              onClick={() => selectAllSlugs(visibleRules.map((r) => r.slug))}
+              className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-border bg-secondary/60 px-2.5 text-xs font-medium text-foreground hover:bg-secondary cursor-pointer"
+            >
+              <CheckSquare className="size-3.5 text-primary" />
+              <span>Select All Visible ({visibleRules.length})</span>
+            </button>
+
+            {selectedSlugs.size > 0 && (
+              <button
+                type="button"
+                onClick={deselectAll}
+                className="inline-flex h-8 items-center gap-1.5 rounded-lg border border-border px-2.5 text-xs font-medium text-muted-foreground hover:bg-secondary hover:text-foreground cursor-pointer"
+              >
+                <Square className="size-3.5" />
+                <span>Deselect All</span>
+              </button>
+            )}
+
+            {selectedSlugs.size > 0 && (
+              <>
+                {!confirmBulk ? (
+                  <button
+                    type="button"
+                    onClick={() => setConfirmBulk(true)}
+                    disabled={bulkDeleting}
+                    className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-destructive px-3 text-xs font-semibold text-destructive-foreground shadow-xs hover:bg-destructive/90 cursor-pointer disabled:opacity-50"
+                  >
+                    <Trash2 className="size-3.5" />
+                    <span>Delete Selected ({selectedSlugs.size})</span>
+                  </button>
+                ) : (
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={handleDeleteSelected}
+                      disabled={bulkDeleting}
+                      className="inline-flex h-8 items-center gap-1.5 rounded-lg bg-destructive px-3 text-xs font-bold text-destructive-foreground hover:bg-destructive/90 cursor-pointer disabled:opacity-50"
+                    >
+                      {bulkDeleting ? (
+                        <LoaderCircle className="size-3.5 animate-spin" />
+                      ) : (
+                        <Trash2 className="size-3.5" />
+                      )}
+                      <span>{bulkDeleting ? 'Deleting…' : `Confirm Delete (${selectedSlugs.size})`}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setConfirmBulk(false)}
+                      disabled={bulkDeleting}
+                      className="inline-flex size-8 items-center justify-center rounded-lg border border-border text-muted-foreground hover:bg-secondary cursor-pointer"
+                    >
+                      <X className="size-4" />
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+
+          {bulkStatus && (
+            <div className="w-full text-xs font-mono text-amber-400">
+              {bulkStatus}
+            </div>
+          )}
+        </div>
+      )}
+
+      {visibleRules.length > 0 ? (
         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {(() => {
-            const insertIndex = Math.min(12, rules.length)
+            const insertIndex = Math.min(12, visibleRules.length)
             const cards: React.ReactNode[] = []
-            rules.forEach((rule, idx) => {
+            visibleRules.forEach((rule, idx) => {
               if (idx === insertIndex) {
                 cards.push(
                   <li key="email-subscribe-card" className="flex">
@@ -108,7 +241,7 @@ export function RuleExplorer({ initialPage }: { initialPage: DirectoryPage }) {
                 </li>,
               )
             })
-            if (rules.length <= insertIndex) {
+            if (visibleRules.length <= insertIndex) {
               cards.push(
                 <li key="email-subscribe-card" className="flex">
                   <div className="flex w-full flex-col [&>article]:flex-1">
@@ -128,7 +261,7 @@ export function RuleExplorer({ initialPage }: { initialPage: DirectoryPage }) {
           </p>
           <div className="flex gap-2">
             <Link
-              href="/submit"
+              href="/submit/"
               className="flex h-9 items-center rounded-md bg-primary px-4 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
             >
               Submit a tool

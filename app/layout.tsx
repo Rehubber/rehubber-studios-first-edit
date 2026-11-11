@@ -36,6 +36,8 @@ export const viewport: Viewport = {
   themeColor: '#1b1d22',
 }
 
+import { AdminProvider } from '@/components/admin-context'
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -51,8 +53,10 @@ export default function RootLayout({
         />
       </head>
       <body className="flex min-h-dvh flex-col antialiased">
-        <div className="flex-1">{children}</div>
-        <SiteFooter />
+        <AdminProvider>
+          <div className="flex-1">{children}</div>
+          <SiteFooter />
+        </AdminProvider>
       </body>
     </html>
   )
