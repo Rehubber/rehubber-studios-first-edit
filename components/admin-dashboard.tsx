@@ -11,10 +11,11 @@ import {
   runTransaction,
   serverTimestamp,
   where,
+  writeBatch,
   type DocumentData,
 } from 'firebase/firestore'
-import { GithubAuthProvider, onAuthStateChanged, signInWithPopup, signOut, type User } from 'firebase/auth'
-import { Check, GitBranch, LoaderCircle, LogOut, ShieldAlert, X } from 'lucide-react'
+import { GithubAuthProvider, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut, type User } from 'firebase/auth'
+import { Check, Database, GitBranch, LoaderCircle, LogOut, RefreshCw, ShieldAlert, X, Zap } from 'lucide-react'
 import { getFirebaseAppCheckToken, getFirebaseClientAuth, getFirebaseClientFirestore } from '@/lib/firebase-client'
 import type { PendingSubmission, SubmissionInput } from '@/lib/types'
 import { parseSubmission, slugify } from '@/lib/validation'
@@ -44,6 +45,9 @@ export function AdminDashboard() {
   const [busyId, setBusyId] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [notModerator, setNotModerator] = useState(false)
+  const [syncing, setSyncing] = useState(false)
+  const [syncProgress, setSyncProgress] = useState<string | null>(null)
+  const [syncSuccess, setSyncSuccess] = useState<string | null>(null)
 
   async function loadSubmissions(currentUser: User) {
     setError(null)
@@ -96,6 +100,79 @@ export function AdminDashboard() {
       await signInWithPopup(getFirebaseClientAuth(), new GithubAuthProvider())
     } catch (authError) {
       setError(authError instanceof Error ? authError.message : 'GitHub sign-in failed.')
+    }
+  }
+
+  async function handleGoogleSignIn() {
+    setError(null)
+    try {
+      await signInWithPopup(getFirebaseClientAuth(), new GoogleAuthProvider())
+    } catch (authError) {
+      setError(authError instanceof Error ? authError.message : 'Google sign-in failed.')
+    }
+  }
+
+  async function handleSync440Tools() {
+    if (!user || syncing) return
+    setSyncing(true)
+    setError(null)
+    setSyncSuccess(null)
+    setSyncProgress('Reading catalog of 440 tools...')
+
+    try {
+      const res = await fetch('/directory/catalog-all.json')
+      if (!res.ok) throw new Error('Could not read catalog-all.json from static directory.')
+      const tools: Array<Record<string, unknown>> = await res.json()
+      if (!Array.isArray(tools) || tools.length === 0) {
+        throw new Error('Catalog is empty or malformed.')
+      }
+
+      const db = getFirebaseClientFirestore()
+      const total = tools.length
+      const CHUNK_SIZE = 150
+      let committedCount = 0
+
+      for (let i = 0; i < total; i += CHUNK_SIZE) {
+        const chunk = tools.slice(i, i + CHUNK_SIZE)
+        const batch = writeBatch(db)
+
+        for (const tool of chunk) {
+          const slug = String(tool.slug || '')
+          if (!slug) continue
+          const ruleRef = doc(db, 'rules', slug)
+          batch.set(
+            ruleRef,
+            {
+              slug,
+              title: String(tool.title || ''),
+              description: String(tool.description || ''),
+              content: typeof tool.content === 'string' ? tool.content : '',
+              tags: Array.isArray(tool.tags) ? tool.tags : [],
+              author: typeof tool.author === 'object' && tool.author ? tool.author : { name: 'directory' },
+              url: typeof tool.url === 'string' ? tool.url : '',
+              status: 'published',
+              upvotes: typeof tool.upvotes === 'number' ? tool.upvotes : 0,
+              views: typeof tool.views === 'number' ? tool.views : 0,
+              source: 'local-seed',
+              syncedAt: serverTimestamp(),
+            },
+            { merge: true },
+          )
+        }
+
+        await batch.commit()
+        committedCount += chunk.length
+        setSyncProgress(`Pushed ${committedCount} of ${total} tools to Cloud Firestore...`)
+      }
+
+      setSyncSuccess(`Successfully pushed all ${total} tools to remote Cloud Firestore!`)
+      setSyncProgress(null)
+    } catch (syncErr) {
+      console.error('Firestore sync error:', syncErr)
+      setError(syncErr instanceof Error ? syncErr.message : 'Failed to sync tools to Cloud Firestore.')
+      setSyncProgress(null)
+    } finally {
+      setSyncing(false)
     }
   }
 
@@ -231,27 +308,87 @@ export function AdminDashboard() {
           <ShieldAlert className="size-8 text-primary" aria-hidden="true" />
           <div className="flex flex-col gap-1">
             <h2 className="font-medium">Moderator sign-in required</h2>
-            <p className="text-sm text-muted-foreground">Sign in with the GitHub account enabled as a moderator.</p>
+            <p className="text-sm text-muted-foreground">Sign in with your administrator account (firecodesecure@gmail.com).</p>
           </div>
-          <button
-            type="button"
-            onClick={handleSignIn}
-            className="flex h-10 items-center gap-2 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:opacity-90"
-          >
-            <GitBranch className="size-4" aria-hidden="true" />
-            Continue with GitHub
-          </button>
-        </section>
-      ) : (
-        <section className="flex flex-col gap-4">
-          <div className="flex items-center justify-between gap-3">
-            <h2 className="font-mono text-sm uppercase tracking-wider text-muted-foreground">
-              Pending ({submissions.length})
-            </h2>
-            <button type="button" onClick={() => void loadSubmissions(user)} className="text-sm text-primary hover:underline">
-              Refresh queue
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <button
+              type="button"
+              onClick={handleGoogleSignIn}
+              className="flex h-10 items-center gap-2 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground hover:opacity-90 cursor-pointer"
+            >
+              <span>Continue with Google</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleSignIn}
+              className="flex h-10 items-center gap-2 rounded-md border border-border bg-secondary px-4 text-sm font-medium text-foreground hover:bg-secondary/80 cursor-pointer"
+            >
+              <GitBranch className="size-4" aria-hidden="true" />
+              <span>Continue with GitHub</span>
             </button>
           </div>
+        </section>
+      ) : (
+        <section className="flex flex-col gap-8">
+          {/* Cloud Firestore Remote Database Sync Card */}
+          <div className="flex flex-col gap-4 rounded-xl border border-primary/30 bg-primary/5 p-5 shadow-xs">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                  <Database className="size-5" aria-hidden="true" />
+                </span>
+                <div className="flex flex-col">
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-sm font-semibold text-foreground">Cloud Firestore Remote Sync</h2>
+                    <span className="rounded-full bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-mono text-emerald-400">
+                      Connected
+                    </span>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Push all 440 curated open-source tools to remote Cloud Firestore database (<code>rules</code> collection).
+                  </p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleSync440Tools}
+                disabled={syncing}
+                className="inline-flex h-9 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-xs font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90 disabled:opacity-60 cursor-pointer"
+              >
+                {syncing ? (
+                  <LoaderCircle className="size-3.5 animate-spin" aria-hidden="true" />
+                ) : (
+                  <Zap className="size-3.5" aria-hidden="true" />
+                )}
+                <span>{syncing ? 'Pushing to Firestore…' : 'Sync 440 Tools to Remote Firestore'}</span>
+              </button>
+            </div>
+
+            {syncProgress && (
+              <div className="flex items-center gap-2 text-xs font-mono text-primary animate-pulse">
+                <RefreshCw className="size-3.5 animate-spin" />
+                <span>{syncProgress}</span>
+              </div>
+            )}
+
+            {syncSuccess && (
+              <div className="flex items-center gap-2 text-xs font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-2.5">
+                <Check className="size-4 shrink-0 text-emerald-400" />
+                <span>{syncSuccess}</span>
+              </div>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="font-mono text-sm uppercase tracking-wider text-muted-foreground">
+                Pending submissions ({submissions.length})
+              </h2>
+              <button type="button" onClick={() => void loadSubmissions(user)} className="text-sm text-primary hover:underline">
+                Refresh queue
+              </button>
+            </div>
           {submissions.length === 0 ? (
             <p className="rounded-xl border border-dashed border-border px-6 py-12 text-center text-sm text-muted-foreground">
               No pending submissions.
@@ -313,6 +450,7 @@ export function AdminDashboard() {
               ))}
             </ul>
           )}
+          </div>
         </section>
       )}
     </main>

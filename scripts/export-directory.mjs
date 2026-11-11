@@ -9,7 +9,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const { loadEnvConfig } = nextEnv
 loadEnvConfig(root)
 
-const pageSize = 8
+const pageSize = 16
 const rulesDirectory = path.join(root, 'content', 'rules')
 const outputDirectory = path.join(root, 'public', 'directory')
 const outputPagesDirectory = path.join(outputDirectory, 'pages')
@@ -143,6 +143,12 @@ for (let page = 1; page <= pageCount; page += 1) {
 await writeFile(
   path.join(outputDirectory, 'manifest.json'),
   `${JSON.stringify({ pages: pageCount, pageSize, ruleCount: rules.length })}\n`,
+  'utf8',
+)
+
+await writeFile(
+  path.join(outputDirectory, 'catalog-all.json'),
+  `${JSON.stringify(rules)}\n`,
   'utf8',
 )
 

@@ -5,7 +5,7 @@ import type { DirectoryPage } from './types'
 
 const DIRECTORY_DIR = path.join(process.cwd(), 'public', 'directory')
 
-export const DIRECTORY_PAGE_SIZE = 8
+export const DIRECTORY_PAGE_SIZE = 16
 
 export async function getDirectoryPage(page: number): Promise<DirectoryPage> {
   if (!Number.isSafeInteger(page) || page < 1) {

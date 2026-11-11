@@ -1,0 +1,134 @@
+{
+  "entities": {
+    "Rule": {
+      "title": "Rule",
+      "description": "An approved open source tool published in the Rehubber directory",
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "description": "Unique URL identifier",
+          "maxLength": 64
+        },
+        "title": {
+          "type": "string",
+          "description": "Tool name",
+          "maxLength": 80
+        },
+        "description": {
+          "type": "string",
+          "description": "Short explanation of the tool",
+          "maxLength": 300
+        },
+        "content": {
+          "type": "string",
+          "description": "Markdown detailed content",
+          "maxLength": 25000
+        },
+        "tags": {
+          "type": "array",
+          "description": "Category tags"
+        },
+        "author": {
+          "type": "object",
+          "description": "Author metadata"
+        },
+        "upvotes": {
+          "type": "number",
+          "description": "Count of community upvotes"
+        },
+        "views": {
+          "type": "number",
+          "description": "Total view impressions"
+        },
+        "url": {
+          "type": "string",
+          "description": "Project website or repository"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["published", "archived"]
+        }
+      },
+      "required": ["slug", "title", "description", "status"]
+    },
+    "Submission": {
+      "title": "Submission",
+      "description": "A user-submitted open source tool pending moderation",
+      "type": "object",
+      "properties": {
+        "slug": { "type": "string", "maxLength": 64 },
+        "title": { "type": "string", "maxLength": 80 },
+        "description": { "type": "string", "maxLength": 300 },
+        "content": { "type": "string", "maxLength": 25000 },
+        "tags": { "type": "array" },
+        "author": { "type": "object" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "submitterUid": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["slug", "title", "description", "status", "submitterUid", "createdAt"]
+    },
+    "Subscriber": {
+      "title": "Subscriber",
+      "description": "Email subscriber for launch status or beta community updates",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "format": "email", "maxLength": 150 },
+        "submissionId": { "type": "string", "maxLength": 128 },
+        "isBetaCommunity": { "type": "boolean" },
+        "category": { "type": "string", "maxLength": 64 },
+        "status": { "type": "string", "maxLength": 32 },
+        "source": { "type": "string", "maxLength": 64 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email", "createdAt"]
+    },
+    "Vote": {
+      "title": "Vote",
+      "description": "Audit record for a single user upvote",
+      "type": "object",
+      "properties": {
+        "slug": { "type": "string", "maxLength": 64 },
+        "uid": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["slug", "uid", "createdAt"]
+    },
+    "SupportMessage": {
+      "title": "SupportMessage",
+      "description": "Support or partnership inquiry",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "format": "email", "maxLength": 150 },
+        "category": { "type": "string", "maxLength": 64 },
+        "message": { "type": "string", "maxLength": 4000 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "email", "category", "message", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/rules/{slug}": {
+      "schema": "Rule",
+      "description": "Published tools directory records"
+    },
+    "/submissions/{submissionId}": {
+      "schema": "Submission",
+      "description": "Submitted tools queue for review"
+    },
+    "/subscribers/{subscriberId}": {
+      "schema": "Subscriber",
+      "description": "Subscribers for status updates and beta community"
+    },
+    "/votes/{voteId}": {
+      "schema": "Vote",
+      "description": "Per-user upvote audit records"
+    },
+    "/support_messages/{messageId}": {
+      "schema": "SupportMessage",
+      "description": "Inquiries and support submissions"
+    }
+  }
+}
