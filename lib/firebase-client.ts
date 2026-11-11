@@ -3,7 +3,7 @@
 import { getApp, getApps, initializeApp } from 'firebase/app'
 import { getToken, initializeAppCheck, ReCaptchaV3Provider, type AppCheck } from 'firebase/app-check'
 import { getAuth } from 'firebase/auth'
-import { getFirestore } from 'firebase/firestore'
+import { getFirestore, initializeFirestore, memoryLocalCache } from 'firebase/firestore'
 
 import appletConfig from '@/firebase-applet-config.json'
 
@@ -47,12 +47,23 @@ export function getFirebaseClientAuth() {
   return getAuth(getFirebaseClientApp())
 }
 
+let firestoreInstance: ReturnType<typeof getFirestore> | null = null
+
 export function getFirebaseClientFirestore() {
+  if (firestoreInstance) return firestoreInstance
   const app = getFirebaseClientApp()
   const cfg = getFirebaseConfig()
-  return cfg.firestoreDatabaseId && cfg.firestoreDatabaseId !== '(default)'
-    ? getFirestore(app, cfg.firestoreDatabaseId)
-    : getFirestore(app)
+  const dbId = cfg.firestoreDatabaseId && cfg.firestoreDatabaseId !== '(default)' ? cfg.firestoreDatabaseId : undefined
+
+  try {
+    firestoreInstance = dbId
+      ? initializeFirestore(app, { localCache: memoryLocalCache() }, dbId)
+      : initializeFirestore(app, { localCache: memoryLocalCache() })
+  } catch {
+    firestoreInstance = dbId ? getFirestore(app, dbId) : getFirestore(app)
+  }
+
+  return firestoreInstance
 }
 
 export enum OperationType {

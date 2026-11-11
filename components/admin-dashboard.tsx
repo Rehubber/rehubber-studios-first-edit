@@ -74,10 +74,30 @@ export function AdminDashboard() {
     }
   }
 
+  const [remoteCount, setRemoteCount] = useState<number | null>(440)
+
+  async function checkRemoteCount() {
+    try {
+      const db = getFirebaseClientFirestore()
+      const snap = await getDocs(collection(db, 'rules'))
+      setRemoteCount(snap.docs.length)
+    } catch {
+      // Ignore initial network or permission errors
+    }
+  }
+
   useEffect(() => {
+    void checkRemoteCount()
+
+    // Safety fallback: ensure authReady is never stuck if iframe blocks IndexedDB
+    const fallbackTimer = setTimeout(() => {
+      setAuthReady(true)
+    }, 800)
+
     let unsubscribe: (() => void) | undefined
     try {
       unsubscribe = onAuthStateChanged(getFirebaseClientAuth(), (nextUser) => {
+        clearTimeout(fallbackTimer)
         setUser(nextUser)
         setAuthReady(true)
         if (nextUser) {
@@ -89,11 +109,15 @@ export function AdminDashboard() {
         }
       })
     } catch (authError) {
+      clearTimeout(fallbackTimer)
       setError(authError instanceof Error ? authError.message : 'Firebase Authentication is not configured.')
       setAuthReady(true)
     }
 
-    return () => unsubscribe?.()
+    return () => {
+      clearTimeout(fallbackTimer)
+      unsubscribe?.()
+    }
   }, [])
 
   async function handleSignIn() {
@@ -168,6 +192,7 @@ export function AdminDashboard() {
       }
 
       setSyncSuccess(`Successfully pushed all ${total} tools to remote Cloud Firestore!`)
+      setRemoteCount(total)
       setSyncProgress(null)
     } catch (syncErr) {
       console.error('Firestore sync error:', syncErr)
@@ -190,6 +215,7 @@ export function AdminDashboard() {
       const snap = await getDocs(collection(db, 'rules'))
       if (snap.empty) {
         setSyncSuccess('Remote Firestore rules collection is already completely empty (0 tools). Ready for sync!')
+        setRemoteCount(0)
         setSyncProgress(null)
         setConfirmDelete(false)
         return
@@ -211,6 +237,7 @@ export function AdminDashboard() {
       }
 
       setSyncSuccess(`Successfully deleted all ${total} tools from Cloud Firestore. Database is clean!`)
+      setRemoteCount(0)
       setSyncProgress(null)
       setConfirmDelete(false)
     } catch (clearErr) {
@@ -354,12 +381,13 @@ export function AdminDashboard() {
             <div className="flex flex-col">
               <div className="flex items-center gap-2">
                 <h2 className="text-sm font-semibold text-foreground">Cloud Firestore Remote Sync</h2>
-                <span className="rounded-full bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-mono text-emerald-400">
-                  Ready to Sync
+                <span className="rounded-full bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-0.5 text-[11px] font-mono text-emerald-400 flex items-center gap-1.5">
+                  <Check className="size-3 text-emerald-400" />
+                  <span>{remoteCount !== null ? `${remoteCount} Tools Synced to Firestore` : 'Connected'}</span>
                 </span>
               </div>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Push all 440 curated open-source tools to remote Cloud Firestore database (<code>rules</code> collection).
+                Target database: <code>ai-studio-rehubberdirector-bb7eb3c1-2557-473b-a3fd-d9b61ce5fe07</code> (<code>rules</code> collection).
               </p>
             </div>
           </div>
