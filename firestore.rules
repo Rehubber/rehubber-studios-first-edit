@@ -101,21 +101,20 @@ service cloud.firestore {
     }
 
     match /rules/{slug} {
-      allow read: if isModerator() || resource.data.status == 'published';
+      allow read: if true;
 
-      allow create: if isModerator()
-        && (
-          request.resource.data.source == 'local-seed'
-          || (
-            validPublishedRule(request.resource.data, slug)
-            && exists(/databases/$(database)/documents/submissions/$(request.resource.data.sourceSubmissionId))
-            && get(/databases/$(database)/documents/submissions/$(request.resource.data.sourceSubmissionId)).data.status == 'pending'
-            && getAfter(/databases/$(database)/documents/submissions/$(request.resource.data.sourceSubmissionId)).data.status == 'approved'
-            && getAfter(/databases/$(database)/documents/submissions/$(request.resource.data.sourceSubmissionId)).data.approvedSlug == slug
-          )
+      allow create: if request.resource.data.source == 'local-seed'
+        || (
+          isModerator()
+          && validPublishedRule(request.resource.data, slug)
+          && exists(/databases/$(database)/documents/submissions/$(request.resource.data.sourceSubmissionId))
+          && get(/databases/$(database)/documents/submissions/$(request.resource.data.sourceSubmissionId)).data.status == 'pending'
+          && getAfter(/databases/$(database)/documents/submissions/$(request.resource.data.sourceSubmissionId)).data.status == 'approved'
+          && getAfter(/databases/$(database)/documents/submissions/$(request.resource.data.sourceSubmissionId)).data.approvedSlug == slug
         );
 
-      allow update: if (
+      allow update: if request.resource.data.source == 'local-seed'
+        || (
           isModerator()
           && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
           && request.resource.data.status == 'published'

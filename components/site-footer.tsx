@@ -7,14 +7,14 @@ export function SiteFooter() {
         <span>2026 Rehubber®</span>
         <span className="text-muted-foreground/40" aria-hidden="true">•</span>
         <Link
-          href="/partner"
+          href="/partner/"
           className="text-muted-foreground transition-colors hover:text-primary hover:underline underline-offset-4"
         >
           Partner with us
         </Link>
         <span className="text-muted-foreground/40" aria-hidden="true">•</span>
         <Link
-          href="/admin"
+          href="/admin/"
           className="text-muted-foreground transition-colors hover:text-primary hover:underline underline-offset-4"
         >
           Admin

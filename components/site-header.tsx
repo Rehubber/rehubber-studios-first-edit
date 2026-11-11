@@ -10,12 +10,20 @@ export function SiteHeader() {
         >
           Rehubber
         </Link>
-        <Link
-          href="/support"
-          className="rounded-md px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
-        >
-          Support
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/admin/"
+            className="rounded-md border border-border/80 bg-secondary/60 px-3 py-1.5 text-xs font-semibold text-foreground transition-colors hover:border-primary/50 hover:bg-secondary hover:text-primary"
+          >
+            Admin
+          </Link>
+          <Link
+            href="/support/"
+            className="rounded-md px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+          >
+            Support
+          </Link>
+        </div>
       </div>
     </header>
   )

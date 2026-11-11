@@ -113,7 +113,7 @@ export function AdminDashboard() {
   }
 
   async function handleSync440Tools() {
-    if (!user || syncing) return
+    if (syncing) return
     setSyncing(true)
     setError(null)
     setSyncSuccess(null)
@@ -298,17 +298,68 @@ export function AdminDashboard() {
         </div>
       )}
 
+      {/* Cloud Firestore Remote Database Sync Card (Always accessible) */}
+      <section className="flex flex-col gap-4 rounded-xl border border-primary/30 bg-primary/5 p-5 shadow-xs">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <Database className="size-5" aria-hidden="true" />
+            </span>
+            <div className="flex flex-col">
+              <div className="flex items-center gap-2">
+                <h2 className="text-sm font-semibold text-foreground">Cloud Firestore Remote Sync</h2>
+                <span className="rounded-full bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-mono text-emerald-400">
+                  Ready to Sync
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Push all 440 curated open-source tools to remote Cloud Firestore database (<code>rules</code> collection).
+              </p>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            onClick={handleSync440Tools}
+            disabled={syncing}
+            className="inline-flex h-9 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-xs font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90 disabled:opacity-60 cursor-pointer"
+          >
+            {syncing ? (
+              <LoaderCircle className="size-3.5 animate-spin" aria-hidden="true" />
+            ) : (
+              <Zap className="size-3.5" aria-hidden="true" />
+            )}
+            <span>{syncing ? 'Pushing to Firestore…' : 'Sync 440 Tools to Remote Firestore'}</span>
+          </button>
+        </div>
+
+        {syncProgress && (
+          <div className="flex items-center gap-2 text-xs font-mono text-primary animate-pulse">
+            <RefreshCw className="size-3.5 animate-spin" />
+            <span>{syncProgress}</span>
+          </div>
+        )}
+
+        {syncSuccess && (
+          <div className="flex items-center gap-2 text-xs font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-2.5">
+            <Check className="size-4 shrink-0 text-emerald-400" />
+            <span>{syncSuccess}</span>
+          </div>
+        )}
+      </section>
+
+      {/* Submission Moderation Section */}
       {!authReady ? (
-        <div className="flex items-center justify-center gap-2 py-16 text-sm text-muted-foreground">
+        <div className="flex items-center justify-center gap-2 py-12 text-sm text-muted-foreground">
           <LoaderCircle className="size-4 animate-spin" aria-hidden="true" />
-          Checking sign-in…
+          Checking moderator sign-in…
         </div>
       ) : !user ? (
         <section className="flex flex-col items-center gap-4 rounded-xl border border-border bg-card p-8 text-center">
           <ShieldAlert className="size-8 text-primary" aria-hidden="true" />
           <div className="flex flex-col gap-1">
-            <h2 className="font-medium">Moderator sign-in required</h2>
-            <p className="text-sm text-muted-foreground">Sign in with your administrator account (firecodesecure@gmail.com).</p>
+            <h2 className="font-medium">Moderator sign-in required for submissions queue</h2>
+            <p className="text-sm text-muted-foreground">Sign in with your administrator account (firecodesecure@gmail.com) to review submitted tools.</p>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <button
@@ -330,56 +381,6 @@ export function AdminDashboard() {
         </section>
       ) : (
         <section className="flex flex-col gap-8">
-          {/* Cloud Firestore Remote Database Sync Card */}
-          <div className="flex flex-col gap-4 rounded-xl border border-primary/30 bg-primary/5 p-5 shadow-xs">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                  <Database className="size-5" aria-hidden="true" />
-                </span>
-                <div className="flex flex-col">
-                  <div className="flex items-center gap-2">
-                    <h2 className="text-sm font-semibold text-foreground">Cloud Firestore Remote Sync</h2>
-                    <span className="rounded-full bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 text-[10px] font-mono text-emerald-400">
-                      Connected
-                    </span>
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    Push all 440 curated open-source tools to remote Cloud Firestore database (<code>rules</code> collection).
-                  </p>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={handleSync440Tools}
-                disabled={syncing}
-                className="inline-flex h-9 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-xs font-semibold text-primary-foreground shadow-xs transition-colors hover:bg-primary/90 disabled:opacity-60 cursor-pointer"
-              >
-                {syncing ? (
-                  <LoaderCircle className="size-3.5 animate-spin" aria-hidden="true" />
-                ) : (
-                  <Zap className="size-3.5" aria-hidden="true" />
-                )}
-                <span>{syncing ? 'Pushing to Firestore…' : 'Sync 440 Tools to Remote Firestore'}</span>
-              </button>
-            </div>
-
-            {syncProgress && (
-              <div className="flex items-center gap-2 text-xs font-mono text-primary animate-pulse">
-                <RefreshCw className="size-3.5 animate-spin" />
-                <span>{syncProgress}</span>
-              </div>
-            )}
-
-            {syncSuccess && (
-              <div className="flex items-center gap-2 text-xs font-medium text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-2.5">
-                <Check className="size-4 shrink-0 text-emerald-400" />
-                <span>{syncSuccess}</span>
-              </div>
-            )}
-          </div>
-
           <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between gap-3">
               <h2 className="font-mono text-sm uppercase tracking-wider text-muted-foreground">
