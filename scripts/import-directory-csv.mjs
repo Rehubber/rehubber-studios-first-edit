@@ -155,7 +155,11 @@ function validateBackup(backup, projectId, collectionName) {
 }
 
 async function getFirebaseContext(expectedProjectId) {
-  const { loadEnvConfig } = await import('@next/env')
+  const nextEnv = await import('@next/env')
+  const loadEnvConfig = nextEnv.loadEnvConfig ?? nextEnv.default?.loadEnvConfig
+  if (typeof loadEnvConfig !== 'function') {
+    throw new Error('Could not load Next.js environment configuration from @next/env.')
+  }
   loadEnvConfig(root)
 
   const projectId = process.env.FIREBASE_PROJECT_ID?.trim()

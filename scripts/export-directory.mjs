@@ -2,8 +2,6 @@ import { readdir, readFile, mkdir, unlink, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import nextEnv from '@next/env'
-import { cert, getApps, initializeApp } from 'firebase-admin/app'
-import { getFirestore } from 'firebase-admin/firestore'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const { loadEnvConfig } = nextEnv
@@ -76,6 +74,9 @@ async function getPublishedRules() {
     console.log('Firebase export credentials are absent; exporting checked-in rule JSON.')
     return getLocalRules()
   }
+
+  const { cert, getApps, initializeApp } = await import('firebase-admin/app')
+  const { getFirestore } = await import('firebase-admin/firestore')
 
   let credential
   if (serviceAccountJson) {
