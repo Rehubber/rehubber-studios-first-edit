@@ -5,6 +5,7 @@ import { Check, CheckSquare, ExternalLink, Eye, History, LoaderCircle, Share2, S
 import { UpvoteButton } from '@/components/upvote-button'
 import { useAdmin } from '@/components/admin-context'
 import type { Rule } from '@/lib/types'
+import posthog from 'posthog-js'
 
 function formatViews(count: number): string {
   if (count >= 1_000_000) {
@@ -40,6 +41,11 @@ export function RuleCard({
       if (typeof window !== 'undefined' && !window.sessionStorage.getItem(key)) {
         window.sessionStorage.setItem(key, '1')
         setViews((prev) => prev + 1)
+        posthog.capture('tool_opened', {
+          tool_slug: rule.slug,
+          tool_category: primaryTag,
+          destination_type: isExternal ? 'external' : 'directory',
+        })
 
         const runUpdate = async () => {
           try {
@@ -75,9 +81,17 @@ export function RuleCard({
           text: rule.description || rule.title,
           url: shareUrl,
         })
+        posthog.capture('tool_shared', {
+          tool_slug: rule.slug,
+          share_method: 'native',
+        })
       } else if (navigator.clipboard) {
         await navigator.clipboard.writeText(shareUrl)
         setCopied(true)
+        posthog.capture('tool_shared', {
+          tool_slug: rule.slug,
+          share_method: 'clipboard',
+        })
         setTimeout(() => setCopied(false), 2000)
       }
     } catch {

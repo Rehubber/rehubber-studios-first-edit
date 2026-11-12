@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { CheckCircle2, LoaderCircle, Mail } from 'lucide-react'
+import posthog from 'posthog-js'
 
 export function EmailSubscribeCard() {
   const [email, setEmail] = useState('')
@@ -39,6 +40,9 @@ export function EmailSubscribeCard() {
         // Fallback: local optimistic subscription
       }
 
+      posthog.capture('newsletter_subscription_completed', {
+        source: 'directory_grid_card',
+      })
       setStatus('success')
     } catch {
       setStatus('error')

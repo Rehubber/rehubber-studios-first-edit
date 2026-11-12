@@ -10,6 +10,7 @@ import { getFirebaseAppCheckToken, getFirebaseClientAuth, getFirebaseClientFires
 import type { SubmissionInput, SubmitResponse } from '@/lib/types'
 import { cn } from '@/lib/utils'
 import { LIMITS, parseSubmission, slugify } from '@/lib/validation'
+import posthog from 'posthog-js'
 
 type FieldErrors = Partial<Record<keyof SubmissionInput, string>>
 type Success = Extract<SubmitResponse, { ok: true }>
@@ -119,6 +120,14 @@ export function SubmitForm() {
           submitterUid: signedInUser.uid,
           createdAt: serverTimestamp(),
         })
+        posthog.capture('tool_submission_completed', {
+          submission_storage: 'firestore',
+          tag_count: parsed.data.tags.length,
+        })
+        posthog.logger.info('tool submission completed', {
+          submission_storage: 'firestore',
+          tag_count: parsed.data.tags.length,
+        })
         setResult({ ok: true, submissionId: created.id, status: 'pending' })
         window.scrollTo({ top: 0, behavior: 'smooth' })
         return
@@ -140,9 +149,20 @@ export function SubmitForm() {
         // Ignore localStorage error
       }
 
+      posthog.capture('tool_submission_completed', {
+        submission_storage: 'local',
+        tag_count: parsed.data.tags.length,
+      })
+      posthog.logger.info('tool submission completed', {
+        submission_storage: 'local',
+        tag_count: parsed.data.tags.length,
+      })
       setResult({ ok: true, submissionId, status: 'pending' })
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } catch (submitError: unknown) {
+      posthog.logger.error('tool submission failed', {
+        submission_storage: isFirebaseConfigured() ? 'firestore' : 'local',
+      })
       console.error('Submission error:', submitError)
       setError(
         submitError instanceof Error

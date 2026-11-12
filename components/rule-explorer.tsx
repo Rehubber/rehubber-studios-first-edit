@@ -7,6 +7,7 @@ import { EmailSubscribeCard } from '@/components/email-subscribe-card'
 import { RuleCard } from '@/components/rule-card'
 import { useAdmin } from '@/components/admin-context'
 import type { DirectoryPage } from '@/lib/types'
+import posthog from 'posthog-js'
 
 const DIRECTORY_CACHE_PREFIX = 'rehubber:directory-page:v1:'
 const DIRECTORY_CACHE_TTL_MS = 60 * 60 * 1000
@@ -82,6 +83,10 @@ export function RuleExplorer({ initialPage }: { initialPage: DirectoryPage }) {
       })
       setLoadedPage(page.page)
       setHasMore(page.hasMore)
+      posthog.capture('directory_page_loaded', {
+        page_number: page.page,
+        tool_count: page.rules.length,
+      })
     } catch (error) {
       setLoadError(error instanceof Error ? error.message : 'Could not load more rules.')
     } finally {
@@ -111,6 +116,10 @@ export function RuleExplorer({ initialPage }: { initialPage: DirectoryPage }) {
       }
 
       markDeletedLocally(slugsToDelete)
+      posthog.capture('admin_rules_deleted', {
+        delete_scope: 'bulk',
+        tool_count: slugsToDelete.length,
+      })
       setBulkStatus(`Successfully deleted ${slugsToDelete.length} tools!`)
       setTimeout(() => setBulkStatus(null), 3000)
       setConfirmBulk(false)

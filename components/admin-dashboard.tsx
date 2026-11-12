@@ -19,6 +19,7 @@ import { Check, Database, GitBranch, LoaderCircle, LogOut, RefreshCw, ShieldAler
 import { getFirebaseAppCheckToken, getFirebaseClientAuth, getFirebaseClientFirestore } from '@/lib/firebase-client'
 import type { PendingSubmission, SubmissionInput } from '@/lib/types'
 import { parseSubmission, slugify } from '@/lib/validation'
+import posthog from 'posthog-js'
 
 function toPendingSubmission(id: string, data: DocumentData): PendingSubmission {
   const createdAt = typeof data.createdAt?.toDate === 'function' ? data.createdAt.toDate().toISOString() : null
@@ -191,6 +192,9 @@ export function AdminDashboard() {
         setSyncProgress(`Pushed ${committedCount} of ${total} tools to Cloud Firestore...`)
       }
 
+      posthog.capture('admin_catalog_synced', {
+        tool_count: total,
+      })
       setSyncSuccess(`Successfully pushed all ${total} tools to remote Cloud Firestore!`)
       setRemoteCount(total)
       setSyncProgress(null)
@@ -214,6 +218,9 @@ export function AdminDashboard() {
       const db = getFirebaseClientFirestore()
       const snap = await getDocs(collection(db, 'rules'))
       if (snap.empty) {
+        posthog.capture('admin_catalog_cleared', {
+          tool_count: 0,
+        })
         setSyncSuccess('Remote Firestore rules collection is already completely empty (0 tools). Ready for sync!')
         setRemoteCount(0)
         setSyncProgress(null)
@@ -236,6 +243,9 @@ export function AdminDashboard() {
         setSyncProgress(`Deleted ${deleted} of ${total} tools from Cloud Firestore...`)
       }
 
+      posthog.capture('admin_catalog_cleared', {
+        tool_count: total,
+      })
       setSyncSuccess(`Successfully deleted all ${total} tools from Cloud Firestore. Database is clean!`)
       setRemoteCount(0)
       setSyncProgress(null)
@@ -320,6 +330,9 @@ export function AdminDashboard() {
           moderatedBy: user.uid,
           approvedSlug: slug,
         })
+      })
+      posthog.capture('submission_moderated', {
+        moderation_action: action,
       })
       setSubmissions((current) => current.filter((submission) => submission.id !== submissionId))
     } catch (moderationError) {
