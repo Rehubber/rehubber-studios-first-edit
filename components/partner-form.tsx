@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { Check, CircleAlert, Handshake, Mail, Send } from 'lucide-react'
 import { getFirebaseClientFirestore } from '@/lib/firebase-client'
+import posthog from 'posthog-js'
 
 const PARTNERSHIP_TYPES = [
   'Featured Tool Sponsorship',
@@ -64,6 +65,9 @@ export function PartnerForm() {
         category: 'Partnership',
         message: `Company: ${trimmedCompany || 'N/A'}\nWebsite: ${trimmedWebsite || 'N/A'}\nType: ${type}\n\n${trimmedMessage}`,
         createdAt: serverTimestamp(),
+      })
+      posthog.capture('partnership_inquiry_submitted', {
+        partnership_type: type,
       })
       setSubmitted(true)
       window.scrollTo({ top: 0, behavior: 'smooth' })

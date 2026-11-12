@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { ArrowBigUp } from 'lucide-react'
+import posthog from 'posthog-js'
 
 const VOTE_STORAGE_KEY = 'rehubber:reddit-vote-state:v1'
 
@@ -34,6 +35,10 @@ export function UpvoteButton({
 
     const nextState = !upvoted
     setUpvoted(nextState)
+    posthog.capture('tool_vote_changed', {
+      tool_slug: slug,
+      vote_state: nextState ? 'upvoted' : 'removed',
+    })
 
     try {
       if (nextState) {
