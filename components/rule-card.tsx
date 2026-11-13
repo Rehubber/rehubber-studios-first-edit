@@ -1,25 +1,30 @@
 'use client'
 
-import { useState } from 'react'
-import { Check, CheckSquare, ExternalLink, Eye, History, LoaderCircle, Share2, Sparkles, Square, Trash2, X } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { Check, CheckSquare, ExternalLink, Eye, History, LoaderCircle, Share2, Square, Trash2, X } from 'lucide-react'
 import { UpvoteButton } from '@/components/upvote-button'
 import { useAdmin } from '@/components/admin-context'
+import { formatToolAddedDate } from '@/lib/sponsor-weeks'
 import type { Rule } from '@/lib/types'
 import posthog from 'posthog-js'
 
-function formatViews(count: number): string {
-  if (count >= 1_000_000) {
-    return (count / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M'
+function invalidateDirectoryPageCache() {
+  try {
+    const keysToRemove: string[] = []
+    for (let i = 0; i < window.localStorage.length; i++) {
+      const key = window.localStorage.key(i)
+      if (key && key.startsWith('rehubber:directory-page:')) {
+        keysToRemove.push(key)
+      }
+    }
+    keysToRemove.forEach((key) => window.localStorage.removeItem(key))
+  } catch {
+    // Ignore storage errors
   }
-  if (count >= 1_000) {
-    return (count / 1_000).toFixed(1).replace(/\.0$/, '') + 'k'
-  }
-  return count.toLocaleString()
 }
 
 export function RuleCard({
   rule,
-  density = 'compact',
 }: {
   rule: Rule
   density?: 'spacious' | 'balanced' | 'compact'
@@ -30,9 +35,14 @@ export function RuleCard({
   const [isDeleting, setIsDeleting] = useState(false)
   const { isAdminMode, isSlugSelected, toggleSelectSlug, markDeletedLocally } = useAdmin()
 
+  useEffect(() => {
+    setViews(rule.views ?? 0)
+  }, [rule.views])
+
   const isSelected = isSlugSelected(rule.slug)
   const primaryTag = rule.tags[0] || 'AI Tool'
-  const dateText = rule.date || '27 Mar 2023'
+  const descriptionText = rule.description?.trim() || primaryTag
+  const dateText = formatToolAddedDate(rule.date)
   const isExternal = Boolean(rule.url)
 
   function trackView() {
@@ -41,6 +51,7 @@ export function RuleCard({
       if (typeof window !== 'undefined' && !window.sessionStorage.getItem(key)) {
         window.sessionStorage.setItem(key, '1')
         setViews((prev) => prev + 1)
+        invalidateDirectoryPageCache()
         posthog.capture('tool_opened', {
           tool_slug: rule.slug,
           tool_category: primaryTag,
@@ -113,7 +124,6 @@ export function RuleCard({
       markDeletedLocally([rule.slug])
     } catch (err) {
       console.error('Failed to delete tool from Firestore:', err)
-      // Still remove locally to respect admin command
       markDeletedLocally([rule.slug])
     } finally {
       setIsDeleting(false)
@@ -142,7 +152,7 @@ export function RuleCard({
 
   return (
     <article
-      className={`group relative flex h-full min-h-[110px] flex-col justify-between overflow-hidden rounded-xl border bg-card px-4 pt-2.5 pb-2 transition-all duration-150 ${
+      className={`group relative flex h-full min-h-[124px] flex-col justify-between overflow-hidden rounded-xl border bg-card px-4 pt-3 pb-2.5 transition-all duration-150 ${
         isSelected
           ? 'border-destructive/80 bg-destructive/5 ring-2 ring-destructive/40 shadow-sm'
           : isAdminMode
@@ -212,7 +222,7 @@ export function RuleCard({
 
       <CardWrapper {...wrapperProps} className="flex flex-1 flex-col gap-1.5 focus:outline-none cursor-pointer">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="text-pretty text-[11px] font-semibold leading-snug tracking-tight text-foreground group-hover:text-primary transition-colors">
+          <h3 className="text-pretty text-[12px] font-semibold leading-snug tracking-tight text-foreground group-hover:text-primary transition-colors">
             {rule.title}
           </h3>
           {isExternal && (
@@ -223,24 +233,26 @@ export function RuleCard({
           )}
         </div>
 
-        <div className="flex items-center gap-1.5 text-[11px] font-medium text-muted-foreground transition-colors group-hover:text-foreground">
-          <Sparkles className="size-3 text-muted-foreground/80 group-hover:text-primary transition-colors" aria-hidden="true" />
-          <span>{primaryTag}</span>
-        </div>
+        <p className="line-clamp-2 text-[11px] leading-relaxed text-muted-foreground transition-colors group-hover:text-foreground/90">
+          {descriptionText}
+        </p>
       </CardWrapper>
 
-      <footer className="mt-2 flex items-center justify-between gap-1 text-muted-foreground">
-        <div className="flex items-center gap-1.5 font-mono text-[8px] font-medium text-muted-foreground/80">
-          <div className="flex items-center gap-1" title={`Added on ${dateText}`}>
-            <History className="size-2.5 text-muted-foreground/60" aria-hidden="true" />
-            <span>{dateText}</span>
-          </div>
+      <footer className="mt-2.5 flex items-center justify-between gap-1 text-muted-foreground">
+        <div className="flex items-center gap-1.5 font-mono text-[8.5px] font-medium text-muted-foreground/80">
+          {dateText && (
+            <>
+              <div className="flex items-center gap-1 whitespace-nowrap" title={`Added on ${dateText}`}>
+                <History className="size-2.5 text-muted-foreground/60" aria-hidden="true" />
+                <span className="tabular-nums">{dateText}</span>
+              </div>
+              <span className="text-muted-foreground/30 text-[6px]" aria-hidden="true">•</span>
+            </>
+          )}
 
-          <span className="text-muted-foreground/30 text-[6px]" aria-hidden="true">•</span>
-
-          <div className="flex items-center gap-1 text-muted-foreground/75" title={`${views.toLocaleString()} views`}>
+          <div className="flex items-center gap-1 whitespace-nowrap text-muted-foreground/75" title={`${views.toLocaleString()} views`}>
             <Eye className="size-2.5 text-muted-foreground/60" aria-hidden="true" />
-            <span>{formatViews(views)}</span>
+            <span className="tabular-nums">{views.toLocaleString()}</span>
           </div>
         </div>
 
@@ -248,7 +260,7 @@ export function RuleCard({
           <button
             type="button"
             onClick={handleShare}
-            className="inline-flex h-6 items-center gap-1 rounded-full px-2 text-[8px] font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+            className="inline-flex h-6 items-center gap-1 rounded-full px-2 text-[8px] font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground cursor-pointer"
             aria-label={`Share ${rule.title}`}
           >
             {copied ? (

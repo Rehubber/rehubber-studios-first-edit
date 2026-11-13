@@ -1,16 +1,18 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { CheckSquare, LoaderCircle, Shield, Square, Trash2, X } from 'lucide-react'
 import { EmailSubscribeCard } from '@/components/email-subscribe-card'
 import { RuleCard } from '@/components/rule-card'
 import { useAdmin } from '@/components/admin-context'
-import type { DirectoryPage } from '@/lib/types'
+import { formatToolAddedDate } from '@/lib/sponsor-weeks'
+import type { DirectoryPage, Rule } from '@/lib/types'
 import posthog from 'posthog-js'
 
-const DIRECTORY_CACHE_PREFIX = 'rehubber:directory-page:v1:'
-const DIRECTORY_CACHE_TTL_MS = 60 * 60 * 1000
+const DIRECTORY_PAGE_TARGET = 16
+const DIRECTORY_CACHE_PREFIX = 'rehubber:directory-page:v2:'
+const DIRECTORY_CACHE_TTL_MS = 5 * 60 * 1000
 
 function isDirectoryPage(value: unknown): value is DirectoryPage {
   if (!value || typeof value !== 'object') return false
@@ -18,8 +20,56 @@ function isDirectoryPage(value: unknown): value is DirectoryPage {
   return Array.isArray(page.rules) && Number.isSafeInteger(page.page) && typeof page.hasMore === 'boolean'
 }
 
-async function loadDirectoryPage(pageNumber: number): Promise<DirectoryPage> {
-  const cacheKey = `${DIRECTORY_CACHE_PREFIX}${pageNumber}`
+function normalizeFirestoreRule(id: string, data: Record<string, unknown>): Rule | null {
+  const title = typeof data.title === 'string' ? data.title : ''
+  if (!title) return null
+
+  const tags = Array.isArray(data.tags) ? data.tags.filter((tag): tag is string => typeof tag === 'string') : []
+  const authorObj = typeof data.author === 'object' && data.author ? (data.author as Record<string, unknown>) : null
+  const authorName =
+    typeof authorObj?.name === 'string'
+      ? authorObj.name
+      : typeof data.authorName === 'string'
+        ? data.authorName
+        : 'directory'
+  const authorUrl =
+    typeof authorObj?.url === 'string'
+      ? authorObj.url
+      : typeof data.authorUrl === 'string'
+        ? data.authorUrl
+        : undefined
+
+  const upvotes =
+    typeof data.upvotes === 'number' && Number.isFinite(data.upvotes) && data.upvotes >= 0
+      ? Math.floor(data.upvotes)
+      : 0
+  const views =
+    typeof data.views === 'number' && Number.isFinite(data.views) && data.views >= 0
+      ? Math.floor(data.views)
+      : 0
+  const date =
+    formatToolAddedDate(data.date) ||
+    formatToolAddedDate(data.approvedAt) ||
+    formatToolAddedDate(data.createdAt) ||
+    formatToolAddedDate(data.syncedAt)
+
+  return {
+    slug: id,
+    title,
+    description: typeof data.description === 'string' ? data.description : '',
+    tags,
+    author: { name: authorName, ...(authorUrl ? { url: authorUrl } : {}) },
+    content: typeof data.content === 'string' ? data.content : '',
+    upvotes,
+    views,
+    ...(date ? { date } : {}),
+    url: typeof data.url === 'string' && data.url ? data.url : undefined,
+    showShare: Boolean(data.showShare),
+  }
+}
+
+async function loadDirectoryPage(pageNumber: number, snapshotTag: string): Promise<DirectoryPage> {
+  const cacheKey = `${DIRECTORY_CACHE_PREFIX}${snapshotTag}:${pageNumber}`
   try {
     const stored = window.localStorage.getItem(cacheKey)
     if (stored) {
@@ -57,25 +107,118 @@ export function RuleExplorer({ initialPage }: { initialPage: DirectoryPage }) {
   const [hasMore, setHasMore] = useState(initialPage.hasMore)
   const [loadingMore, setLoadingMore] = useState(false)
   const [loadError, setLoadError] = useState<string | null>(null)
-  const currentPage = initialPage.page
-  const [loadedPage, setLoadedPage] = useState(currentPage)
+  const [loadedPage, setLoadedPage] = useState(initialPage.page)
+  const snapshotTag = initialPage.rules[0]?.slug ?? 'empty'
 
   const [bulkDeleting, setBulkDeleting] = useState(false)
   const [confirmBulk, setConfirmBulk] = useState(false)
   const [bulkStatus, setBulkStatus] = useState<string | null>(null)
 
   const { isAdminMode, selectedSlugs, selectAllSlugs, deselectAll, deletedSlugs, markDeletedLocally } = useAdmin()
+  const syncedLiveSlugsRef = useRef<Set<string>>(new Set())
+  const approvedFetchedRef = useRef(false)
 
-  // Filter out any tools that were deleted locally
+  // Filter out any tools that were deleted locally or reconciled from Firestore
   const visibleRules = rules.filter((rule) => !deletedSlugs.has(rule.slug))
 
-  async function loadMore() {
+  // Live-sync slugs against Cloud Firestore for all visitors so descriptions, dates,
+  // real views, real upvotes, newly approved tools, and deletions reflect on site visits.
+  useEffect(() => {
+    const slugsToSync = visibleRules
+      .map((rule) => rule.slug)
+      .filter((slug) => !syncedLiveSlugsRef.current.has(slug))
+
+    if (slugsToSync.length === 0 && approvedFetchedRef.current) return
+    slugsToSync.forEach((slug) => syncedLiveSlugsRef.current.add(slug))
+
+    let cancelled = false
+    const syncLive = async () => {
+      try {
+        const { getFirebaseClientFirestore, isFirebaseConfigured } = await import('@/lib/firebase-client')
+        if (!isFirebaseConfigured()) return
+        const { collection, documentId, getDocs, query, where } = await import('firebase/firestore')
+        const db = getFirebaseClientFirestore()
+
+        const liveMap = new Map<string, Rule>()
+        const missingSlugs: string[] = []
+
+        for (let i = 0; i < slugsToSync.length; i += 30) {
+          const chunk = slugsToSync.slice(i, i + 30)
+          const snap = await getDocs(query(collection(db, 'rules'), where(documentId(), 'in', chunk)))
+          const foundInChunk = new Set<string>()
+          snap.docs.forEach((docSnap) => {
+            foundInChunk.add(docSnap.id)
+            const data = docSnap.data()
+            if (data?.status === 'published') {
+              const normalized = normalizeFirestoreRule(docSnap.id, data)
+              if (normalized) {
+                liveMap.set(docSnap.id, normalized)
+              }
+            } else {
+              missingSlugs.push(docSnap.id)
+            }
+          })
+          chunk.forEach((slug) => {
+            if (!foundInChunk.has(slug)) {
+              missingSlugs.push(slug)
+            }
+          })
+        }
+
+        const approvedAdditions: Rule[] = []
+        if (!approvedFetchedRef.current) {
+          approvedFetchedRef.current = true
+          try {
+            const approvedSnap = await getDocs(
+              query(collection(db, 'rules'), where('source', '==', 'approved-submission')),
+            )
+            approvedSnap.docs.forEach((docSnap) => {
+              const data = docSnap.data()
+              if (data?.status === 'published') {
+                const normalized = normalizeFirestoreRule(docSnap.id, data)
+                if (normalized) {
+                  approvedAdditions.push(normalized)
+                  syncedLiveSlugsRef.current.add(normalized.slug)
+                }
+              }
+            })
+          } catch {
+            // Non-blocking fallback if query fails offline
+          }
+        }
+
+        if (cancelled) return
+
+        if (missingSlugs.length > 0) {
+          markDeletedLocally(missingSlugs)
+        }
+
+        if (liveMap.size > 0 || approvedAdditions.length > 0) {
+          setRules((current) => {
+            const existingSlugs = new Set(current.map((r) => r.slug))
+            const newApproved = approvedAdditions.filter((r) => !existingSlugs.has(r.slug))
+            const updatedCurrent = current.map((r) => liveMap.get(r.slug) ?? r)
+            return newApproved.length > 0 ? [...newApproved, ...updatedCurrent] : updatedCurrent
+          })
+        }
+      } catch {
+        // Keep static snapshot rendered gracefully when offline
+      }
+    }
+
+    void syncLive()
+    return () => {
+      cancelled = true
+    }
+  }, [visibleRules, markDeletedLocally])
+
+  const loadMore = useCallback(async () => {
     if (!hasMore || loadingMore) return
     setLoadingMore(true)
     setLoadError(null)
 
     try {
-      const page = await loadDirectoryPage(loadedPage + 1)
+      const page = await loadDirectoryPage(loadedPage + 1, snapshotTag)
 
       setRules((current) => {
         const knownSlugs = new Set(current.map((rule) => rule.slug))
@@ -92,7 +235,15 @@ export function RuleExplorer({ initialPage }: { initialPage: DirectoryPage }) {
     } finally {
       setLoadingMore(false)
     }
-  }
+  }, [hasMore, loadingMore, loadedPage, snapshotTag])
+
+  // Auto-backfill: whenever visible tools drop below a full page (e.g. after deleting tools),
+  // automatically pull up the next page so the directory never goes blank.
+  useEffect(() => {
+    if (visibleRules.length < DIRECTORY_PAGE_TARGET && hasMore && !loadingMore && !loadError) {
+      void loadMore()
+    }
+  }, [visibleRules.length, hasMore, loadingMore, loadError, loadMore])
 
   async function handleDeleteSelected() {
     if (selectedSlugs.size === 0 || bulkDeleting) return

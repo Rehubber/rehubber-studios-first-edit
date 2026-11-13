@@ -107,6 +107,39 @@
         "createdAt": { "type": "string", "format": "date-time" }
       },
       "required": ["name", "email", "category", "message", "createdAt"]
+    },
+    "SponsorBooking": {
+      "title": "SponsorBooking",
+      "description": "Automated self-serve 1-week Main Sponsor booking displayed in the homepage hero",
+      "type": "object",
+      "properties": {
+        "weekId": { "type": "string", "pattern": "^(current|\\d{4}-\\d{2}-\\d{2})$", "maxLength": 16 },
+        "weekStart": { "type": "string", "format": "date-time", "maxLength": 40 },
+        "weekEnd": { "type": "string", "format": "date-time", "maxLength": 40 },
+        "startsAtMs": { "type": "number" },
+        "endsAtMs": { "type": "number" },
+        "sponsorName": { "type": "string", "minLength": 2, "maxLength": 32 },
+        "sponsorUrl": { "type": "string", "maxLength": 300 },
+        "amountUsd": { "type": "number" },
+        "status": { "type": "string", "enum": ["active", "completed", "cancelled"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["weekId", "weekStart", "weekEnd", "startsAtMs", "endsAtMs", "sponsorName", "sponsorUrl", "amountUsd", "status", "createdAt"]
+    },
+    "SponsorContact": {
+      "title": "SponsorContact",
+      "description": "Private sponsor contact email associated with a 1-week Main Sponsor booking",
+      "type": "object",
+      "properties": {
+        "bookingId": { "type": "string", "pattern": "^[a-zA-Z0-9_\\-]+$", "maxLength": 64 },
+        "weekId": { "type": "string", "maxLength": 16 },
+        "weekStart": { "type": "string", "maxLength": 40 },
+        "weekEnd": { "type": "string", "maxLength": 40 },
+        "email": { "type": "string", "format": "email", "maxLength": 150 },
+        "sponsorName": { "type": "string", "minLength": 2, "maxLength": 32 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["bookingId", "weekId", "weekStart", "weekEnd", "email", "sponsorName", "createdAt"]
     }
   },
   "firestore": {
@@ -129,6 +162,14 @@
     "/support_messages/{messageId}": {
       "schema": "SupportMessage",
       "description": "Inquiries and support submissions"
+    },
+    "/sponsor_bookings/{slotId}": {
+      "schema": "SponsorBooking",
+      "description": "Single active 1-week Main Sponsor hero link reservation"
+    },
+    "/sponsor_contacts/{contactId}": {
+      "schema": "SponsorContact",
+      "description": "Private sponsor receipt emails restricted to moderators"
     }
   }
 }

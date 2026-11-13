@@ -1,7 +1,7 @@
 import 'server-only'
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
-import type { DirectoryPage } from './types'
+import type { DirectoryManifest, DirectoryPage } from './types'
 
 const DIRECTORY_DIR = path.join(process.cwd(), 'public', 'directory')
 
@@ -18,5 +18,14 @@ export async function getDirectoryPage(page: number): Promise<DirectoryPage> {
   } catch (error) {
     console.error(`[directory] Could not read static page ${page}:`, error)
     throw new Error('Static directory data is missing. Run the directory export before building.')
+  }
+}
+
+export async function getDirectoryManifest(): Promise<DirectoryManifest> {
+  const filePath = path.join(DIRECTORY_DIR, 'manifest.json')
+  try {
+    return JSON.parse(await fs.readFile(filePath, 'utf8')) as DirectoryManifest
+  } catch {
+    return { pages: 1, pageSize: DIRECTORY_PAGE_SIZE, ruleCount: 0 }
   }
 }

@@ -43,3 +43,21 @@ export type SubmitResponse = {
   submissionId: string
   status: 'pending'
 }
+
+export type DirectoryManifest = {
+  pages: number
+  pageSize: number
+  ruleCount: number
+}
+
+export type SponsorBooking = {
+  weekId: string
+  weekStart: string
+  weekEnd: string
+  startsAtMs: number
+  endsAtMs: number
+  sponsorName: string
+  sponsorUrl: string
+  amountUsd: number
+  status: 'active' | 'completed' | 'cancelled'
+}

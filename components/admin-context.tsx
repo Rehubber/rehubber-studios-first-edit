@@ -126,12 +126,14 @@ export function AdminProvider({ children }: { children: ReactNode }) {
       try {
         window.localStorage.setItem(DELETED_SLUGS_STORAGE_KEY, JSON.stringify(Array.from(next)))
         // Also invalidate any cached directory pages in localStorage
+        const keysToRemove: string[] = []
         for (let i = 0; i < window.localStorage.length; i++) {
           const key = window.localStorage.key(i)
           if (key && key.startsWith('rehubber:directory-page:')) {
-            window.localStorage.removeItem(key)
+            keysToRemove.push(key)
           }
         }
+        keysToRemove.forEach((key) => window.localStorage.removeItem(key))
       } catch {
         // Storage errors ignored
       }

@@ -184,6 +184,57 @@ service cloud.firestore {
       allow read, update, delete: if isModerator();
     }
 
+    function validSponsorBooking(data, slotId) {
+      return slotId is string
+        && slotId == 'current'
+        && data.keys().hasAll(['weekId', 'weekStart', 'weekEnd', 'startsAtMs', 'endsAtMs', 'sponsorName', 'sponsorUrl', 'amountUsd', 'status', 'createdAt'])
+        && data.keys().hasOnly(['weekId', 'weekStart', 'weekEnd', 'startsAtMs', 'endsAtMs', 'sponsorName', 'sponsorUrl', 'amountUsd', 'status', 'createdAt'])
+        && data.weekId == slotId
+        && data.weekStart is string && data.weekStart.size() >= 10 && data.weekStart.size() <= 40
+        && data.weekEnd is string && data.weekEnd.size() >= 10 && data.weekEnd.size() <= 40
+        && data.startsAtMs is number
+        && data.endsAtMs is number
+        && data.endsAtMs - data.startsAtMs == 604800000
+        && data.startsAtMs >= request.time.toMillis() - 86400000
+        && data.startsAtMs <= request.time.toMillis() + 86400000
+        && data.endsAtMs > request.time.toMillis()
+        && data.sponsorName is string && data.sponsorName.size() >= 2 && data.sponsorName.size() <= 32
+        && data.sponsorUrl is string && data.sponsorUrl.size() >= 8 && data.sponsorUrl.size() <= 300 && data.sponsorUrl.matches('^https://.*')
+        && data.amountUsd == 299
+        && data.status == 'active'
+        && data.createdAt == request.time;
+    }
+
+    match /sponsor_bookings/{slotId} {
+      allow read: if true;
+      allow create: if validSponsorBooking(request.resource.data, slotId)
+        && !exists(/databases/$(database)/documents/sponsor_bookings/$(slotId));
+      allow update: if isModerator()
+        || (
+          validSponsorBooking(request.resource.data, slotId)
+          && resource.data.endsAtMs <= request.time.toMillis()
+        );
+      allow delete: if isModerator();
+    }
+
+    match /sponsor_contacts/{contactId} {
+      allow create: if contactId is string
+        && contactId.size() >= 4
+        && contactId.size() <= 64
+        && contactId.matches('^[a-zA-Z0-9_\\-]+$')
+        && !exists(/databases/$(database)/documents/sponsor_contacts/$(contactId))
+        && request.resource.data.keys().hasAll(['bookingId', 'weekId', 'weekStart', 'weekEnd', 'email', 'sponsorName', 'createdAt'])
+        && request.resource.data.keys().hasOnly(['bookingId', 'weekId', 'weekStart', 'weekEnd', 'email', 'sponsorName', 'createdAt'])
+        && request.resource.data.bookingId == contactId
+        && request.resource.data.weekId is string && request.resource.data.weekId.size() >= 2 && request.resource.data.weekId.size() <= 16
+        && request.resource.data.weekStart is string && request.resource.data.weekStart.size() >= 10 && request.resource.data.weekStart.size() <= 40
+        && request.resource.data.weekEnd is string && request.resource.data.weekEnd.size() >= 10 && request.resource.data.weekEnd.size() <= 40
+        && request.resource.data.email is string && request.resource.data.email.size() >= 5 && request.resource.data.email.size() <= 150
+        && request.resource.data.sponsorName is string && request.resource.data.sponsorName.size() >= 2 && request.resource.data.sponsorName.size() <= 32
+        && request.resource.data.createdAt == request.time;
+      allow read, update, delete: if isModerator();
+    }
+
     match /moderators/{uid} {
       allow read, write: if false;
     }

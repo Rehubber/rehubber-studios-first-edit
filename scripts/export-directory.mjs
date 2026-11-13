@@ -16,6 +16,36 @@ const outputPagesDirectory = path.join(outputDirectory, 'pages')
 const localOnly = process.argv.includes('--local')
 const requireFirestore = process.argv.includes('--require-firestore')
 
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+function formatAddedDate(value) {
+  if (!value) return undefined
+  if (typeof value === 'string') {
+    const trimmed = value.trim()
+    if (!trimmed) return undefined
+    if (/^\d{1,2}\s+[A-Za-z]{3}\s+\d{4}$/.test(trimmed)) return trimmed
+    const parsed = new Date(trimmed)
+    if (!Number.isNaN(parsed.getTime())) {
+      return `${parsed.getUTCDate()} ${MONTHS[parsed.getUTCMonth()]} ${parsed.getUTCFullYear()}`
+    }
+    return trimmed
+  }
+  if (typeof value === 'object' && value !== null) {
+    if (typeof value.toDate === 'function') {
+      const d = value.toDate()
+      if (!Number.isNaN(d.getTime())) {
+        return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`
+      }
+    } else if (typeof value.seconds === 'number') {
+      const d = new Date(value.seconds * 1000)
+      if (!Number.isNaN(d.getTime())) {
+        return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`
+      }
+    }
+  }
+  return undefined
+}
+
 function normalizeRule(data, slug) {
   const title = typeof data.title === 'string' ? data.title : ''
   const content = typeof data.content === 'string' ? data.content : ''
@@ -35,6 +65,20 @@ function normalizeRule(data, slug) {
         ? data.authorUrl
         : undefined
 
+  const upvotes =
+    typeof data.upvotes === 'number' && Number.isFinite(data.upvotes) && data.upvotes >= 0
+      ? Math.floor(data.upvotes)
+      : 0
+  const views =
+    typeof data.views === 'number' && Number.isFinite(data.views) && data.views >= 0
+      ? Math.floor(data.views)
+      : 0
+  const date =
+    formatAddedDate(data.date) ||
+    formatAddedDate(data.approvedAt) ||
+    formatAddedDate(data.createdAt) ||
+    formatAddedDate(data.syncedAt)
+
   return {
     slug,
     title,
@@ -42,9 +86,9 @@ function normalizeRule(data, slug) {
     tags,
     author: { name: authorName, ...(authorUrl ? { url: authorUrl } : {}) },
     content,
-    upvotes: Number.isSafeInteger(data.upvotes) && data.upvotes >= 0 ? data.upvotes : 0,
-    views: Number.isSafeInteger(data.views) && data.views >= 0 ? data.views : 0,
-    date: typeof data.date === 'string' ? data.date : undefined,
+    upvotes,
+    views,
+    ...(date ? { date } : {}),
     url: typeof data.url === 'string' ? data.url : undefined,
     showShare: Boolean(data.showShare),
   }
@@ -61,17 +105,80 @@ async function getLocalRules() {
   return rules.filter(Boolean).sort((a, b) => a.slug.localeCompare(b.slug))
 }
 
+async function getPublishedRulesFromClientSdk() {
+  const configPath = path.join(root, 'firebase-applet-config.json')
+  let appletConfig
+  try {
+    appletConfig = JSON.parse(await readFile(configPath, 'utf8'))
+  } catch {
+    return null
+  }
+
+  if (!appletConfig?.apiKey || !appletConfig?.projectId || !appletConfig?.appId) {
+    return null
+  }
+
+  const { initializeApp, deleteApp } = await import('@firebase/app')
+  const { collection, getDocs, getFirestore, query, where } = await import('@firebase/firestore')
+
+  const app = initializeApp(
+    {
+      apiKey: appletConfig.apiKey,
+      projectId: appletConfig.projectId,
+      appId: appletConfig.appId,
+    },
+    `export-directory-${Date.now()}`,
+  )
+
+  try {
+    const dbId =
+      appletConfig.firestoreDatabaseId && appletConfig.firestoreDatabaseId !== '(default)'
+        ? appletConfig.firestoreDatabaseId
+        : undefined
+    const db = dbId ? getFirestore(app, dbId) : getFirestore(app)
+    const collectionName = process.env.FIRESTORE_RULES_COLLECTION?.trim() || 'rules'
+    const q = query(collection(db, collectionName), where('status', '==', 'published'))
+    const snapshot = await getDocs(q)
+    const rules = snapshot.docs
+      .map((doc) => normalizeRule(doc.data(), doc.id))
+      .filter(Boolean)
+      .sort((a, b) => a.slug.localeCompare(b.slug))
+
+    if (!rules.length) {
+      if (requireFirestore) {
+        throw new Error('Firestore has no published rules; refusing to replace the directory snapshot with an empty export.')
+      }
+      return null
+    }
+
+    console.log(`Exporting ${rules.length} published rules from Cloud Firestore (${appletConfig.projectId}).`)
+    return rules
+  } finally {
+    await deleteApp(app).catch(() => {})
+  }
+}
+
 async function getPublishedRules() {
   if (localOnly) return getLocalRules()
 
+  try {
+    const firestoreRules = await getPublishedRulesFromClientSdk()
+    if (firestoreRules && firestoreRules.length > 0) {
+      return firestoreRules
+    }
+  } catch (error) {
+    if (requireFirestore) throw error
+    console.warn('Could not fetch rules from Cloud Firestore via applet config:', error?.message || error)
+  }
+
   const projectId = process.env.FIREBASE_PROJECT_ID?.trim()
-  const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT_JSON
+  const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT_JSON?.trim()
   const clientEmail = process.env.FIREBASE_CLIENT_EMAIL?.trim()
   const privateKey = process.env.FIREBASE_PRIVATE_KEY?.trim().replace(/\\n/g, '\n')
 
   if (!projectId || (!serviceAccountJson && (!clientEmail || !privateKey))) {
     if (requireFirestore) {
-      throw new Error('Production export requires Firebase service-account credentials; refusing to publish local JSON.')
+      throw new Error('Production export requires Firebase credentials or applet config; refusing to publish local JSON.')
     }
     console.log('Firebase export credentials are absent; exporting checked-in rule JSON.')
     return getLocalRules()
@@ -81,9 +188,16 @@ async function getPublishedRules() {
   if (serviceAccountJson) {
     try {
       const serviceAccount = JSON.parse(serviceAccountJson)
+      if (!serviceAccount || typeof serviceAccount !== 'object' || !serviceAccount.private_key) {
+        throw new Error('Service account JSON must be an object with private_key.')
+      }
       credential = cert(serviceAccount)
     } catch (error) {
-      throw new Error('FIREBASE_SERVICE_ACCOUNT_JSON must contain valid service-account JSON.', { cause: error })
+      if (requireFirestore) {
+        throw new Error('FIREBASE_SERVICE_ACCOUNT_JSON must contain valid service-account JSON.', { cause: error })
+      }
+      console.warn('Invalid FIREBASE_SERVICE_ACCOUNT_JSON; exporting checked-in rule JSON.')
+      return getLocalRules()
     }
   } else {
     credential = cert({ projectId, clientEmail, privateKey })

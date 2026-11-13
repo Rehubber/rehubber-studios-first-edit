@@ -18,6 +18,7 @@ import { GithubAuthProvider, GoogleAuthProvider, onAuthStateChanged, signInWithP
 import { Check, Database, GitBranch, LoaderCircle, LogOut, RefreshCw, ShieldAlert, Trash2, X, Zap } from 'lucide-react'
 import { getFirebaseAppCheckToken, getFirebaseClientAuth, getFirebaseClientFirestore } from '@/lib/firebase-client'
 import type { PendingSubmission, SubmissionInput } from '@/lib/types'
+import { formatToolAddedDate } from '@/lib/sponsor-weeks'
 import { parseSubmission, slugify } from '@/lib/validation'
 import posthog from 'posthog-js'
 
@@ -167,6 +168,7 @@ export function AdminDashboard() {
           const slug = String(tool.slug || '')
           if (!slug) continue
           const ruleRef = doc(db, 'rules', slug)
+          const addedDate = formatToolAddedDate(tool.date) ?? formatToolAddedDate(new Date())
           batch.set(
             ruleRef,
             {
@@ -177,6 +179,7 @@ export function AdminDashboard() {
               tags: Array.isArray(tool.tags) ? tool.tags : [],
               author: typeof tool.author === 'object' && tool.author ? tool.author : { name: 'directory' },
               url: typeof tool.url === 'string' ? tool.url : '',
+              ...(addedDate ? { date: addedDate } : {}),
               status: 'published',
               upvotes: typeof tool.upvotes === 'number' ? tool.upvotes : 0,
               views: typeof tool.views === 'number' ? tool.views : 0,
@@ -307,6 +310,7 @@ export function AdminDashboard() {
         const publishedSnapshot = await transaction.get(publishedRef)
         if (publishedSnapshot.exists()) throw new Error('A published rule already uses this title.')
 
+        const approvedDate = formatToolAddedDate(new Date())
         transaction.set(publishedRef, {
           slug,
           title: parsed.data.title,
@@ -317,8 +321,10 @@ export function AdminDashboard() {
             name: parsed.data.authorName || 'anonymous',
             ...(parsed.data.authorUrl ? { url: parsed.data.authorUrl } : {}),
           },
+          ...(approvedDate ? { date: approvedDate } : {}),
           status: 'published',
           upvotes: 0,
+          views: 0,
           source: 'approved-submission',
           sourceSubmissionId: submissionId,
           createdAt: data.createdAt ?? serverTimestamp(),
