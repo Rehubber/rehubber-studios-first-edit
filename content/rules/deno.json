@@ -12,8 +12,9 @@
     "url": "https://github.com/denoland/deno"
   },
   "url": "https://deno.com",
-  "upvotes": 360,
-  "views": 9666,
-  "date": "28 Mar 2024",
-  "content": "Next-generation JavaScript and TypeScript runtime built on V8 and Rust with built-in security."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "Next-generation JavaScript and TypeScript runtime built on V8 and Rust with built-in security.",
+  "sortOrder": 104
 }

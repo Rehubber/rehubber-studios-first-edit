@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react'
 import { ArrowBigUp } from 'lucide-react'
 import posthog from 'posthog-js'
 
-const VOTE_STORAGE_KEY = 'rehubber:reddit-vote-state:v1'
+const LEGACY_VOTE_STORAGE_KEY = 'rehubber:reddit-vote-state:v1'
+const VOTE_STORAGE_KEY = 'rehubber:reddit-vote-state:v2'
 
 function invalidateDirectoryPageCache() {
   try {
@@ -24,9 +25,11 @@ function invalidateDirectoryPageCache() {
 export function UpvoteButton({
   slug,
   initialCount = 0,
+  onVoteChange,
 }: {
   slug: string
   initialCount?: number
+  onVoteChange?: (slug: string, nextCount: number) => void
 }) {
   const [upvoted, setUpvoted] = useState(false)
   const [liveCount, setLiveCount] = useState(initialCount)
@@ -37,6 +40,7 @@ export function UpvoteButton({
 
   useEffect(() => {
     try {
+      window.localStorage.removeItem(`${LEGACY_VOTE_STORAGE_KEY}:${slug}`)
       const stored = window.localStorage.getItem(`${VOTE_STORAGE_KEY}:${slug}`)
       if (stored === 'up') {
         setUpvoted(true)
@@ -52,8 +56,10 @@ export function UpvoteButton({
 
     const nextState = !upvoted
     const delta = nextState ? 1 : -1
+    const nextCount = Math.max(0, liveCount + delta)
     setUpvoted(nextState)
-    setLiveCount((prev) => Math.max(0, prev + delta))
+    setLiveCount(nextCount)
+    onVoteChange?.(slug, nextCount)
     posthog.capture('tool_vote_changed', {
       tool_slug: slug,
       vote_state: nextState ? 'upvoted' : 'removed',
@@ -71,7 +77,8 @@ export function UpvoteButton({
     }
 
     try {
-      const { getFirebaseClientFirestore } = await import('@/lib/firebase-client')
+      const { getFirebaseAppCheckToken, getFirebaseClientFirestore } = await import('@/lib/firebase-client')
+      await getFirebaseAppCheckToken().catch(() => '')
       const { doc, updateDoc, increment } = await import('firebase/firestore')
       const db = getFirebaseClientFirestore()
       const ruleRef = doc(db, 'rules', slug)

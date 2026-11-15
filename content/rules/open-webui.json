@@ -12,8 +12,9 @@
     "url": "https://github.com/open-webui/open-webui"
   },
   "url": "https://openwebui.com",
-  "upvotes": 380,
-  "views": 10083,
-  "date": "28 Mar 2024",
-  "content": "User-friendly WebUI for LLMs supporting Ollama and OpenAI-compatible APIs."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "User-friendly WebUI for LLMs supporting Ollama and OpenAI-compatible APIs.",
+  "sortOrder": 267
 }

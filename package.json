@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node scripts/export-directory.mjs && next dev -p 3000 -H 0.0.0.0",
+    "dev": "node scripts/export-directory.mjs --local && next dev -p 3000 -H 0.0.0.0",
     "export:directory": "node scripts/export-directory.mjs",
     "build": "npm run export:directory && next build",
     "test": "npx tsx scripts/test-flows.ts",

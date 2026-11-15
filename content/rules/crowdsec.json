@@ -11,8 +11,9 @@
     "url": "https://github.com/crowdsecurity"
   },
   "url": "https://github.com/crowdsecurity/crowdsec",
-  "upvotes": 185,
-  "views": 4375,
-  "date": "2024-03-20",
-  "content": "CrowdSec: Open source, lightweight agent to detect and remediate bad behaviors on Linux servers and APIs."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "CrowdSec: Open source, lightweight agent to detect and remediate bad behaviors on Linux servers and APIs.",
+  "sortOrder": 128
 }

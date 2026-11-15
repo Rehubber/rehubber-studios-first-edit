@@ -11,8 +11,9 @@
     "url": "https://github.com/apache"
   },
   "url": "https://github.com/apache/apache-pinot",
-  "upvotes": 333,
-  "views": 9044,
-  "date": "2024-03-20",
-  "content": "Apache Pinot: Realtime distributed OLAP datastore designed to execute OLAP queries with low latency."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "Apache Pinot: Realtime distributed OLAP datastore designed to execute OLAP queries with low latency.",
+  "sortOrder": 250
 }

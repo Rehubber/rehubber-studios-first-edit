@@ -12,8 +12,9 @@
     "url": "https://github.com/run-llama/llama_index"
   },
   "url": "https://www.llamaindex.ai",
-  "upvotes": 340,
-  "views": 9213,
-  "date": "28 Mar 2024",
-  "content": "Data framework for LLM applications to ingest, index, and query private or domain data."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "Data framework for LLM applications to ingest, index, and query private or domain data.",
+  "sortOrder": 305
 }

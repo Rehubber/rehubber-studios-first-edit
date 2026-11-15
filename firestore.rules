@@ -2,6 +2,15 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
     function signedIn() {
       return request.auth != null;
     }
@@ -16,10 +25,8 @@ service cloud.firestore {
 
     function isModerator() {
       return signedIn()
-        && (
-          (request.auth.token.email == 'firecodesecure@gmail.com') ||
-          (exists(moderatorPath(request.auth.uid)) && get(moderatorPath(request.auth.uid)).data.enabled == true)
-        );
+        && exists(moderatorPath(request.auth.uid))
+        && get(moderatorPath(request.auth.uid)).data.enabled == true;
     }
 
     function validSubmission(data) {
@@ -38,7 +45,7 @@ service cloud.firestore {
         && data.title.size() >= 2
         && data.title.size() <= 60
         && data.description is string
-        && data.description.size() >= 20
+        && data.description.size() >= 3
         && data.description.size() <= 280
         && data.content is string
         && data.content.size() >= 10
@@ -63,14 +70,39 @@ service cloud.firestore {
 
     function validPublishedRule(data, slug) {
       return data.slug == slug
-        && data.title is string
-        && data.description is string
-        && data.content is string
-        && data.tags is list
+        && data.title is string && data.title.size() >= 2 && data.title.size() <= 120
+        && data.description is string && data.description.size() >= 3 && data.description.size() <= 500
+        && data.content is string && data.content.size() <= 25000
+        && data.tags is list && data.tags.size() <= 10
         && data.author is map
         && data.status == 'published'
         && data.upvotes == 0
-        && data.sourceSubmissionId is string;
+        && data.sourceSubmissionId is string && data.sourceSubmissionId.size() <= 128;
+    }
+
+    function validLocalSeedRule(data, slug) {
+      return data.keys().hasAll([
+          'slug', 'title', 'description', 'content', 'tags', 'author',
+          'status', 'upvotes', 'views', 'source', 'syncedAt'
+        ])
+        && data.keys().hasOnly([
+          'slug', 'title', 'description', 'content', 'tags', 'author',
+          'url', 'sortOrder', 'date', 'status', 'upvotes', 'views', 'source', 'syncedAt'
+        ])
+        && data.slug == slug
+        && data.title is string && data.title.size() >= 1 && data.title.size() <= 120
+        && data.description is string && data.description.size() <= 500
+        && data.content is string && data.content.size() <= 25000
+        && data.tags is list && data.tags.size() <= 10
+        && data.author is map
+        && (!('url' in data) || (data.url is string && data.url.size() <= 2048))
+        && (!('sortOrder' in data) || data.sortOrder is int)
+        && (!('date' in data) || (data.date is string && data.date.size() <= 40))
+        && data.status == 'published'
+        && data.upvotes is int && data.upvotes >= 0
+        && data.views is int && data.views >= 0
+        && data.source == 'local-seed'
+        && data.syncedAt == request.time;
     }
 
     function votePath(slug, uid) {
@@ -79,9 +111,11 @@ service cloud.firestore {
 
     function validVoteForRule(slug) {
       let path = votePath(slug, request.auth.uid);
-      return githubUser()
+      return signedIn()
         && resource.data.status == 'published'
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['upvotes'])
+        && request.resource.data.upvotes is int
+        && resource.data.upvotes is int
         && request.resource.data.upvotes == resource.data.upvotes + 1
         && !exists(path)
         && existsAfter(path)
@@ -89,99 +123,74 @@ service cloud.firestore {
         && getAfter(path).data.slug == slug;
     }
 
+    function validUnvoteForRule(slug) {
+      let path = votePath(slug, request.auth.uid);
+      return signedIn()
+        && resource.data.status == 'published'
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['upvotes'])
+        && request.resource.data.upvotes is int
+        && request.resource.data.upvotes >= 0
+        && resource.data.upvotes is int
+        && request.resource.data.upvotes == resource.data.upvotes - 1
+        && exists(path)
+        && !existsAfter(path);
+    }
+
     function validRuleVoteOrView() {
       return resource.data.status == 'published'
         && (
-          (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['upvotes'])
-           && (request.resource.data.upvotes == resource.data.upvotes + 1 || request.resource.data.upvotes == resource.data.upvotes - 1))
+          (
+            request.resource.data.diff(resource.data).affectedKeys().hasOnly(['upvotes'])
+            && request.resource.data.upvotes is int
+            && request.resource.data.upvotes >= 0
+            && (
+              (!('upvotes' in resource.data) && request.resource.data.upvotes == 1)
+              || (
+                resource.data.upvotes is int
+                && (
+                  request.resource.data.upvotes == resource.data.upvotes + 1
+                  || request.resource.data.upvotes == resource.data.upvotes - 1
+                )
+              )
+            )
+          )
           ||
-          (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views'])
-           && request.resource.data.views == resource.data.views + 1)
-        );
-    }
-
-    match /rules/{slug} {
-      allow read: if true;
-
-      allow create: if request.resource.data.source == 'local-seed'
-        || (
-          isModerator()
-          && validPublishedRule(request.resource.data, slug)
-          && exists(/databases/$(database)/documents/submissions/$(request.resource.data.sourceSubmissionId))
-          && get(/databases/$(database)/documents/submissions/$(request.resource.data.sourceSubmissionId)).data.status == 'pending'
-          && getAfter(/databases/$(database)/documents/submissions/$(request.resource.data.sourceSubmissionId)).data.status == 'approved'
-          && getAfter(/databases/$(database)/documents/submissions/$(request.resource.data.sourceSubmissionId)).data.approvedSlug == slug
-        );
-
-      allow update: if request.resource.data.source == 'local-seed'
-        || (
-          isModerator()
-          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
-          && request.resource.data.status == 'published'
-        ) || validVoteForRule(slug) || validRuleVoteOrView();
-
-      allow delete: if true;
-    }
-
-    match /submissions/{submissionId} {
-      allow create: if githubUser() && validSubmission(request.resource.data);
-      allow read: if isModerator();
-
-      allow update: if isModerator()
-        && resource.data.status == 'pending'
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
-          'status', 'moderatedAt', 'moderatedBy', 'approvedSlug'
-        ])
-        && request.resource.data.status in ['approved', 'rejected']
-        && request.resource.data.moderatedAt == request.time
-        && request.resource.data.moderatedBy == request.auth.uid
-        && (
-          request.resource.data.status == 'rejected'
-          || (
-            request.resource.data.approvedSlug is string
-            && getAfter(/databases/$(database)/documents/rules/$(request.resource.data.approvedSlug)).data.sourceSubmissionId == submissionId
+          (
+            request.resource.data.diff(resource.data).affectedKeys().hasOnly(['views'])
+            && request.resource.data.views is int
+            && (
+              (!('views' in resource.data) && request.resource.data.views == 1)
+              || (resource.data.views is int && request.resource.data.views == resource.data.views + 1)
+            )
           )
         );
-
-      allow delete: if false;
     }
 
-    match /votes/{voteId} {
-      allow read: if isModerator() || (signedIn() && resource.data.uid == request.auth.uid);
-
-      allow create: if githubUser()
-        && request.resource.data.keys().hasOnly(['slug', 'uid', 'createdAt'])
-        && request.resource.data.slug is string
-        && request.resource.data.uid == request.auth.uid
-        && voteId == request.resource.data.slug + '__' + request.auth.uid
-        && request.resource.data.createdAt == request.time
-        && !exists(/databases/$(database)/documents/votes/$(voteId))
-        && exists(/databases/$(database)/documents/rules/$(request.resource.data.slug))
-        && get(/databases/$(database)/documents/rules/$(request.resource.data.slug)).data.status == 'published'
-        && existsAfter(/databases/$(database)/documents/rules/$(request.resource.data.slug))
-        && getAfter(/databases/$(database)/documents/rules/$(request.resource.data.slug)).data.upvotes
-          == get(/databases/$(database)/documents/rules/$(request.resource.data.slug)).data.upvotes + 1;
-
-      allow update, delete: if false;
+    function validSubscriber(data) {
+      return data.keys().hasAll(['email', 'createdAt'])
+        && data.keys().hasOnly([
+          'email', 'createdAt', 'source', 'submissionId',
+          'isBetaCommunity', 'category', 'status'
+        ])
+        && data.email is string
+        && data.email.size() >= 5
+        && data.email.size() <= 150
+        && data.createdAt == request.time
+        && (!('source' in data) || (data.source is string && data.source.size() <= 64))
+        && (!('submissionId' in data) || (data.submissionId is string && data.submissionId.size() <= 128))
+        && (!('isBetaCommunity' in data) || data.isBetaCommunity is bool)
+        && (!('category' in data) || (data.category is string && data.category.size() <= 64))
+        && (!('status' in data) || (data.status is string && data.status.size() <= 32));
     }
 
-    match /subscribers/{subscriberId} {
-      allow create: if request.resource.data.keys().hasAll(['email', 'createdAt'])
-        && request.resource.data.email is string
-        && request.resource.data.email.size() >= 5
-        && request.resource.data.email.size() <= 150
-        && request.resource.data.createdAt == request.time;
-      allow read, update, delete: if isModerator();
-    }
-
-    match /support_messages/{messageId} {
-      allow create: if request.resource.data.keys().hasAll(['name', 'email', 'category', 'message', 'createdAt'])
-        && request.resource.data.name is string && request.resource.data.name.size() >= 2 && request.resource.data.name.size() <= 100
-        && request.resource.data.email is string && request.resource.data.email.size() >= 5 && request.resource.data.email.size() <= 150
-        && request.resource.data.category in ['General Question', 'Feature Request', 'Bug Report', 'Tool Claim', 'Partnership']
-        && request.resource.data.message is string && request.resource.data.message.size() >= 10 && request.resource.data.message.size() <= 4000
-        && request.resource.data.createdAt == request.time;
-      allow read, update, delete: if isModerator();
+    function validSupportMessage(data) {
+      return data.keys().hasAll(['name', 'email', 'category', 'message', 'createdAt'])
+        && data.keys().hasOnly(['name', 'email', 'category', 'message', 'createdAt'])
+        && data.name is string && data.name.size() >= 2 && data.name.size() <= 100
+        && data.email is string && data.email.size() >= 5 && data.email.size() <= 150
+        && data.category in ['General Question', 'Feature Request', 'Bug Report', 'Tool Claim', 'Partnership']
+        && data.message is string && data.message.size() >= 10 && data.message.size() <= 4000
+        && data.createdAt == request.time;
     }
 
     function validSponsorBooking(data, slotId) {
@@ -205,6 +214,117 @@ service cloud.firestore {
         && data.createdAt == request.time;
     }
 
+    function validSponsorContact(data, contactId) {
+      return isValidId(contactId)
+        && contactId.size() >= 4
+        && contactId.size() <= 64
+        && data.keys().hasAll(['bookingId', 'weekId', 'weekStart', 'weekEnd', 'email', 'sponsorName', 'createdAt'])
+        && data.keys().hasOnly(['bookingId', 'weekId', 'weekStart', 'weekEnd', 'email', 'sponsorName', 'createdAt'])
+        && data.bookingId == contactId
+        && data.weekId is string && data.weekId.size() >= 2 && data.weekId.size() <= 16
+        && data.weekStart is string && data.weekStart.size() >= 10 && data.weekStart.size() <= 40
+        && data.weekEnd is string && data.weekEnd.size() >= 10 && data.weekEnd.size() <= 40
+        && data.email is string && data.email.size() >= 5 && data.email.size() <= 150
+        && data.sponsorName is string && data.sponsorName.size() >= 2 && data.sponsorName.size() <= 32
+        && data.createdAt == request.time;
+    }
+
+    match /rules/{slug} {
+      allow read: if isModerator() || resource.data.status == 'published';
+
+      allow create: if isValidId(slug) && (
+        (isModerator() && validLocalSeedRule(request.resource.data, slug))
+        || (
+          isModerator()
+          && validPublishedRule(request.resource.data, slug)
+          && exists(/databases/$(database)/documents/submissions/$(request.resource.data.sourceSubmissionId))
+          && get(/databases/$(database)/documents/submissions/$(request.resource.data.sourceSubmissionId)).data.status == 'pending'
+          && getAfter(/databases/$(database)/documents/submissions/$(request.resource.data.sourceSubmissionId)).data.status == 'approved'
+          && getAfter(/databases/$(database)/documents/submissions/$(request.resource.data.sourceSubmissionId)).data.approvedSlug == slug
+        )
+      );
+
+      allow update: if isValidId(slug) && (
+        (isModerator() && validLocalSeedRule(request.resource.data, slug))
+        || (
+          isModerator()
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+          && request.resource.data.status == 'published'
+        )
+        || validVoteForRule(slug)
+        || validUnvoteForRule(slug)
+        || validRuleVoteOrView()
+      );
+
+      allow delete: if isValidId(slug) && isModerator();
+    }
+
+    match /submissions/{submissionId} {
+      allow create: if isValidId(submissionId) && githubUser() && validSubmission(request.resource.data);
+      allow read: if isModerator();
+
+      allow update: if isValidId(submissionId)
+        && isModerator()
+        && resource.data.status == 'pending'
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'status', 'moderatedAt', 'moderatedBy', 'approvedSlug'
+        ])
+        && request.resource.data.status in ['approved', 'rejected']
+        && request.resource.data.moderatedAt == request.time
+        && request.resource.data.moderatedBy == request.auth.uid
+        && (
+          request.resource.data.status == 'rejected'
+          || (
+            request.resource.data.approvedSlug is string
+            && getAfter(/databases/$(database)/documents/rules/$(request.resource.data.approvedSlug)).data.sourceSubmissionId == submissionId
+          )
+        );
+
+      allow delete: if false;
+    }
+
+    match /votes/{voteId} {
+      allow read: if isModerator() || (signedIn() && resource.data.uid == request.auth.uid);
+
+      allow create: if isValidId(voteId)
+        && signedIn()
+        && request.resource.data.keys().hasAll(['slug', 'uid', 'createdAt'])
+        && request.resource.data.keys().hasOnly(['slug', 'uid', 'createdAt'])
+        && request.resource.data.slug is string
+        && request.resource.data.slug.size() <= 128
+        && request.resource.data.uid == request.auth.uid
+        && voteId == request.resource.data.slug + '__' + request.auth.uid
+        && request.resource.data.createdAt == request.time
+        && !exists(/databases/$(database)/documents/votes/$(voteId))
+        && exists(/databases/$(database)/documents/rules/$(request.resource.data.slug))
+        && get(/databases/$(database)/documents/rules/$(request.resource.data.slug)).data.status == 'published'
+        && existsAfter(/databases/$(database)/documents/rules/$(request.resource.data.slug))
+        && getAfter(/databases/$(database)/documents/rules/$(request.resource.data.slug)).data.upvotes
+          == get(/databases/$(database)/documents/rules/$(request.resource.data.slug)).data.upvotes + 1;
+
+      allow update: if false;
+
+      allow delete: if isValidId(voteId)
+        && signedIn()
+        && resource.data.uid == request.auth.uid
+        && voteId == resource.data.slug + '__' + request.auth.uid
+        && exists(/databases/$(database)/documents/rules/$(resource.data.slug))
+        && get(/databases/$(database)/documents/rules/$(resource.data.slug)).data.status == 'published'
+        && existsAfter(/databases/$(database)/documents/rules/$(resource.data.slug))
+        && getAfter(/databases/$(database)/documents/rules/$(resource.data.slug)).data.upvotes
+          == get(/databases/$(database)/documents/rules/$(resource.data.slug)).data.upvotes - 1;
+    }
+
+    match /subscribers/{subscriberId} {
+      allow create: if isValidId(subscriberId) && validSubscriber(request.resource.data);
+      allow read, update, delete: if isModerator();
+    }
+
+    match /support_messages/{messageId} {
+      allow create: if isValidId(messageId) && validSupportMessage(request.resource.data);
+      allow read, update, delete: if isModerator();
+    }
+
     match /sponsor_bookings/{slotId} {
       allow read: if true;
       allow create: if validSponsorBooking(request.resource.data, slotId)
@@ -218,29 +338,14 @@ service cloud.firestore {
     }
 
     match /sponsor_contacts/{contactId} {
-      allow create: if contactId is string
-        && contactId.size() >= 4
-        && contactId.size() <= 64
-        && contactId.matches('^[a-zA-Z0-9_\\-]+$')
-        && !exists(/databases/$(database)/documents/sponsor_contacts/$(contactId))
-        && request.resource.data.keys().hasAll(['bookingId', 'weekId', 'weekStart', 'weekEnd', 'email', 'sponsorName', 'createdAt'])
-        && request.resource.data.keys().hasOnly(['bookingId', 'weekId', 'weekStart', 'weekEnd', 'email', 'sponsorName', 'createdAt'])
-        && request.resource.data.bookingId == contactId
-        && request.resource.data.weekId is string && request.resource.data.weekId.size() >= 2 && request.resource.data.weekId.size() <= 16
-        && request.resource.data.weekStart is string && request.resource.data.weekStart.size() >= 10 && request.resource.data.weekStart.size() <= 40
-        && request.resource.data.weekEnd is string && request.resource.data.weekEnd.size() >= 10 && request.resource.data.weekEnd.size() <= 40
-        && request.resource.data.email is string && request.resource.data.email.size() >= 5 && request.resource.data.email.size() <= 150
-        && request.resource.data.sponsorName is string && request.resource.data.sponsorName.size() >= 2 && request.resource.data.sponsorName.size() <= 32
-        && request.resource.data.createdAt == request.time;
+      allow create: if validSponsorContact(request.resource.data, contactId)
+        && !exists(/databases/$(database)/documents/sponsor_contacts/$(contactId));
       allow read, update, delete: if isModerator();
     }
 
     match /moderators/{uid} {
-      allow read, write: if false;
-    }
-
-    match /{document=**} {
-      allow read, write: if false;
+      allow get: if signedIn() && request.auth.uid == uid;
+      allow list, write: if false;
     }
   }
 }

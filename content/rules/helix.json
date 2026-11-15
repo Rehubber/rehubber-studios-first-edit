@@ -12,8 +12,9 @@
     "url": "https://github.com/helix-editor/helix"
   },
   "url": "https://helix-editor.com",
-  "upvotes": 330,
-  "views": 8919,
-  "date": "28 Mar 2024",
-  "content": "A post-modern modal text editor written in Rust with built-in Tree-sitter syntax analysis."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "A post-modern modal text editor written in Rust with built-in Tree-sitter syntax analysis.",
+  "sortOrder": 266
 }

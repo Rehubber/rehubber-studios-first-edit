@@ -9,18 +9,30 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const { loadEnvConfig } = nextEnv
 loadEnvConfig(root)
 
-const projectId = process.env.FIREBASE_PROJECT_ID?.trim()
-const clientEmail = process.env.FIREBASE_CLIENT_EMAIL?.trim()
+const clean = (v) => (v ? String(v).trim().replace(/^['"]+|['"]+$/g, '') : '')
+const projectId = clean(process.env.FIREBASE_PROJECT_ID)
+const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT_JSON?.trim()
+const clientEmail = clean(process.env.FIREBASE_CLIENT_EMAIL)
 const privateKey = process.env.FIREBASE_PRIVATE_KEY?.trim().replace(/\\n/g, '\n')
 
-if (!projectId || !clientEmail || !privateKey) {
-  throw new Error('Set FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, and FIREBASE_PRIVATE_KEY before seeding.')
+let credential
+if (serviceAccountJson) {
+  const sa = JSON.parse(serviceAccountJson)
+  credential = cert(sa)
+} else if (projectId && clientEmail && privateKey) {
+  credential = cert({ projectId, clientEmail, privateKey })
+}
+
+if (!projectId || !credential) {
+  throw new Error(
+    'Set FIREBASE_PROJECT_ID and either FIREBASE_SERVICE_ACCOUNT_JSON or FIREBASE_CLIENT_EMAIL + FIREBASE_PRIVATE_KEY before seeding.',
+  )
 }
 
 const app =
   getApps()[0] ??
   initializeApp({
-    credential: cert({ projectId, clientEmail, privateKey }),
+    credential,
     projectId,
   })
 const db = getFirestore(app)

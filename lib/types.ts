@@ -7,6 +7,7 @@ export type Rule = {
   content?: string
   upvotes?: number
   views?: number
+  sortOrder?: number
   date?: string
   url?: string
   showShare?: boolean

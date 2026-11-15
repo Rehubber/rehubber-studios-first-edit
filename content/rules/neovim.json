@@ -12,8 +12,9 @@
     "url": "https://github.com/neovim/neovim"
   },
   "url": "https://neovim.io",
-  "upvotes": 435,
-  "views": 11599,
-  "date": "28 Mar 2024",
-  "content": "Vim-fork focused on extensibility and usability, with native Lua scripting and LSP client."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "Vim-fork focused on extensibility and usability, with native Lua scripting and LSP client.",
+  "sortOrder": 241
 }

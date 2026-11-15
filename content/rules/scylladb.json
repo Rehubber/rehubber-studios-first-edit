@@ -11,8 +11,9 @@
     "url": "https://github.com/scylladb"
   },
   "url": "https://github.com/scylladb/scylladb",
-  "upvotes": 248,
-  "views": 7646,
-  "date": "2024-03-20",
-  "content": "ScyllaDB: High-performance NoSQL database compatible with Cassandra and DynamoDB in C++."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "ScyllaDB: High-performance NoSQL database compatible with Cassandra and DynamoDB in C++.",
+  "sortOrder": 67
 }

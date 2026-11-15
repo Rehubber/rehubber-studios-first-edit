@@ -11,8 +11,9 @@
     "url": "https://github.com/caddyserver"
   },
   "url": "https://github.com/caddyserver/caddy-server",
-  "upvotes": 407,
-  "views": 12147,
-  "date": "2024-03-20",
-  "content": "Caddy Server: Enterprise-ready, open source web server with automatic HTTPS written in Go."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "Caddy Server: Enterprise-ready, open source web server with automatic HTTPS written in Go.",
+  "sortOrder": 231
 }

@@ -12,8 +12,9 @@
     "url": "https://github.com/AUTOMATIC1111/stable-diffusion-webui"
   },
   "url": "https://github.com/AUTOMATIC1111/stable-diffusion-webui",
-  "upvotes": 420,
-  "views": 11249,
-  "date": "28 Mar 2024",
-  "content": "Browser interface based on Gradio library for Stable Diffusion text-to-image."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "Browser interface based on Gradio library for Stable Diffusion text-to-image.",
+  "sortOrder": 81
 }

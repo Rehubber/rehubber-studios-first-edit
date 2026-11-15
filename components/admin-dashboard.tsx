@@ -16,7 +16,12 @@ import {
 } from 'firebase/firestore'
 import { GithubAuthProvider, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut, type User } from 'firebase/auth'
 import { Check, Database, GitBranch, LoaderCircle, LogOut, RefreshCw, ShieldAlert, Trash2, X, Zap } from 'lucide-react'
-import { getFirebaseAppCheckToken, getFirebaseClientAuth, getFirebaseClientFirestore } from '@/lib/firebase-client'
+import {
+  getFirebaseAppCheckToken,
+  getFirebaseClientAuth,
+  getFirebaseClientFirestore,
+  getFirebaseConfig,
+} from '@/lib/firebase-client'
 import type { PendingSubmission, SubmissionInput } from '@/lib/types'
 import { formatToolAddedDate } from '@/lib/sponsor-weeks'
 import { parseSubmission, slugify } from '@/lib/validation'
@@ -76,7 +81,8 @@ export function AdminDashboard() {
     }
   }
 
-  const [remoteCount, setRemoteCount] = useState<number | null>(440)
+  const [remoteCount, setRemoteCount] = useState<number | null>(null)
+  const firebaseConfig = getFirebaseConfig()
 
   async function checkRemoteCount() {
     try {
@@ -89,8 +95,6 @@ export function AdminDashboard() {
   }
 
   useEffect(() => {
-    void checkRemoteCount()
-
     // Safety fallback: ensure authReady is never stuck if iframe blocks IndexedDB
     const fallbackTimer = setTimeout(() => {
       setAuthReady(true)
@@ -104,8 +108,10 @@ export function AdminDashboard() {
         setAuthReady(true)
         if (nextUser) {
           void loadSubmissions(nextUser)
+          void checkRemoteCount()
         } else {
           setSubmissions([])
+          setRemoteCount(null)
           setError(null)
           setNotModerator(false)
         }
@@ -145,7 +151,7 @@ export function AdminDashboard() {
     setSyncing(true)
     setError(null)
     setSyncSuccess(null)
-    setSyncProgress('Reading catalog of 440 tools...')
+    setSyncProgress('Reading static directory catalog...')
 
     try {
       const res = await fetch('/directory/catalog-all.json')
@@ -179,6 +185,7 @@ export function AdminDashboard() {
               tags: Array.isArray(tool.tags) ? tool.tags : [],
               author: typeof tool.author === 'object' && tool.author ? tool.author : { name: 'directory' },
               url: typeof tool.url === 'string' ? tool.url : '',
+              ...(typeof tool.sortOrder === 'number' ? { sortOrder: tool.sortOrder } : {}),
               ...(addedDate ? { date: addedDate } : {}),
               status: 'published',
               upvotes: typeof tool.upvotes === 'number' ? tool.upvotes : 0,
@@ -390,7 +397,8 @@ export function AdminDashboard() {
         </div>
       )}
 
-      {/* Cloud Firestore Remote Database Sync Card (Always accessible) */}
+      {/* Cloud Firestore Remote Database Sync Card (Authenticated moderators only) */}
+      {user && !notModerator && (
       <section className="flex flex-col gap-4 rounded-xl border border-primary/30 bg-primary/5 p-5 shadow-xs">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -406,7 +414,8 @@ export function AdminDashboard() {
                 </span>
               </div>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Target database: <code>(default)</code> (<code>rules</code> collection).
+                Target project: <code>{firebaseConfig.projectId || 'env'}</code> · Database:{' '}
+                <code>{firebaseConfig.firestoreDatabaseId}</code> (<code>rules</code> collection).
               </p>
             </div>
           </div>
@@ -460,7 +469,7 @@ export function AdminDashboard() {
               ) : (
                 <Zap className="size-3.5" aria-hidden="true" />
               )}
-              <span>{syncing ? 'Pushing to Firestore…' : 'Sync 440 Tools to Remote Firestore'}</span>
+              <span>{syncing ? 'Pushing to Firestore…' : 'Sync 425 Tools to Remote Firestore'}</span>
             </button>
           </div>
         </div>
@@ -479,6 +488,7 @@ export function AdminDashboard() {
           </div>
         )}
       </section>
+      )}
 
       {/* Submission Moderation Section */}
       {!authReady ? (
@@ -491,7 +501,7 @@ export function AdminDashboard() {
           <ShieldAlert className="size-8 text-primary" aria-hidden="true" />
           <div className="flex flex-col gap-1">
             <h2 className="font-medium">Moderator sign-in required for submissions queue</h2>
-            <p className="text-sm text-muted-foreground">Sign in with your administrator account (firecodesecure@gmail.com) to review submitted tools.</p>
+            <p className="text-sm text-muted-foreground">Sign in with an authorized moderator account to review submitted tools.</p>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <button

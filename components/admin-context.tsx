@@ -2,10 +2,12 @@
 
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
 import { onAuthStateChanged } from 'firebase/auth'
+import { doc, getDoc } from 'firebase/firestore'
 import posthog from 'posthog-js'
-import { getFirebaseClientAuth, isFirebaseConfigured } from '@/lib/firebase-client'
+import { getFirebaseClientAuth, getFirebaseClientFirestore, isFirebaseConfigured } from '@/lib/firebase-client'
 
 interface AdminContextType {
+  isAuthorizedAdmin: boolean
   isAdminMode: boolean
   toggleAdminMode: () => void
   setAdminMode: (active: boolean) => void
@@ -21,9 +23,11 @@ interface AdminContextType {
 const AdminContext = createContext<AdminContextType | null>(null)
 
 const ADMIN_MODE_STORAGE_KEY = 'rehubber:admin_mode_enabled'
-const DELETED_SLUGS_STORAGE_KEY = 'rehubber:deleted_tools_local'
+const LEGACY_DELETED_SLUGS_STORAGE_KEY = 'rehubber:deleted_tools_local'
+const DELETED_SLUGS_STORAGE_KEY = 'rehubber:deleted_tools_local:v2'
 
 export function AdminProvider({ children }: { children: ReactNode }) {
+  const [isAuthorizedAdmin, setIsAuthorizedAdmin] = useState<boolean>(false)
   const [isAdminMode, setIsAdminMode] = useState<boolean>(false)
   const [selectedSlugs, setSelectedSlugs] = useState<Set<string>>(new Set())
   const [deletedSlugs, setDeletedSlugs] = useState<Set<string>>(new Set())
@@ -32,8 +36,40 @@ export function AdminProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!isFirebaseConfigured()) return
 
+    let cancelled = false
     try {
-      return onAuthStateChanged(getFirebaseClientAuth(), (user) => {
+      const unsubscribe = onAuthStateChanged(getFirebaseClientAuth(), async (user) => {
+        let isAdmin = false
+        if (user) {
+          try {
+            const modSnap = await getDoc(doc(getFirebaseClientFirestore(), 'moderators', user.uid))
+            isAdmin = modSnap.exists() && modSnap.data()?.enabled === true
+          } catch {
+            isAdmin = false
+          }
+        }
+
+        if (cancelled) return
+        setIsAuthorizedAdmin(isAdmin)
+
+        if (!isAdmin) {
+          setIsAdminMode(false)
+          setSelectedSlugs(new Set())
+          try {
+            window.localStorage.removeItem(ADMIN_MODE_STORAGE_KEY)
+          } catch {
+            // Ignore storage errors
+          }
+        } else {
+          try {
+            if (window.localStorage.getItem(ADMIN_MODE_STORAGE_KEY) === 'true') {
+              setIsAdminMode(true)
+            }
+          } catch {
+            // Ignore storage errors
+          }
+        }
+
         if (user) {
           if (identifiedUserId.current && identifiedUserId.current !== user.uid) {
             posthog.reset()
@@ -51,6 +87,11 @@ export function AdminProvider({ children }: { children: ReactNode }) {
           identifiedUserId.current = null
         }
       })
+
+      return () => {
+        cancelled = true
+        unsubscribe()
+      }
     } catch {
       // Firebase Authentication is optional for the public application.
     }
@@ -58,10 +99,9 @@ export function AdminProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     try {
-      const savedMode = window.localStorage.getItem(ADMIN_MODE_STORAGE_KEY)
-      if (savedMode === 'true') {
-        setIsAdminMode(true)
-      }
+      // Clear legacy key that could have been poisoned by cross-project Firestore sync
+      window.localStorage.removeItem(LEGACY_DELETED_SLUGS_STORAGE_KEY)
+
       const savedDeleted = window.localStorage.getItem(DELETED_SLUGS_STORAGE_KEY)
       if (savedDeleted) {
         const parsed = JSON.parse(savedDeleted)
@@ -75,6 +115,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
   }, [])
 
   function toggleAdminMode() {
+    if (!isAuthorizedAdmin) return
     setIsAdminMode((prev) => {
       const next = !prev
       try {
@@ -87,6 +128,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
   }
 
   function setAdminMode(active: boolean) {
+    if (!isAuthorizedAdmin && active) return
     setIsAdminMode(active)
     try {
       window.localStorage.setItem(ADMIN_MODE_STORAGE_KEY, String(active))
@@ -149,6 +191,7 @@ export function AdminProvider({ children }: { children: ReactNode }) {
   return (
     <AdminContext.Provider
       value={{
+        isAuthorizedAdmin,
         isAdminMode,
         toggleAdminMode,
         setAdminMode,
@@ -170,6 +213,7 @@ export function useAdmin() {
   const ctx = useContext(AdminContext)
   if (!ctx) {
     return {
+      isAuthorizedAdmin: false,
       isAdminMode: false,
       toggleAdminMode: () => {},
       setAdminMode: () => {},

@@ -1,7 +1,7 @@
 import 'server-only'
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
-import type { DirectoryManifest, DirectoryPage } from './types'
+import type { DirectoryManifest, DirectoryPage, Rule } from './types'
 
 const DIRECTORY_DIR = path.join(process.cwd(), 'public', 'directory')
 
@@ -19,6 +19,20 @@ export async function getDirectoryPage(page: number): Promise<DirectoryPage> {
     console.error(`[directory] Could not read static page ${page}:`, error)
     throw new Error('Static directory data is missing. Run the directory export before building.')
   }
+}
+
+export async function getAllRules(): Promise<Rule[]> {
+  const filePath = path.join(DIRECTORY_DIR, 'catalog-all.json')
+  try {
+    return JSON.parse(await fs.readFile(filePath, 'utf8')) as Rule[]
+  } catch {
+    return []
+  }
+}
+
+export async function getRuleBySlug(slug: string): Promise<Rule | null> {
+  const all = await getAllRules()
+  return all.find((rule) => rule.slug === slug) ?? null
 }
 
 export async function getDirectoryManifest(): Promise<DirectoryManifest> {

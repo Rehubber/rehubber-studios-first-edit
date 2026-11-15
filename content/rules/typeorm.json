@@ -11,8 +11,9 @@
     "url": "https://github.com/typeorm"
   },
   "url": "https://github.com/typeorm/typeorm",
-  "upvotes": 197,
-  "views": 6164,
-  "date": "2024-03-20",
-  "content": "TypeORM: ORM for TypeScript and JavaScript (ES7, ES6, ES5). Supports MySQL, PostgreSQL, MariaDB, SQLite."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "TypeORM: ORM for TypeScript and JavaScript (ES7, ES6, ES5). Supports MySQL, PostgreSQL, MariaDB, SQLite.",
+  "sortOrder": 132
 }

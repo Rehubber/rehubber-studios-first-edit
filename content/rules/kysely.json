@@ -11,8 +11,9 @@
     "url": "https://github.com/kysely-org"
   },
   "url": "https://github.com/kysely-org/kysely",
-  "upvotes": 384,
-  "views": 10174,
-  "date": "2024-03-20",
-  "content": "Kysely: Type-safe and autocompletion-friendly typescript SQL query builder with zero dependencies."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "Kysely: Type-safe and autocompletion-friendly typescript SQL query builder with zero dependencies.",
+  "sortOrder": 206
 }

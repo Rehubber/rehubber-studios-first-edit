@@ -11,8 +11,9 @@
     "url": "https://github.com/cockroachdb"
   },
   "url": "https://github.com/cockroachdb/cockroachdb-core",
-  "upvotes": 182,
-  "views": 5068,
-  "date": "2024-03-20",
-  "content": "CockroachDB Core: Cloud-native distributed SQL database designed for resilience and consistency."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "CockroachDB Core: Cloud-native distributed SQL database designed for resilience and consistency.",
+  "sortOrder": 57
 }
