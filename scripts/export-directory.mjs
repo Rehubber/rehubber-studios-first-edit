@@ -200,18 +200,26 @@ async function getPublishedRules() {
   if (projectId && (serviceAccountJson || (clientEmail && privateKey))) {
     let credential
     if (serviceAccountJson) {
+      let serviceAccount
       try {
-        const serviceAccount = JSON.parse(serviceAccountJson)
-        if (!serviceAccount || typeof serviceAccount !== 'object' || !serviceAccount.private_key) {
-          throw new Error('Service account JSON must be an object with private_key.')
-        }
-        credential = cert(serviceAccount)
+        serviceAccount = JSON.parse(serviceAccountJson)
       } catch (error) {
         if (requireFirestore) {
           throw new Error('FIREBASE_SERVICE_ACCOUNT_JSON must contain valid service-account JSON.', { cause: error })
         }
         console.warn('Invalid FIREBASE_SERVICE_ACCOUNT_JSON; checking client SDK fallback.')
         credential = null
+      }
+      if (serviceAccount) {
+        if (!serviceAccount.private_key || !serviceAccount.project_id) {
+          throw new Error('Service account JSON must include project_id and private_key.')
+        }
+        if (serviceAccount.project_id !== projectId) {
+          throw new Error(
+            `FIREBASE_SERVICE_ACCOUNT_JSON targets "${serviceAccount.project_id}", but FIREBASE_PROJECT_ID is "${projectId}".`,
+          )
+        }
+        credential = cert(serviceAccount)
       }
     } else {
       credential = cert({ projectId, clientEmail, privateKey })
@@ -276,8 +284,7 @@ async function getPublishedRules() {
       return firestoreRules
     }
   } catch (error) {
-    if (requireFirestore) throw error
-    console.warn('Could not fetch rules from Cloud Firestore via applet config:', error?.message || error)
+    console.warn('Could not fetch rules from Cloud Firestore via applet config; trying Admin SDK:', error?.message || error)
   }
 
   if (requireFirestore) {

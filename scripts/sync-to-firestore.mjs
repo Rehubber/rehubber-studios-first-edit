@@ -17,7 +17,13 @@ const privateKey = process.env.FIREBASE_PRIVATE_KEY?.trim().replace(/\\n/g, '\n'
 
 let credential
 if (serviceAccountJson) {
-  credential = cert(JSON.parse(serviceAccountJson))
+  const serviceAccount = JSON.parse(serviceAccountJson)
+  if (!serviceAccount.project_id || serviceAccount.project_id !== projectId) {
+    throw new Error(
+      `FIREBASE_SERVICE_ACCOUNT_JSON must target "${projectId}" to match FIREBASE_PROJECT_ID.`,
+    )
+  }
+  credential = cert(serviceAccount)
 } else if (projectId && clientEmail && privateKey) {
   credential = cert({ projectId, clientEmail, privateKey })
 }

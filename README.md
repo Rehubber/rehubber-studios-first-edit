@@ -15,6 +15,7 @@ A static, paginated directory hosted on Cloudflare Pages, with Firebase Authenti
 ## Firebase setup
 
 1. Create a Firebase project and choose the **Spark** plan. Create a Cloud Firestore database in **Standard** edition.
+   The browser, export, and admin clients all use the `(default)` database; keep the Firebase project ID consistent across the web app config and server credentials.
 2. Register a Firebase Web App. Put its API key, auth domain, project ID, and app ID in `.env.local` using the `NEXT_PUBLIC_FIREBASE_*` names in `.env.example`.
 3. In **Authentication → Sign-in method**, enable **GitHub**. Create a GitHub OAuth App and configure its authorization callback URL as:
 
@@ -43,7 +44,6 @@ A static, paginated directory hosted on Cloudflare Pages, with Firebase Authenti
 
 1. Install Wrangler and create a Cloudflare Pages project using Direct Upload. From a terminal, run `npx wrangler pages project create`, then enter `rehubber-directory` as the project name and `main` as the production branch. Direct Upload projects cannot later be converted to Git-integrated Pages projects. Do not configure Pages to run its own Next.js build; GitHub Actions builds the static `out/` directory and uploads it.
 2. In your GitHub repository settings, add these **Actions variables**:
-   - `FIREBASE_PROJECT_ID`
    - `NEXT_PUBLIC_FIREBASE_API_KEY`
    - `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
    - `NEXT_PUBLIC_FIREBASE_PROJECT_ID`
@@ -51,6 +51,8 @@ A static, paginated directory hosted on Cloudflare Pages, with Firebase Authenti
    - `NEXT_PUBLIC_FIREBASE_APPCHECK_SITE_KEY`
    - `CLOUDFLARE_ACCOUNT_ID`
    - `CLOUDFLARE_PAGES_PROJECT` (`rehubber-directory`)
+   Enter these as raw values without surrounding quote characters.
+   The export uses `NEXT_PUBLIC_FIREBASE_PROJECT_ID`, so the Web App settings and Firestore service account must belong to the same project.
 3. Add these **Actions secrets**:
    - `FIREBASE_SERVICE_ACCOUNT_JSON`: service-account JSON for exporting published rules. Grant only the permissions needed to read the published rules collection.
    - `CLOUDFLARE_API_TOKEN`: a Cloudflare API token scoped to Pages project deployments for this account.
