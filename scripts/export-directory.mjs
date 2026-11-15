@@ -167,8 +167,7 @@ async function getPublishedRules() {
       return firestoreRules
     }
   } catch (error) {
-    if (requireFirestore) throw error
-    console.warn('Could not fetch rules from Cloud Firestore via applet config:', error?.message || error)
+    console.warn('Could not fetch rules from Cloud Firestore via applet config; trying Admin SDK:', error?.message || error)
   }
 
   const projectId = process.env.FIREBASE_PROJECT_ID?.trim()
@@ -188,8 +187,13 @@ async function getPublishedRules() {
   if (serviceAccountJson) {
     try {
       const serviceAccount = JSON.parse(serviceAccountJson)
-      if (!serviceAccount || typeof serviceAccount !== 'object' || !serviceAccount.private_key) {
-        throw new Error('Service account JSON must be an object with private_key.')
+      if (!serviceAccount || typeof serviceAccount !== 'object' || !serviceAccount.private_key || !serviceAccount.project_id) {
+        throw new Error('Service account JSON must include project_id and private_key.')
+      }
+      if (serviceAccount.project_id !== projectId) {
+        throw new Error(
+          `FIREBASE_SERVICE_ACCOUNT_JSON targets "${serviceAccount.project_id}", but FIREBASE_PROJECT_ID is "${projectId}".`,
+        )
       }
       credential = cert(serviceAccount)
     } catch (error) {

@@ -44,7 +44,7 @@ jobs:
       - run: npm ci
       - name: Export published Firestore rules
         env:
-          FIREBASE_PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID }}
+          FIREBASE_PROJECT_ID: ${{ vars.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
           FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
         run: npm run export:directory -- --require-firestore
       - name: Build static site

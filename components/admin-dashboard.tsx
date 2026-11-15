@@ -406,7 +406,7 @@ export function AdminDashboard() {
                 </span>
               </div>
               <p className="text-xs text-muted-foreground mt-0.5">
-                Target database: <code>ai-studio-rehubberdirector-bb7eb3c1-2557-473b-a3fd-d9b61ce5fe07</code> (<code>rules</code> collection).
+                Target database: <code>(default)</code> (<code>rules</code> collection).
               </p>
             </div>
           </div>

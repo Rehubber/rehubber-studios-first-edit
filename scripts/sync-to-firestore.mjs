@@ -15,7 +15,8 @@ const app = initializeApp({
   appId: appletConfig.appId,
 })
 
-const db = getFirestore(app, appletConfig.firestoreDatabaseId)
+const databaseId = appletConfig.firestoreDatabaseId
+const db = databaseId && databaseId !== '(default)' ? getFirestore(app, databaseId) : getFirestore(app)
 const rulesDir = path.join(root, 'content', 'rules')
 const files = (await readdir(rulesDir)).filter((f) => f.endsWith('.json'))
 
