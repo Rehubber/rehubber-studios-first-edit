@@ -12,8 +12,9 @@
     "url": "https://github.com/dokku/dokku"
   },
   "url": "https://dokku.com",
-  "upvotes": 320,
-  "views": 8601,
-  "date": "28 Mar 2024",
-  "content": "A docker-powered PaaS that helps you build and manage the lifecycle of applications."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "A docker-powered PaaS that helps you build and manage the lifecycle of applications.",
+  "sortOrder": 421
 }

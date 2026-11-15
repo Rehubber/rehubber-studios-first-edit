@@ -12,8 +12,9 @@
     "url": "https://github.com/meilisearch/meilisearch"
   },
   "url": "https://www.meilisearch.com",
-  "upvotes": 370,
-  "views": 10002,
-  "date": "28 Mar 2024",
-  "content": "A lightning-fast, ultra-relevant, and typo-tolerant search engine written in Rust."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "A lightning-fast, ultra-relevant, and typo-tolerant search engine written in Rust.",
+  "sortOrder": 29
 }

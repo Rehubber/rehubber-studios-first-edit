@@ -11,8 +11,9 @@
     "url": "https://github.com/timescale"
   },
   "url": "https://github.com/timescale/timescaledb",
-  "upvotes": 379,
-  "views": 12300,
-  "date": "2024-03-20",
-  "content": "TimescaleDB: PostgreSQL extension optimized for time-series data, events, and analytics."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "TimescaleDB: PostgreSQL extension optimized for time-series data, events, and analytics.",
+  "sortOrder": 403
 }

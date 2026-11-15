@@ -11,8 +11,9 @@
     "url": "https://github.com/fastify"
   },
   "url": "https://github.com/fastify/fastify",
-  "upvotes": 327,
-  "views": 7354,
-  "date": "2024-03-20",
-  "content": "Fastify: Extremely fast and low overhead web framework for Node.js with built-in schema validation."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "Fastify: Extremely fast and low overhead web framework for Node.js with built-in schema validation.",
+  "sortOrder": 227
 }

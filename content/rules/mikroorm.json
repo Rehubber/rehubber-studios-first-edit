@@ -11,8 +11,9 @@
     "url": "https://github.com/mikro-orm"
   },
   "url": "https://github.com/mikro-orm/mikroorm",
-  "upvotes": 366,
-  "views": 10172,
-  "date": "2024-03-20",
-  "content": "MikroORM: TypeScript ORM for Node.js based on Data Mapper, Unit of Work and Identity Map patterns."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "MikroORM: TypeScript ORM for Node.js based on Data Mapper, Unit of Work and Identity Map patterns.",
+  "sortOrder": 289
 }

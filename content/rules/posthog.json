@@ -12,8 +12,9 @@
     "url": "https://github.com/PostHog/posthog"
   },
   "url": "https://posthog.com",
-  "upvotes": 405,
-  "views": 10673,
-  "date": "28 Mar 2024",
-  "content": "Open-source product analytics, session recording, feature flags, and A/B testing suite."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "Open-source product analytics, session recording, feature flags, and A/B testing suite.",
+  "sortOrder": 110
 }

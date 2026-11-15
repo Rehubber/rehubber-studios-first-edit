@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Check, CheckSquare, ExternalLink, Eye, History, LoaderCircle, Share2, Square, Trash2, X } from 'lucide-react'
+import { CheckSquare, ExternalLink, Eye, History, LoaderCircle, Square, Trash2, X } from 'lucide-react'
+import { ShareMenu } from '@/components/share-menu'
 import { UpvoteButton } from '@/components/upvote-button'
 import { useAdmin } from '@/components/admin-context'
 import { formatToolAddedDate } from '@/lib/sponsor-weeks'
@@ -25,11 +26,12 @@ function invalidateDirectoryPageCache() {
 
 export function RuleCard({
   rule,
+  onVoteChange,
 }: {
   rule: Rule
   density?: 'spacious' | 'balanced' | 'compact'
+  onVoteChange?: (slug: string, nextCount: number) => void
 }) {
-  const [copied, setCopied] = useState(false)
   const [views, setViews] = useState(rule.views ?? 0)
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -47,7 +49,7 @@ export function RuleCard({
 
   function trackView() {
     try {
-      const key = `rehubber:viewed:${rule.slug}`
+      const key = `rehubber:viewed:v2:${rule.slug}`
       if (typeof window !== 'undefined' && !window.sessionStorage.getItem(key)) {
         window.sessionStorage.setItem(key, '1')
         setViews((prev) => prev + 1)
@@ -60,7 +62,8 @@ export function RuleCard({
 
         const runUpdate = async () => {
           try {
-            const { getFirebaseClientFirestore } = await import('@/lib/firebase-client')
+            const { getFirebaseAppCheckToken, getFirebaseClientFirestore } = await import('@/lib/firebase-client')
+            await getFirebaseAppCheckToken().catch(() => '')
             const { doc, updateDoc, increment } = await import('firebase/firestore')
             const db = getFirebaseClientFirestore()
             const ruleRef = doc(db, 'rules', rule.slug)
@@ -78,35 +81,6 @@ export function RuleCard({
       }
     } catch {
       // Ignore background storage errors
-    }
-  }
-
-  async function handleShare(e: React.MouseEvent) {
-    e.preventDefault()
-    e.stopPropagation()
-    const shareUrl = rule.url || (typeof window !== 'undefined' ? window.location.href : '')
-    try {
-      if (navigator.share) {
-        await navigator.share({
-          title: rule.title,
-          text: rule.description || rule.title,
-          url: shareUrl,
-        })
-        posthog.capture('tool_shared', {
-          tool_slug: rule.slug,
-          share_method: 'native',
-        })
-      } else if (navigator.clipboard) {
-        await navigator.clipboard.writeText(shareUrl)
-        setCopied(true)
-        posthog.capture('tool_shared', {
-          tool_slug: rule.slug,
-          share_method: 'clipboard',
-        })
-        setTimeout(() => setCopied(false), 2000)
-      }
-    } catch {
-      // User cancelled share dialog
     }
   }
 
@@ -152,7 +126,7 @@ export function RuleCard({
 
   return (
     <article
-      className={`group relative flex h-full min-h-[124px] flex-col justify-between overflow-hidden rounded-xl border bg-card px-4 pt-3 pb-2.5 transition-all duration-150 ${
+      className={`group relative flex h-full min-h-[124px] flex-col justify-between overflow-visible rounded-xl border bg-card px-4 pt-3 pb-2.5 transition-all duration-150 ${
         isSelected
           ? 'border-destructive/80 bg-destructive/5 ring-2 ring-destructive/40 shadow-sm'
           : isAdminMode
@@ -257,26 +231,14 @@ export function RuleCard({
         </div>
 
         <div className="flex items-center gap-1.5">
-          <button
-            type="button"
-            onClick={handleShare}
-            className="inline-flex h-6 items-center gap-1 rounded-full px-2 text-[8px] font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground cursor-pointer"
-            aria-label={`Share ${rule.title}`}
-          >
-            {copied ? (
-              <>
-                <Check className="size-2.5 text-emerald-500" aria-hidden="true" />
-                <span className="text-emerald-500">Copied</span>
-              </>
-            ) : (
-              <>
-                <Share2 className="size-2.5" aria-hidden="true" />
-                <span>Share</span>
-              </>
-            )}
-          </button>
+          <ShareMenu
+            slug={rule.slug}
+            title={rule.title}
+            description={rule.description}
+            compact
+          />
 
-          <UpvoteButton slug={rule.slug} initialCount={rule.upvotes ?? 0} />
+          <UpvoteButton slug={rule.slug} initialCount={rule.upvotes ?? 0} onVoteChange={onVoteChange} />
         </div>
       </footer>
     </article>

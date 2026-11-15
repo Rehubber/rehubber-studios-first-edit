@@ -12,8 +12,9 @@
     "url": "https://github.com/oven-sh/bun"
   },
   "url": "https://bun.sh",
-  "upvotes": 440,
-  "views": 11934,
-  "date": "28 Mar 2024",
-  "content": "Incredibly fast JavaScript runtime, bundler, test runner, and package manager in Zig."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "Incredibly fast JavaScript runtime, bundler, test runner, and package manager in Zig.",
+  "sortOrder": 355
 }

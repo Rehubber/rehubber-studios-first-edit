@@ -12,8 +12,9 @@
     "url": "https://github.com/ggerganov/whisper.cpp"
   },
   "url": "https://github.com/ggerganov/whisper.cpp",
-  "upvotes": 375,
-  "views": 9985,
-  "date": "28 Mar 2024",
-  "content": "Port of OpenAI Whisper automatic speech recognition model in pure C/C++."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "Port of OpenAI Whisper automatic speech recognition model in pure C/C++.",
+  "sortOrder": 205
 }

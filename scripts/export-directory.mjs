@@ -74,10 +74,15 @@ function normalizeRule(data, slug) {
       ? Math.floor(data.views)
       : 0
   const date =
-    formatAddedDate(data.date) ||
     formatAddedDate(data.approvedAt) ||
-    formatAddedDate(data.createdAt) ||
-    formatAddedDate(data.syncedAt)
+    formatAddedDate(data.date) ||
+    formatAddedDate(data.syncedAt) ||
+    formatAddedDate(data.createdAt)
+
+  const sortOrder =
+    typeof data.sortOrder === 'number' && Number.isFinite(data.sortOrder)
+      ? Math.floor(data.sortOrder)
+      : undefined
 
   return {
     slug,
@@ -88,10 +93,27 @@ function normalizeRule(data, slug) {
     content,
     upvotes,
     views,
+    ...(sortOrder !== undefined ? { sortOrder } : {}),
     ...(date ? { date } : {}),
     url: typeof data.url === 'string' ? data.url : undefined,
     showShare: Boolean(data.showShare),
   }
+}
+
+function compareDirectoryRules(a, b) {
+  const aVotes = typeof a.upvotes === 'number' && a.upvotes > 0 ? a.upvotes : 0
+  const bVotes = typeof b.upvotes === 'number' && b.upvotes > 0 ? b.upvotes : 0
+  if (aVotes !== bVotes) {
+    return bVotes - aVotes
+  }
+
+  const aOrder = typeof a.sortOrder === 'number' ? a.sortOrder : Number.MAX_SAFE_INTEGER
+  const bOrder = typeof b.sortOrder === 'number' ? b.sortOrder : Number.MAX_SAFE_INTEGER
+  if (aOrder !== bOrder) {
+    return aOrder - bOrder
+  }
+
+  return a.slug.localeCompare(b.slug)
 }
 
 async function getLocalRules() {
@@ -102,19 +124,31 @@ async function getLocalRules() {
       return normalizeRule(data, file.replace(/\.json$/, ''))
     }),
   )
-  return rules.filter(Boolean).sort((a, b) => a.slug.localeCompare(b.slug))
+  return rules.filter(Boolean).sort(compareDirectoryRules)
 }
 
-async function getPublishedRulesFromClientSdk() {
-  const configPath = path.join(root, 'firebase-applet-config.json')
-  let appletConfig
-  try {
-    appletConfig = JSON.parse(await readFile(configPath, 'utf8'))
-  } catch {
-    return null
+function cleanEnvValue(value) {
+  if (!value) return ''
+  return String(value).trim().replace(/^['"]+|['"]+$/g, '')
+}
+
+async function getPublishedRulesFromClientSdk(configSource) {
+  let config = configSource
+  if (!config) {
+    const configPath = path.join(root, 'firebase-applet-config.json')
+    try {
+      config = JSON.parse(await readFile(configPath, 'utf8'))
+    } catch {
+      return null
+    }
   }
 
-  if (!appletConfig?.apiKey || !appletConfig?.projectId || !appletConfig?.appId) {
+  const apiKey = cleanEnvValue(config?.apiKey)
+  const projectId = cleanEnvValue(config?.projectId)
+  const appId = cleanEnvValue(config?.appId)
+  const firestoreDatabaseId = cleanEnvValue(config?.firestoreDatabaseId)
+
+  if (!apiKey || !projectId || !appId) {
     return null
   }
 
@@ -123,18 +157,15 @@ async function getPublishedRulesFromClientSdk() {
 
   const app = initializeApp(
     {
-      apiKey: appletConfig.apiKey,
-      projectId: appletConfig.projectId,
-      appId: appletConfig.appId,
+      apiKey,
+      projectId,
+      appId,
     },
     `export-directory-${Date.now()}`,
   )
 
   try {
-    const dbId =
-      appletConfig.firestoreDatabaseId && appletConfig.firestoreDatabaseId !== '(default)'
-        ? appletConfig.firestoreDatabaseId
-        : undefined
+    const dbId = firestoreDatabaseId && firestoreDatabaseId !== '(default)' ? firestoreDatabaseId : undefined
     const db = dbId ? getFirestore(app, dbId) : getFirestore(app)
     const collectionName = process.env.FIRESTORE_RULES_COLLECTION?.trim() || 'rules'
     const q = query(collection(db, collectionName), where('status', '==', 'published'))
@@ -142,7 +173,7 @@ async function getPublishedRulesFromClientSdk() {
     const rules = snapshot.docs
       .map((doc) => normalizeRule(doc.data(), doc.id))
       .filter(Boolean)
-      .sort((a, b) => a.slug.localeCompare(b.slug))
+      .sort(compareDirectoryRules)
 
     if (!rules.length) {
       if (requireFirestore) {
@@ -151,7 +182,7 @@ async function getPublishedRulesFromClientSdk() {
       return null
     }
 
-    console.log(`Exporting ${rules.length} published rules from Cloud Firestore (${appletConfig.projectId}).`)
+    console.log(`Exporting ${rules.length} published rules from Cloud Firestore (${projectId}).`)
     return rules
   } finally {
     await deleteApp(app).catch(() => {})
@@ -160,6 +191,84 @@ async function getPublishedRulesFromClientSdk() {
 
 async function getPublishedRules() {
   if (localOnly) return getLocalRules()
+
+  const projectId = cleanEnvValue(process.env.FIREBASE_PROJECT_ID)
+  const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT_JSON?.trim()
+  const clientEmail = cleanEnvValue(process.env.FIREBASE_CLIENT_EMAIL)
+  const privateKey = process.env.FIREBASE_PRIVATE_KEY?.trim().replace(/\\n/g, '\n')
+
+  if (projectId && (serviceAccountJson || (clientEmail && privateKey))) {
+    let credential
+    if (serviceAccountJson) {
+      try {
+        const serviceAccount = JSON.parse(serviceAccountJson)
+        if (!serviceAccount || typeof serviceAccount !== 'object' || !serviceAccount.private_key) {
+          throw new Error('Service account JSON must be an object with private_key.')
+        }
+        credential = cert(serviceAccount)
+      } catch (error) {
+        if (requireFirestore) {
+          throw new Error('FIREBASE_SERVICE_ACCOUNT_JSON must contain valid service-account JSON.', { cause: error })
+        }
+        console.warn('Invalid FIREBASE_SERVICE_ACCOUNT_JSON; checking client SDK fallback.')
+        credential = null
+      }
+    } else {
+      credential = cert({ projectId, clientEmail, privateKey })
+    }
+
+    if (credential) {
+      const app =
+        getApps()[0] ??
+        initializeApp({
+          credential,
+          projectId,
+        })
+      try {
+        const db = getFirestore(app)
+        const collectionName = process.env.FIRESTORE_RULES_COLLECTION?.trim() || 'rules'
+        const snapshot = await db
+          .collection(collectionName)
+          .where('status', '==', 'published')
+          .get()
+        const rules = snapshot.docs
+          .map((doc) => normalizeRule(doc.data(), doc.id))
+          .filter(Boolean)
+          .sort(compareDirectoryRules)
+
+        if (!rules.length) {
+          throw new Error('Firestore has no published rules; refusing to replace the directory snapshot with an empty export.')
+        }
+
+        console.log(`Exporting ${rules.length} published rules from Cloud Firestore (${projectId}) via Admin SDK.`)
+        return rules
+      } finally {
+        await app.delete()
+      }
+    }
+  }
+
+  const envClientProjectId = cleanEnvValue(process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID)
+  const envClientApiKey = cleanEnvValue(process.env.NEXT_PUBLIC_FIREBASE_API_KEY)
+  const envClientAppId = cleanEnvValue(process.env.NEXT_PUBLIC_FIREBASE_APP_ID)
+  const envClientDbId = cleanEnvValue(process.env.NEXT_PUBLIC_FIRESTORE_DATABASE_ID) || '(default)'
+
+  if (envClientProjectId && envClientApiKey && envClientAppId) {
+    try {
+      const envRules = await getPublishedRulesFromClientSdk({
+        projectId: envClientProjectId,
+        apiKey: envClientApiKey,
+        appId: envClientAppId,
+        firestoreDatabaseId: envClientDbId,
+      })
+      if (envRules && envRules.length > 0) {
+        return envRules
+      }
+    } catch (error) {
+      if (requireFirestore) throw error
+      console.warn('Could not fetch rules from Cloud Firestore via NEXT_PUBLIC_FIREBASE_* env:', error?.message || error)
+    }
+  }
 
   try {
     const firestoreRules = await getPublishedRulesFromClientSdk()
@@ -171,64 +280,11 @@ async function getPublishedRules() {
     console.warn('Could not fetch rules from Cloud Firestore via applet config:', error?.message || error)
   }
 
-  const projectId = process.env.FIREBASE_PROJECT_ID?.trim()
-  const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT_JSON?.trim()
-  const clientEmail = process.env.FIREBASE_CLIENT_EMAIL?.trim()
-  const privateKey = process.env.FIREBASE_PRIVATE_KEY?.trim().replace(/\\n/g, '\n')
-
-  if (!projectId || (!serviceAccountJson && (!clientEmail || !privateKey))) {
-    if (requireFirestore) {
-      throw new Error('Production export requires Firebase credentials or applet config; refusing to publish local JSON.')
-    }
-    console.log('Firebase export credentials are absent; exporting checked-in rule JSON.')
-    return getLocalRules()
+  if (requireFirestore) {
+    throw new Error('Production export requires Firebase credentials or applet config; refusing to publish local JSON.')
   }
-
-  let credential
-  if (serviceAccountJson) {
-    try {
-      const serviceAccount = JSON.parse(serviceAccountJson)
-      if (!serviceAccount || typeof serviceAccount !== 'object' || !serviceAccount.private_key) {
-        throw new Error('Service account JSON must be an object with private_key.')
-      }
-      credential = cert(serviceAccount)
-    } catch (error) {
-      if (requireFirestore) {
-        throw new Error('FIREBASE_SERVICE_ACCOUNT_JSON must contain valid service-account JSON.', { cause: error })
-      }
-      console.warn('Invalid FIREBASE_SERVICE_ACCOUNT_JSON; exporting checked-in rule JSON.')
-      return getLocalRules()
-    }
-  } else {
-    credential = cert({ projectId, clientEmail, privateKey })
-  }
-
-  const app =
-    getApps()[0] ??
-    initializeApp({
-      credential,
-      projectId,
-    })
-  try {
-    const db = getFirestore(app)
-    const collectionName = process.env.FIRESTORE_RULES_COLLECTION?.trim() || 'rules'
-    const snapshot = await db
-      .collection(collectionName)
-      .where('status', '==', 'published')
-      .get()
-    const rules = snapshot.docs
-      .map((doc) => normalizeRule(doc.data(), doc.id))
-      .filter(Boolean)
-      .sort((a, b) => a.slug.localeCompare(b.slug))
-
-    if (!rules.length) {
-      throw new Error('Firestore has no published rules; refusing to replace the directory snapshot with an empty export.')
-    }
-
-    return rules
-  } finally {
-    await app.delete()
-  }
+  console.log('Firebase export credentials are absent; exporting checked-in rule JSON.')
+  return getLocalRules()
 }
 
 const rules = await getPublishedRules()

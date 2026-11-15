@@ -11,8 +11,9 @@
     "url": "https://github.com/seaweedfs"
   },
   "url": "https://github.com/seaweedfs/seaweedfs",
-  "upvotes": 336,
-  "views": 8610,
-  "date": "2024-03-20",
-  "content": "SeaweedFS: Fast distributed storage system for blobs, objects, files, and data lake buckets."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "SeaweedFS: Fast distributed storage system for blobs, objects, files, and data lake buckets.",
+  "sortOrder": 367
 }

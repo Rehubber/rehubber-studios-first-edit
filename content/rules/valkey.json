@@ -12,8 +12,9 @@
     "url": "https://github.com/valkey-io/valkey"
   },
   "url": "https://valkey.io",
-  "upvotes": 290,
-  "views": 7858,
-  "date": "28 Mar 2024",
-  "content": "An open source, high-performance in-memory key/value datastore continuation of Redis."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "An open source, high-performance in-memory key/value datastore continuation of Redis.",
+  "sortOrder": 26
 }

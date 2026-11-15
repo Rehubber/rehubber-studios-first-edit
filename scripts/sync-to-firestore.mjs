@@ -1,37 +1,58 @@
 import { readdir, readFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { initializeApp } from '@firebase/app'
-import { doc, getFirestore, serverTimestamp, writeBatch } from '@firebase/firestore'
+import nextEnv from '@next/env'
+import { cert, getApps, initializeApp } from 'firebase-admin/app'
+import { FieldValue, getFirestore } from 'firebase-admin/firestore'
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
-const appletConfig = JSON.parse(await readFile(path.join(root, 'firebase-applet-config.json'), 'utf8'))
+const { loadEnvConfig } = nextEnv
+loadEnvConfig(root)
 
-console.log('Connecting to project:', appletConfig.projectId, 'database:', appletConfig.firestoreDatabaseId)
+const clean = (v) => (v ? String(v).trim().replace(/^['"]+|['"]+$/g, '') : '')
+const projectId = clean(process.env.FIREBASE_PROJECT_ID)
+const serviceAccountJson = process.env.FIREBASE_SERVICE_ACCOUNT_JSON?.trim()
+const clientEmail = clean(process.env.FIREBASE_CLIENT_EMAIL)
+const privateKey = process.env.FIREBASE_PRIVATE_KEY?.trim().replace(/\\n/g, '\n')
 
-const app = initializeApp({
-  apiKey: appletConfig.apiKey,
-  projectId: appletConfig.projectId,
-  appId: appletConfig.appId,
-})
+let credential
+if (serviceAccountJson) {
+  credential = cert(JSON.parse(serviceAccountJson))
+} else if (projectId && clientEmail && privateKey) {
+  credential = cert({ projectId, clientEmail, privateKey })
+}
 
-const db = getFirestore(app, appletConfig.firestoreDatabaseId)
+if (!projectId || !credential) {
+  throw new Error(
+    'Admin SDK credentials required so firestore.rules never have to be opened. Set FIREBASE_PROJECT_ID and FIREBASE_SERVICE_ACCOUNT_JSON (or FIREBASE_CLIENT_EMAIL + FIREBASE_PRIVATE_KEY).',
+  )
+}
+
+const app =
+  getApps()[0] ??
+  initializeApp({
+    credential,
+    projectId,
+  })
+
+const db = getFirestore(app)
+const collectionName = process.env.FIRESTORE_RULES_COLLECTION?.trim() || 'rules'
 const rulesDir = path.join(root, 'content', 'rules')
 const files = (await readdir(rulesDir)).filter((f) => f.endsWith('.json'))
 
-console.log(`Found ${files.length} tools in content/rules/ to sync to Cloud Firestore...`)
+console.log(`Syncing ${files.length} tools to ${projectId} (${collectionName}) via Firebase Admin SDK...`)
 
 const BATCH_SIZE = 150
 let totalUploaded = 0
 
 for (let i = 0; i < files.length; i += BATCH_SIZE) {
   const chunk = files.slice(i, i + BATCH_SIZE)
-  const batch = writeBatch(db)
+  const batch = db.batch()
 
   for (const file of chunk) {
     const slug = file.replace(/\.json$/, '')
     const data = JSON.parse(await readFile(path.join(rulesDir, file), 'utf8'))
-    const docRef = doc(db, 'rules', slug)
+    const docRef = db.collection(collectionName).doc(slug)
 
     batch.set(
       docRef,
@@ -43,12 +64,13 @@ for (let i = 0; i < files.length; i += BATCH_SIZE) {
         tags: Array.isArray(data.tags) ? data.tags : [],
         author: typeof data.author === 'object' && data.author ? data.author : { name: data.authorName || 'directory' },
         url: typeof data.url === 'string' ? data.url : '',
+        ...(typeof data.sortOrder === 'number' ? { sortOrder: data.sortOrder } : {}),
         date: typeof data.date === 'string' ? data.date : '',
         status: 'published',
         upvotes: typeof data.upvotes === 'number' ? data.upvotes : 0,
         views: typeof data.views === 'number' ? data.views : 0,
         source: 'local-seed',
-        syncedAt: serverTimestamp(),
+        syncedAt: FieldValue.serverTimestamp(),
       },
       { merge: true },
     )
@@ -56,8 +78,8 @@ for (let i = 0; i < files.length; i += BATCH_SIZE) {
 
   await batch.commit()
   totalUploaded += chunk.length
-  console.log(`Uploaded batch: ${totalUploaded} / ${files.length} tools to Firestore...`)
+  console.log(`Uploaded batch: ${totalUploaded} / ${files.length} tools...`)
 }
 
-console.log(`\n🎉 Successfully synced all ${totalUploaded} tools to Cloud Firestore!`)
+console.log(`Successfully synced all ${totalUploaded} tools to ${projectId} (${collectionName}).`)
 process.exit(0)

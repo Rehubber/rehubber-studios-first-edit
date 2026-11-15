@@ -12,8 +12,9 @@
     "url": "https://github.com/drizzle-team/drizzle-orm"
   },
   "url": "https://orm.drizzle.team",
-  "upvotes": 390,
-  "views": 10442,
-  "date": "28 Mar 2024",
-  "content": "TypeScript ORM that lets you write type-safe SQL queries with zero overhead and full control."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "TypeScript ORM that lets you write type-safe SQL queries with zero overhead and full control.",
+  "sortOrder": 259
 }

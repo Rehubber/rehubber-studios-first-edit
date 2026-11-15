@@ -9,20 +9,59 @@ import appletConfig from '@/firebase-applet-config.json'
 
 let appCheckInstance: AppCheck | null = null
 
-export function getFirebaseConfig() {
-  const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY || appletConfig.apiKey || ''
-  const authDomain = process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || appletConfig.authDomain || ''
-  const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || appletConfig.projectId || ''
-  const appId = process.env.NEXT_PUBLIC_FIREBASE_APP_ID || appletConfig.appId || ''
-  const firestoreDatabaseId =
-    process.env.NEXT_PUBLIC_FIRESTORE_DATABASE_ID || appletConfig.firestoreDatabaseId || '(default)'
+function cleanConfigValue(value?: string): string {
+  if (!value) return ''
+  return value.trim().replace(/^['"]+|['"]+$/g, '')
+}
 
-  return { apiKey, authDomain, projectId, appId, firestoreDatabaseId }
+export function getFirebaseConfig() {
+  const envApiKey = cleanConfigValue(process.env.NEXT_PUBLIC_FIREBASE_API_KEY)
+  const envAuthDomain = cleanConfigValue(process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN)
+  const envProjectId = cleanConfigValue(process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID)
+  const envAppId = cleanConfigValue(process.env.NEXT_PUBLIC_FIREBASE_APP_ID)
+  const envDbId = cleanConfigValue(process.env.NEXT_PUBLIC_FIRESTORE_DATABASE_ID)
+
+  if (envApiKey && envProjectId && envAppId) {
+    return {
+      apiKey: envApiKey,
+      authDomain: envAuthDomain || `${envProjectId}.firebaseapp.com`,
+      projectId: envProjectId,
+      appId: envAppId,
+      firestoreDatabaseId: envDbId || '(default)',
+    }
+  }
+
+  return {
+    apiKey: cleanConfigValue(appletConfig.apiKey),
+    authDomain: cleanConfigValue(appletConfig.authDomain),
+    projectId: cleanConfigValue(appletConfig.projectId),
+    appId: cleanConfigValue(appletConfig.appId),
+    firestoreDatabaseId: cleanConfigValue(appletConfig.firestoreDatabaseId) || '(default)',
+  }
 }
 
 export function isFirebaseConfigured(): boolean {
   const cfg = getFirebaseConfig()
   return Boolean(cfg.apiKey && cfg.projectId && cfg.appId)
+}
+
+export function ensureFirebaseAppCheck(app = getApps()[0]) {
+  if (typeof window === 'undefined' || !app) return null
+  const siteKey = cleanConfigValue(process.env.NEXT_PUBLIC_FIREBASE_APPCHECK_SITE_KEY)
+  if (!siteKey) return null
+
+  if (!appCheckInstance) {
+    try {
+      appCheckInstance = initializeAppCheck(app, {
+        provider: new ReCaptchaV3Provider(siteKey),
+        isTokenAutoRefreshEnabled: true,
+      })
+    } catch {
+      return null
+    }
+  }
+
+  return appCheckInstance
 }
 
 export function getFirebaseClientApp() {
@@ -32,7 +71,7 @@ export function getFirebaseClientApp() {
     throw new Error('Firebase Web App config is missing. Add the NEXT_PUBLIC_FIREBASE_* values to the environment.')
   }
 
-  return (
+  const app =
     getApps()[0] ??
     initializeApp({
       apiKey: cfg.apiKey,
@@ -40,7 +79,9 @@ export function getFirebaseClientApp() {
       projectId: cfg.projectId,
       appId: cfg.appId,
     })
-  )
+
+  ensureFirebaseAppCheck(app)
+  return app
 }
 
 export function getFirebaseClientAuth() {
@@ -123,18 +164,11 @@ export function handleFirestoreError(error: unknown, operationType: OperationTyp
 }
 
 export async function getFirebaseAppCheckToken(): Promise<string> {
-  const siteKey = process.env.NEXT_PUBLIC_FIREBASE_APPCHECK_SITE_KEY
-  if (!siteKey) {
+  const instance = ensureFirebaseAppCheck(getFirebaseClientApp())
+  if (!instance) {
     return ''
   }
 
-  if (!appCheckInstance) {
-    appCheckInstance = initializeAppCheck(getFirebaseClientApp(), {
-      provider: new ReCaptchaV3Provider(siteKey),
-      isTokenAutoRefreshEnabled: true,
-    })
-  }
-
-  const tokenResult = await getToken(appCheckInstance)
+  const tokenResult = await getToken(instance)
   return tokenResult.token ?? ''
 }

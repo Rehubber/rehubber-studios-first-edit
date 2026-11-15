@@ -12,8 +12,9 @@
     "url": "https://github.com/jesseduffield/lazygit"
   },
   "url": "https://github.com/jesseduffield/lazygit",
-  "upvotes": 395,
-  "views": 10272,
-  "date": "28 Mar 2024",
-  "content": "Simple terminal UI for git commands, written in Go with the gocui library."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "Simple terminal UI for git commands, written in Go with the gocui library.",
+  "sortOrder": 268
 }

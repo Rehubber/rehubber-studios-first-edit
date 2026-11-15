@@ -11,8 +11,9 @@
     "url": "https://github.com/apache"
   },
   "url": "https://github.com/apache/apache-cassandra",
-  "upvotes": 402,
-  "views": 9987,
-  "date": "2024-03-20",
-  "content": "Apache Cassandra: Distributed wide-column store designed to handle large amounts of data across servers."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "Apache Cassandra: Distributed wide-column store designed to handle large amounts of data across servers.",
+  "sortOrder": 180
 }

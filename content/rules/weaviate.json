@@ -12,8 +12,9 @@
     "url": "https://github.com/weaviate/weaviate"
   },
   "url": "https://weaviate.io",
-  "upvotes": 290,
-  "views": 7660,
-  "date": "28 Mar 2024",
-  "content": "Open-source vector database that stores both objects and vectors with multi-modal search."
+  "upvotes": 0,
+  "views": 0,
+  "date": "2026-11-15",
+  "content": "Open-source vector database that stores both objects and vectors with multi-modal search.",
+  "sortOrder": 66
 }
