@@ -39,7 +39,15 @@ A static, paginated directory hosted on Cloudflare Pages, with Firebase Authenti
    ```
 
    This one-time script requires `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, and `FIREBASE_PRIVATE_KEY` in `.env.local`. Never use these credentials in frontend variables or commit them.
-7. Open `/admin` and sign in with GitHub. The page shows the account's Firebase UID. In the Firebase Console, create `moderators/<UID>` with the boolean field `enabled: true`. Only accounts with this Firestore document can read the queue or moderate.
+7. For additive CSV imports, use a CSV with `name`, `description`, and `repository` columns (a header row is optional). Preview first; existing slugs are skipped and never overwritten:
+
+   ```bash
+   npm run import:directory -- "path/to/tools.csv"
+   npm run import:directory -- "path/to/tools.csv" --apply
+   ```
+
+   The importer requires Firebase Admin credentials in `.env.local`, verifies the configured project, and sets new tools' counters to zero. After importing, run the directory deployment workflow to publish the additions.
+8. Open `/admin` and sign in with GitHub. The page shows the account's Firebase UID. In the Firebase Console, create `moderators/<UID>` with the boolean field `enabled: true`. Only accounts with this Firestore document can read the queue or moderate.
 
 ## Cloudflare Pages deployment
 
