@@ -35,6 +35,17 @@ function isDirectoryPage(value: unknown): value is DirectoryPage {
   return Array.isArray(page.rules) && Number.isSafeInteger(page.page) && typeof page.hasMore === 'boolean'
 }
 
+function getDirectoryPageForSlug(manifest: unknown, slug: string): number | null {
+  if (!manifest || typeof manifest !== 'object') return null
+  const rulePageBySlug = (manifest as { rulePageBySlug?: unknown }).rulePageBySlug
+  if (!rulePageBySlug || typeof rulePageBySlug !== 'object' || Array.isArray(rulePageBySlug)) return null
+
+  const pageNumber = (rulePageBySlug as Record<string, unknown>)[slug]
+  return typeof pageNumber === 'number' && Number.isSafeInteger(pageNumber) && pageNumber > 0
+    ? pageNumber
+    : null
+}
+
 async function loadDirectoryPage(pageNumber: number, snapshotTag: string): Promise<DirectoryPage> {
   const cacheKey = `${DIRECTORY_CACHE_PREFIX}${snapshotTag}:${pageNumber}`
   try {
@@ -75,6 +86,7 @@ export function RuleExplorer({ initialPage }: { initialPage: DirectoryPage }) {
   const [loadingMore, setLoadingMore] = useState(false)
   const [loadError, setLoadError] = useState<string | null>(null)
   const [loadedPage, setLoadedPage] = useState(initialPage.page)
+  const [highlightedSlug, setHighlightedSlug] = useState<string | null>(null)
   const snapshotTag = initialPage.rules[0]?.slug ?? 'empty'
 
   const [bulkDeleting, setBulkDeleting] = useState(false)
@@ -102,6 +114,52 @@ export function RuleExplorer({ initialPage }: { initialPage: DirectoryPage }) {
       // Ignore storage errors
     }
   }, [])
+
+  useEffect(() => {
+    const targetSlug = new URLSearchParams(window.location.search).get('tool')
+    if (targetSlug === null) return
+    const slug = targetSlug
+
+    let cancelled = false
+    async function loadTargetTool() {
+      try {
+        const response = await fetch('/directory/manifest.json')
+        if (!response.ok) throw new Error('Could not locate this tool on the homepage. Please try again.')
+        const manifest: unknown = await response.json()
+        const targetPage = getDirectoryPageForSlug(manifest, slug)
+        if (targetPage === null) throw new Error('Could not find this tool on the homepage.')
+
+        const page = await loadDirectoryPage(targetPage, snapshotTag)
+        if (cancelled) return
+
+        setRules((current) => {
+          const knownSlugs = new Set(current.map((rule) => rule.slug))
+          return [...current, ...page.rules.filter((rule) => !knownSlugs.has(rule.slug))].sort(compareDirectoryRules)
+        })
+        setHighlightedSlug(slug)
+      } catch (error) {
+        if (!cancelled) {
+          setLoadError(error instanceof Error ? error.message : 'Could not open this tool on the homepage.')
+        }
+      }
+    }
+
+    void loadTargetTool()
+    return () => {
+      cancelled = true
+    }
+  }, [snapshotTag])
+
+  useEffect(() => {
+    if (!highlightedSlug) return
+    const card = document.getElementById(`tool-${highlightedSlug}`)
+    if (!card) return
+
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    card.focus({ preventScroll: true })
+    const timeout = window.setTimeout(() => setHighlightedSlug(null), 3000)
+    return () => window.clearTimeout(timeout)
+  }, [highlightedSlug, rules.length])
 
   // Filter out any tools deleted by an authenticated admin
   const visibleRules = rules.filter((rule) => !deletedSlugs.has(rule.slug))
@@ -304,6 +362,7 @@ export function RuleExplorer({ initialPage }: { initialPage: DirectoryPage }) {
                     <RuleCard
                       rule={rule}
                       density="compact"
+                      highlighted={highlightedSlug === rule.slug}
                       onVoteChange={handleVoteChange}
                     />
                   </div>

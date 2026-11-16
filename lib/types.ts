@@ -49,6 +49,7 @@ export type DirectoryManifest = {
   pages: number
   pageSize: number
   ruleCount: number
+  rulePageBySlug?: Record<string, number>
 }
 
 export type SponsorBooking = {

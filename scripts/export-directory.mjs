@@ -303,6 +303,9 @@ for (const entry of await readdir(outputPagesDirectory, { withFileTypes: true })
 }
 
 const pageCount = Math.ceil(rules.length / pageSize)
+const rulePageBySlug = Object.fromEntries(
+  rules.map((rule, index) => [rule.slug, Math.floor(index / pageSize) + 1]),
+)
 for (let page = 1; page <= pageCount; page += 1) {
   const pageRules = rules.slice((page - 1) * pageSize, page * pageSize)
   const data = {
@@ -319,7 +322,7 @@ for (let page = 1; page <= pageCount; page += 1) {
 
 await writeFile(
   path.join(outputDirectory, 'manifest.json'),
-  `${JSON.stringify({ pages: pageCount, pageSize, ruleCount: rules.length })}\n`,
+  `${JSON.stringify({ pages: pageCount, pageSize, ruleCount: rules.length, rulePageBySlug })}\n`,
   'utf8',
 )
 

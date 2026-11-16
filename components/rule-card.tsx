@@ -27,10 +27,12 @@ function invalidateDirectoryPageCache() {
 export function RuleCard({
   rule,
   onVoteChange,
+  highlighted = false,
 }: {
   rule: Rule
   density?: 'spacious' | 'balanced' | 'compact'
   onVoteChange?: (slug: string, nextCount: number) => void
+  highlighted?: boolean
 }) {
   const [views, setViews] = useState(rule.views ?? 0)
   const [confirmDelete, setConfirmDelete] = useState(false)
@@ -126,13 +128,15 @@ export function RuleCard({
 
   return (
     <article
+      id={`tool-${rule.slug}`}
+      tabIndex={highlighted ? -1 : undefined}
       className={`group relative flex h-full min-h-[124px] flex-col justify-between overflow-visible rounded-xl border bg-card px-4 pt-3 pb-2.5 transition-all duration-150 ${
         isSelected
           ? 'border-destructive/80 bg-destructive/5 ring-2 ring-destructive/40 shadow-sm'
           : isAdminMode
             ? 'border-border/90 hover:border-amber-500/50 hover:bg-card/90'
             : 'border-border hover:border-primary/40 hover:bg-card/90'
-      }`}
+      } ${highlighted ? 'ring-2 ring-primary ring-offset-2 ring-offset-background shadow-lg' : ''}`}
     >
       {/* Admin Mode Overlay Bar */}
       {isAdminMode && (

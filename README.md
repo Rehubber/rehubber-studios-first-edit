@@ -6,6 +6,7 @@ A static, paginated directory hosted on Cloudflare Pages, with Firebase Authenti
 
 - The build exports published Firestore rules into compact JSON pages, then generates a static Next.js export in `out/`.
 - The homepage is static HTML with the first 24 rules. “Load more” fetches static JSON files from the CDN, not Firestore.
+- Homepage links to individual tools use the directory manifest to load and highlight the matching card, including tools on later pages.
 - Additional JSON pages are cached in `localStorage` for one hour.
 - Submissions are written directly to the private `submissions` collection and stay pending until a moderator approves them.
 - Moderation and voting use the Firebase Web SDK. Firestore Security Rules authorize each operation; the `/admin` route being hard to guess is not a security control.

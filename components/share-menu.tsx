@@ -78,6 +78,7 @@ export function ShareMenu({
 
   const origin = buildShareOrigin()
   const shareUrl = `${origin}/tool/${slug}/`
+  const homepageToolUrl = `/?tool=${encodeURIComponent(slug)}`
   const shareText = description ? `${title} — ${description}` : `Check out ${title} on Rehubber`
 
   function trackShare(method: string) {
@@ -273,11 +274,11 @@ export function ShareMenu({
 
               <div className="mt-3 border-t border-border/70 pt-2.5">
                 <Link
-                  href={`/tool/${slug}/`}
+                  href={homepageToolUrl}
                   onClick={() => setOpen(false)}
                   className="inline-flex items-center gap-1.5 text-[11px] font-medium text-primary hover:underline"
                 >
-                  <span>View card page on Rehubber</span>
+                  <span>Find this tool on the homepage</span>
                   <ExternalLink className="size-3" aria-hidden="true" />
                 </Link>
               </div>

@@ -40,6 +40,6 @@ export async function getDirectoryManifest(): Promise<DirectoryManifest> {
   try {
     return JSON.parse(await fs.readFile(filePath, 'utf8')) as DirectoryManifest
   } catch {
-    return { pages: 1, pageSize: DIRECTORY_PAGE_SIZE, ruleCount: 0 }
+    return { pages: 1, pageSize: DIRECTORY_PAGE_SIZE, ruleCount: 0, rulePageBySlug: {} }
   }
 }
