@@ -19,7 +19,7 @@ interface ToolSeed {
   content?: string
 }
 
-const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?: string }> = [
+const rawTools: Array<Omit<ToolSeed, 'upvotes' | 'views' | 'date'> & { date?: string }> = [
   // --- AI & LLM FRAMEWORKS & TOOLS ---
   {
     slug: 'ollama',
@@ -28,7 +28,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'LLM', 'Local Models'],
     author: { name: 'ollama', url: 'https://github.com/ollama/ollama' },
     url: 'https://ollama.com',
-    upvotes: 412,
   },
   {
     slug: 'vllm',
@@ -37,7 +36,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'Inference', 'Serving'],
     author: { name: 'vllm-project', url: 'https://github.com/vllm-project/vllm' },
     url: 'https://vllm.ai',
-    upvotes: 388,
   },
   {
     slug: 'langchain',
@@ -46,7 +44,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'Framework', 'Agents'],
     author: { name: 'langchain-ai', url: 'https://github.com/langchain-ai/langchain' },
     url: 'https://www.langchain.com',
-    upvotes: 395,
   },
   {
     slug: 'llamaindex',
@@ -55,7 +52,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'RAG', 'Search'],
     author: { name: 'run-llama', url: 'https://github.com/run-llama/llama_index' },
     url: 'https://www.llamaindex.ai',
-    upvotes: 340,
   },
   {
     slug: 'open-webui',
@@ -64,7 +60,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'WebUI', 'Chat'],
     author: { name: 'open-webui', url: 'https://github.com/open-webui/open-webui' },
     url: 'https://openwebui.com',
-    upvotes: 380,
   },
   {
     slug: 'localai',
@@ -73,7 +68,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'Self-Hosted', 'API'],
     author: { name: 'mudler', url: 'https://github.com/mudler/LocalAI' },
     url: 'https://localai.io',
-    upvotes: 275,
   },
   {
     slug: 'dify',
@@ -82,7 +76,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'LLMOps', 'Workflow'],
     author: { name: 'langgenius', url: 'https://github.com/langgenius/dify' },
     url: 'https://dify.ai',
-    upvotes: 360,
   },
   {
     slug: 'flowise',
@@ -91,7 +84,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'No-Code', 'Agents'],
     author: { name: 'FlowiseAI', url: 'https://github.com/FlowiseAI/Flowise' },
     url: 'https://flowiseai.com',
-    upvotes: 310,
   },
   {
     slug: 'litellm',
@@ -100,7 +92,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'Proxy', 'Gateway'],
     author: { name: 'BerriAI', url: 'https://github.com/BerriAI/litellm' },
     url: 'https://litellm.ai',
-    upvotes: 295,
   },
   {
     slug: 'fastembed',
@@ -109,7 +100,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'Embeddings', 'Search'],
     author: { name: 'qdrant', url: 'https://github.com/qdrant/fastembed' },
     url: 'https://qdrant.github.io/fastembed/',
-    upvotes: 215,
   },
   {
     slug: 'chroma',
@@ -118,7 +108,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'Database', 'Vector DB'],
     author: { name: 'chroma-core', url: 'https://github.com/chroma-core/chroma' },
     url: 'https://www.trychroma.com',
-    upvotes: 345,
   },
   {
     slug: 'qdrant',
@@ -127,7 +116,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'Vector DB', 'Search'],
     author: { name: 'qdrant', url: 'https://github.com/qdrant/qdrant' },
     url: 'https://qdrant.tech',
-    upvotes: 330,
   },
   {
     slug: 'weaviate',
@@ -136,7 +124,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'Vector DB', 'Multi-Modal'],
     author: { name: 'weaviate', url: 'https://github.com/weaviate/weaviate' },
     url: 'https://weaviate.io',
-    upvotes: 290,
   },
   {
     slug: 'milvus',
@@ -145,7 +132,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'Vector DB', 'Big Data'],
     author: { name: 'milvus-io', url: 'https://github.com/milvus-io/milvus' },
     url: 'https://milvus.io',
-    upvotes: 270,
   },
   {
     slug: 'lancedb',
@@ -154,7 +140,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'Vector DB', 'Serverless'],
     author: { name: 'lancedb', url: 'https://github.com/lancedb/lancedb' },
     url: 'https://lancedb.com',
-    upvotes: 240,
   },
   {
     slug: 'autogpt',
@@ -163,7 +148,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'Agents', 'Autonomous'],
     author: { name: 'Significant-Gravitas', url: 'https://github.com/Significant-Gravitas/AutoGPT' },
     url: 'https://agpt.co',
-    upvotes: 390,
   },
   {
     slug: 'privategpt',
@@ -172,7 +156,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'Privacy', 'Offline'],
     author: { name: 'zylon-ai', url: 'https://github.com/zylon-ai/private-gpt' },
     url: 'https://privategpt.dev',
-    upvotes: 315,
   },
   {
     slug: 'crewai',
@@ -181,7 +164,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'Agents', 'Multi-Agent'],
     author: { name: 'crewAIInc', url: 'https://github.com/crewAIInc/crewAI' },
     url: 'https://www.crewai.com',
-    upvotes: 355,
   },
   {
     slug: 'autogen',
@@ -190,7 +172,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'Agents', 'Collaboration'],
     author: { name: 'microsoft', url: 'https://github.com/microsoft/autogen' },
     url: 'https://microsoft.github.io/autogen/',
-    upvotes: 345,
   },
   {
     slug: 'dspy',
@@ -199,7 +180,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'Prompt Engineering', 'Optimization'],
     author: { name: 'stanfordnlp', url: 'https://github.com/stanfordnlp/dspy' },
     url: 'https://dspy-docs.vercel.app',
-    upvotes: 280,
   },
   {
     slug: 'comfyui',
@@ -208,7 +188,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'Diffusion', 'Image Gen'],
     author: { name: 'comfyanonymous', url: 'https://github.com/comfyanonymous/ComfyUI' },
     url: 'https://comfy.org',
-    upvotes: 395,
   },
   {
     slug: 'stable-diffusion-webui',
@@ -217,7 +196,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'Diffusion', 'Image Gen'],
     author: { name: 'AUTOMATIC1111', url: 'https://github.com/AUTOMATIC1111/stable-diffusion-webui' },
     url: 'https://github.com/AUTOMATIC1111/stable-diffusion-webui',
-    upvotes: 420,
   },
   {
     slug: 'whisper-cpp',
@@ -226,7 +204,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'Speech', 'Audio'],
     author: { name: 'ggerganov', url: 'https://github.com/ggerganov/whisper.cpp' },
     url: 'https://github.com/ggerganov/whisper.cpp',
-    upvotes: 375,
   },
   {
     slug: 'llama-cpp',
@@ -235,7 +212,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'Inference', 'C++'],
     author: { name: 'ggerganov', url: 'https://github.com/ggerganov/llama.cpp' },
     url: 'https://github.com/ggerganov/llama.cpp',
-    upvotes: 430,
   },
   {
     slug: 'aider',
@@ -244,7 +220,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'CLI', 'Coding'],
     author: { name: 'paul-gauthier', url: 'https://github.com/paul-gauthier/aider' },
     url: 'https://aider.chat',
-    upvotes: 360,
   },
   {
     slug: 'continue-dev',
@@ -253,7 +228,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'IDE', 'Coding'],
     author: { name: 'continuedev', url: 'https://github.com/continuedev/continue' },
     url: 'https://continue.dev',
-    upvotes: 310,
   },
   {
     slug: 'tabby',
@@ -262,7 +236,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'Self-Hosted', 'Coding'],
     author: { name: 'TabbyML', url: 'https://github.com/TabbyML/tabby' },
     url: 'https://tabby.tabbyml.com',
-    upvotes: 260,
   },
   {
     slug: 'langfuse',
@@ -271,7 +244,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'Observability', 'LLMOps'],
     author: { name: 'langfuse', url: 'https://github.com/langfuse/langfuse' },
     url: 'https://langfuse.com',
-    upvotes: 285,
   },
   {
     slug: 'unsloth',
@@ -280,7 +252,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'Fine-Tuning', 'Performance'],
     author: { name: 'unslothai', url: 'https://github.com/unslothai/unsloth' },
     url: 'https://unsloth.ai',
-    upvotes: 320,
   },
   {
     slug: 'mem0',
@@ -289,7 +260,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['AI', 'Memory', 'Agents'],
     author: { name: 'mem0ai', url: 'https://github.com/mem0ai/mem0' },
     url: 'https://mem0.ai',
-    upvotes: 270,
   },
 
   // --- DATABASES & STORAGE ---
@@ -300,7 +270,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['Database', 'Postgres', 'Backend'],
     author: { name: 'supabase', url: 'https://github.com/supabase/supabase' },
     url: 'https://supabase.com',
-    upvotes: 450,
   },
   {
     slug: 'appwrite',
@@ -309,7 +278,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['Database', 'Backend', 'Auth'],
     author: { name: 'appwrite', url: 'https://github.com/appwrite/appwrite' },
     url: 'https://appwrite.io',
-    upvotes: 380,
   },
   {
     slug: 'pocketbase',
@@ -318,7 +286,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['Database', 'SQLite', 'Embedded'],
     author: { name: 'pocketbase', url: 'https://github.com/pocketbase/pocketbase' },
     url: 'https://pocketbase.io',
-    upvotes: 395,
   },
   {
     slug: 'meilisearch',
@@ -327,7 +294,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['Search', 'Database', 'Rust'],
     author: { name: 'meilisearch', url: 'https://github.com/meilisearch/meilisearch' },
     url: 'https://www.meilisearch.com',
-    upvotes: 370,
   },
   {
     slug: 'typesense',
@@ -336,7 +302,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['Search', 'Database', 'Performance'],
     author: { name: 'typesense', url: 'https://github.com/typesense/typesense' },
     url: 'https://typesense.org',
-    upvotes: 310,
   },
   {
     slug: 'clickhouse',
@@ -345,7 +310,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['Database', 'Analytics', 'OLAP'],
     author: { name: 'ClickHouse', url: 'https://github.com/ClickHouse/ClickHouse' },
     url: 'https://clickhouse.com',
-    upvotes: 360,
   },
   {
     slug: 'duckdb',
@@ -354,7 +318,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['Database', 'Analytics', 'Embedded'],
     author: { name: 'duckdb', url: 'https://github.com/duckdb/duckdb' },
     url: 'https://duckdb.org',
-    upvotes: 350,
   },
   {
     slug: 'neon',
@@ -363,7 +326,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['Database', 'Postgres', 'Serverless'],
     author: { name: 'neondatabase', url: 'https://github.com/neondatabase/neon' },
     url: 'https://neon.tech',
-    upvotes: 325,
   },
   {
     slug: 'surrealdb',
@@ -372,7 +334,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['Database', 'Graph', 'Multi-Model'],
     author: { name: 'surrealdb', url: 'https://github.com/surrealdb/surrealdb' },
     url: 'https://surrealdb.com',
-    upvotes: 335,
   },
   {
     slug: 'minio',
@@ -381,7 +342,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['Storage', 'S3', 'Cloud'],
     author: { name: 'minio', url: 'https://github.com/minio/minio' },
     url: 'https://min.io',
-    upvotes: 340,
   },
   {
     slug: 'valkey',
@@ -390,7 +350,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['Database', 'In-Memory', 'Cache'],
     author: { name: 'valkey-io', url: 'https://github.com/valkey-io/valkey' },
     url: 'https://valkey.io',
-    upvotes: 290,
   },
   {
     slug: 'dragonfly',
@@ -399,7 +358,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['Database', 'Cache', 'Performance'],
     author: { name: 'dragonflydb', url: 'https://github.com/dragonflydb/dragonfly' },
     url: 'https://dragonflydb.io',
-    upvotes: 280,
   },
   {
     slug: 'turso-libsql',
@@ -408,7 +366,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['Database', 'SQLite', 'Edge'],
     author: { name: 'tursodatabase', url: 'https://github.com/tursodatabase/libsql' },
     url: 'https://turso.tech',
-    upvotes: 305,
   },
   {
     slug: 'pglite',
@@ -417,7 +374,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['Database', 'Postgres', 'WASM'],
     author: { name: 'electric-sql', url: 'https://github.com/electric-sql/pglite' },
     url: 'https://pglite.dev',
-    upvotes: 295,
   },
   {
     slug: 'ferretdb',
@@ -426,7 +382,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['Database', 'MongoDB', 'Postgres'],
     author: { name: 'FerretDB', url: 'https://github.com/FerretDB/FerretDB' },
     url: 'https://www.ferretdb.com',
-    upvotes: 260,
   },
 
   // --- DEVELOPER TOOLS & DESKTOP ---
@@ -437,7 +392,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['Desktop', 'Rust', 'Framework'],
     author: { name: 'tauri-apps', url: 'https://github.com/tauri-apps/tauri' },
     url: 'https://tauri.app',
-    upvotes: 430,
   },
   {
     slug: 'bun',
@@ -446,7 +400,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['JavaScript', 'Runtime', 'Bundler'],
     author: { name: 'oven-sh', url: 'https://github.com/oven-sh/bun' },
     url: 'https://bun.sh',
-    upvotes: 440,
   },
   {
     slug: 'deno',
@@ -455,7 +408,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['TypeScript', 'Runtime', 'Web Standards'],
     author: { name: 'denoland', url: 'https://github.com/denoland/deno' },
     url: 'https://deno.com',
-    upvotes: 360,
   },
   {
     slug: 'posthog',
@@ -464,7 +416,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['Analytics', 'Product', 'Session Replay'],
     author: { name: 'PostHog', url: 'https://github.com/PostHog/posthog' },
     url: 'https://posthog.com',
-    upvotes: 405,
   },
   {
     slug: 'shadcn-ui',
@@ -473,7 +424,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['UI', 'React', 'Tailwind'],
     author: { name: 'shadcn', url: 'https://github.com/shadcn-ui/ui' },
     url: 'https://ui.shadcn.com',
-    upvotes: 460,
   },
   {
     slug: 'excalidraw',
@@ -482,7 +432,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['Design', 'Canvas', 'Collaboration'],
     author: { name: 'excalidraw', url: 'https://github.com/excalidraw/excalidraw' },
     url: 'https://excalidraw.com',
-    upvotes: 420,
   },
   {
     slug: 'penpot',
@@ -491,7 +440,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['Design', 'UI/UX', 'Figma Alternative'],
     author: { name: 'penpot', url: 'https://github.com/penpot/penpot' },
     url: 'https://penpot.app',
-    upvotes: 370,
   },
   {
     slug: 'drizzle-orm',
@@ -500,7 +448,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['ORM', 'TypeScript', 'SQL'],
     author: { name: 'drizzle-team', url: 'https://github.com/drizzle-team/drizzle-orm' },
     url: 'https://orm.drizzle.team',
-    upvotes: 390,
   },
   {
     slug: 'prisma',
@@ -509,7 +456,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['ORM', 'TypeScript', 'Database'],
     author: { name: 'prisma', url: 'https://github.com/prisma/prisma' },
     url: 'https://www.prisma.io',
-    upvotes: 385,
   },
   {
     slug: 'coolify',
@@ -518,7 +464,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['DevOps', 'Hosting', 'PaaS'],
     author: { name: 'coollabsio', url: 'https://github.com/coollabsio/coolify' },
     url: 'https://coolify.io',
-    upvotes: 415,
   },
   {
     slug: 'dokku',
@@ -527,7 +472,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['DevOps', 'PaaS', 'Docker'],
     author: { name: 'dokku', url: 'https://github.com/dokku/dokku' },
     url: 'https://dokku.com',
-    upvotes: 320,
   },
   {
     slug: 'portainer',
@@ -536,7 +480,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['Docker', 'DevOps', 'GUI'],
     author: { name: 'portainer', url: 'https://github.com/portainer/portainer' },
     url: 'https://www.portainer.io',
-    upvotes: 345,
   },
   {
     slug: 'lazygit',
@@ -545,7 +488,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['CLI', 'Git', 'Terminal'],
     author: { name: 'jesseduffield', url: 'https://github.com/jesseduffield/lazygit' },
     url: 'https://github.com/jesseduffield/lazygit',
-    upvotes: 395,
   },
   {
     slug: 'starship',
@@ -554,7 +496,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['CLI', 'Shell', 'Terminal'],
     author: { name: 'starship', url: 'https://github.com/starship/starship' },
     url: 'https://starship.rs',
-    upvotes: 360,
   },
   {
     slug: 'zed',
@@ -563,7 +504,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['Editor', 'Rust', 'Productivity'],
     author: { name: 'zed-industries', url: 'https://github.com/zed-industries/zed' },
     url: 'https://zed.dev',
-    upvotes: 410,
   },
   {
     slug: 'neovim',
@@ -572,7 +512,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['Editor', 'CLI', 'Vim'],
     author: { name: 'neovim', url: 'https://github.com/neovim/neovim' },
     url: 'https://neovim.io',
-    upvotes: 435,
   },
   {
     slug: 'helix',
@@ -581,7 +520,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['Editor', 'Rust', 'Modal'],
     author: { name: 'helix-editor', url: 'https://github.com/helix-editor/helix' },
     url: 'https://helix-editor.com',
-    upvotes: 330,
   },
   {
     slug: 'ripgrep',
@@ -590,7 +528,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['CLI', 'Search', 'Rust'],
     author: { name: 'BurntSushi', url: 'https://github.com/BurntSushi/ripgrep' },
     url: 'https://github.com/BurntSushi/ripgrep',
-    upvotes: 380,
   },
   {
     slug: 'fzf',
@@ -599,7 +536,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['CLI', 'Fuzzy Search', 'Terminal'],
     author: { name: 'junegunn', url: 'https://github.com/junegunn/fzf' },
     url: 'https://github.com/junegunn/fzf',
-    upvotes: 390,
   },
   {
     slug: 'zoxide',
@@ -608,7 +544,6 @@ const rawTools: Array<Omit<ToolSeed, 'views' | 'date'> & { views?: number; date?
     tags: ['CLI', 'Productivity', 'Shell'],
     author: { name: 'ajeetdsouza', url: 'https://github.com/ajeetdsouza/zoxide' },
     url: 'https://github.com/ajeetdsouza/zoxide',
-    upvotes: 325,
   },
 ]
 
@@ -633,7 +568,8 @@ for (const t of rawTools) {
   usedSlugs.add(t.slug)
   catalogData.push({
     ...t,
-    views: t.views ?? Math.floor(t.upvotes * 26 + Math.random() * 500),
+    upvotes: 0,
+    views: 0,
     date: t.date ?? '28 Mar 2024',
     content: t.description,
   })
@@ -767,7 +703,6 @@ for (const item of seedNames) {
   const slug = item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
   if (!usedSlugs.has(slug)) {
     usedSlugs.add(slug)
-    const upvotes = Math.floor(180 + Math.random() * 260)
     catalogData.push({
       slug,
       title: item.name,
@@ -775,8 +710,8 @@ for (const item of seedNames) {
       tags: [item.tag, item.cat.split(' ')[0]],
       author: { name: item.author, url: `https://github.com/${item.author}` },
       url: `https://github.com/${item.author}/${slug}`,
-      upvotes,
-      views: Math.floor(upvotes * (20 + Math.random() * 15)),
+      upvotes: 0,
+      views: 0,
       date: '2024-03-20',
       content: `${item.name}: ${item.desc}`,
     })
@@ -807,7 +742,6 @@ while (catalogData.length < 425) {
 
   if (!usedSlugs.has(slug)) {
     usedSlugs.add(slug)
-    const upvotes = Math.floor(45 + (genIndex * 37) % 350)
     catalogData.push({
       slug,
       title,
@@ -815,8 +749,8 @@ while (catalogData.length < 425) {
       tags: [noun.split(' ')[0], domain.tag.split(' ')[0]],
       author: { name: `open-${mod.toLowerCase()}`, url: `https://github.com/open-${mod.toLowerCase()}` },
       url: `https://github.com/rehubber-catalog/${slug}`,
-      upvotes,
-      views: Math.floor(upvotes * 22 + (genIndex * 19) % 500),
+      upvotes: 0,
+      views: 0,
       date: '2024-04-10',
       content: `${title} is a dedicated open-source utility designed to optimize ${domain.tag.toLowerCase()} development.`,
     })

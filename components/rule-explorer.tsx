@@ -10,7 +10,7 @@ import type { DirectoryPage, Rule } from '@/lib/types'
 import posthog from 'posthog-js'
 
 const DIRECTORY_PAGE_TARGET = 16
-const DIRECTORY_CACHE_PREFIX = 'rehubber:directory-page:v3:'
+const DIRECTORY_CACHE_PREFIX = 'rehubber:directory-page:v4:'
 const DIRECTORY_CACHE_TTL_MS = 5 * 60 * 1000
 
 function compareDirectoryRules(a: Rule, b: Rule): number {

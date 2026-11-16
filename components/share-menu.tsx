@@ -123,6 +123,27 @@ export function ShareMenu({
     }
   }
 
+  async function handleShareButtonClick(e: React.MouseEvent) {
+    e.preventDefault()
+    e.stopPropagation()
+
+    if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+      try {
+        await navigator.share({
+          title: `${title} · Rehubber`,
+          text: shareText,
+          url: shareUrl,
+        })
+        trackShare('native')
+        return
+      } catch (error) {
+        if (error instanceof Error && error.name === 'AbortError') return
+      }
+    }
+
+    setOpen((prev) => !prev)
+  }
+
   function buildSocialUrl(platform: 'x' | 'linkedin' | 'reddit'): string {
     const encodedUrl = encodeURIComponent(shareUrl)
     const encodedText = encodeURIComponent(`${title} on Rehubber`)
@@ -270,11 +291,7 @@ export function ShareMenu({
     <div className="relative z-10 inline-flex">
       <button
         type="button"
-        onClick={(e) => {
-          e.preventDefault()
-          e.stopPropagation()
-          setOpen((prev) => !prev)
-        }}
+        onClick={handleShareButtonClick}
         className={
           compact
             ? 'inline-flex h-5 items-center gap-1 rounded-full border border-border/70 bg-secondary/70 px-2 text-[8.5px] font-medium leading-none text-muted-foreground transition-colors hover:border-border hover:bg-secondary hover:text-foreground cursor-pointer'
