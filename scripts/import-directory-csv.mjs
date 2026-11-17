@@ -237,16 +237,21 @@ async function main() {
     return
   }
 
+  const nextSortOrder = snapshot.docs.reduce((max, document) => {
+    const order = document.get('sortOrder')
+    return typeof order === 'number' && order >= max ? order + 1 : max
+  }, 0)
   let imported = 0
   for (let offset = 0; offset < newRecords.length; offset += 400) {
     const batch = getFirestore(app).batch()
     const chunk = newRecords.slice(offset, offset + 400)
-    for (const record of chunk) {
+    chunk.forEach((record, index) => {
       batch.create(collection.doc(record.slug), {
         ...record,
+        sortOrder: nextSortOrder + offset + index,
         syncedAt: FieldValue.serverTimestamp(),
       })
-    }
+    })
     await batch.commit()
     imported += chunk.length
     console.log(`Created ${imported} of ${newRecords.length} new tools.`)
