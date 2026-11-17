@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { ArrowBigUp } from 'lucide-react'
-import posthog from 'posthog-js'
+import { trackListingEvent } from '@/lib/analytics'
 
 const LEGACY_VOTE_STORAGE_KEY = 'rehubber:reddit-vote-state:v1'
 const VOTE_STORAGE_KEY = 'rehubber:reddit-vote-state:v2'
@@ -24,10 +24,16 @@ function invalidateDirectoryPageCache() {
 
 export function UpvoteButton({
   slug,
+  title = slug,
+  listingPosition = 0,
+  source = 'directory',
   initialCount = 0,
   onVoteChange,
 }: {
   slug: string
+  title?: string
+  listingPosition?: number
+  source?: string
   initialCount?: number
   onVoteChange?: (slug: string, nextCount: number) => void
 }) {
@@ -60,8 +66,12 @@ export function UpvoteButton({
     setUpvoted(nextState)
     setLiveCount(nextCount)
     onVoteChange?.(slug, nextCount)
-    posthog.capture('tool_vote_changed', {
-      tool_slug: slug,
+    trackListingEvent('listing_vote_changed', {
+      listingId: slug,
+      listingName: title,
+      listingPosition,
+      source,
+    }, {
       vote_state: nextState ? 'upvoted' : 'removed',
     })
 

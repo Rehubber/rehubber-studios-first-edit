@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next'
+import Script from 'next/script'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { SiteFooter } from '@/components/site-footer'
 import { SiteHeader } from '@/components/site-header'
@@ -6,6 +7,8 @@ import './globals.css'
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-geist' })
 const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono' })
+const googleAnalyticsId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim()
+const hasGoogleAnalyticsId = Boolean(googleAnalyticsId && /^G-[A-Z0-9]+$/i.test(googleAnalyticsId))
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.rehubber.com'),
@@ -57,6 +60,12 @@ export default function RootLayout({
           <div className="flex-1">{children}</div>
           <SiteFooter />
         </AdminProvider>
+        {hasGoogleAnalyticsId && (
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`}
+            strategy="afterInteractive"
+          />
+        )}
       </body>
     </html>
   )

@@ -3,16 +3,22 @@ import { SiteHeader } from '@/components/site-header'
 import { PartnerCheckoutForm } from '@/components/partner-checkout-form'
 
 export const metadata: Metadata = {
-  title: 'Book a Spot · Rehubber Open Source Site Ally ($299/wk)',
+  title: 'Reserve a Sponsorship Placement',
   description:
-    'Enter your sponsor information to reserve the single Rehubber Open source site Ally spot for 1 week ($299 USD).',
+    'Enter sponsor details to reserve Rehubber’s weekly site-ally placement for open-source developer tools.',
+  alternates: { canonical: '/partner/book/' },
+  robots: { index: false },
   openGraph: {
-    title: 'Book a Spot · Rehubber Open Source Site Ally ($299/wk)',
-    description:
-      'Enter your sponsor information to reserve the single Rehubber Open source site Ally spot for 1 week ($299 USD).',
+    title: 'Reserve a Sponsorship Placement | Rehubber',
+    description: 'Enter sponsor details to reserve Rehubber’s weekly site-ally placement for open-source developer tools.',
     url: 'https://www.rehubber.com/partner/book/',
     siteName: 'Rehubber',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Reserve a Sponsorship Placement | Rehubber',
+    description: 'Enter sponsor details to reserve Rehubber’s weekly site-ally placement for open-source developer tools.',
   },
 }
 

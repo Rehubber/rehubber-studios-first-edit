@@ -23,7 +23,7 @@ export async function generateMetadata({
   }
 
   const description =
-    rule.description?.trim() || `${rule.title} open-source developer tool listed on Rehubber.`
+    rule.description?.trim() || `Explore ${rule.title}, an open-source developer tool listed in Rehubber’s directory.`
   const url = `https://www.rehubber.com/tool/${rule.slug}/`
 
   return {
@@ -33,7 +33,7 @@ export async function generateMetadata({
       canonical: url,
     },
     openGraph: {
-      title: `${rule.title} · Rehubber`,
+      title: `${rule.title} — Open-Source Developer Tool | Rehubber`,
       description,
       url,
       siteName: 'Rehubber',
@@ -41,7 +41,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: 'summary',
-      title: `${rule.title} · Rehubber`,
+      title: `${rule.title} — Open-Source Tool | Rehubber`,
       description,
     },
   }

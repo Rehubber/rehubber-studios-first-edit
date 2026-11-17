@@ -7,7 +7,6 @@ import { EmailSubscribeCard } from '@/components/email-subscribe-card'
 import { RuleCard } from '@/components/rule-card'
 import { useAdmin } from '@/components/admin-context'
 import type { DirectoryPage, Rule } from '@/lib/types'
-import posthog from 'posthog-js'
 
 const DIRECTORY_PAGE_TARGET = 16
 const DIRECTORY_CACHE_PREFIX = 'rehubber:directory-page:v4:'
@@ -189,10 +188,6 @@ export function RuleExplorer({ initialPage }: { initialPage: DirectoryPage }) {
       })
       setLoadedPage(page.page)
       setHasMore(page.hasMore)
-      posthog.capture('directory_page_loaded', {
-        page_number: page.page,
-        tool_count: page.rules.length,
-      })
     } catch (error) {
       setLoadError(error instanceof Error ? error.message : 'Could not load more tools.')
     } finally {
@@ -230,10 +225,6 @@ export function RuleExplorer({ initialPage }: { initialPage: DirectoryPage }) {
       }
 
       markDeletedLocally(slugsToDelete)
-      posthog.capture('admin_rules_deleted', {
-        delete_scope: 'bulk',
-        tool_count: slugsToDelete.length,
-      })
       setBulkStatus(`Successfully deleted ${slugsToDelete.length} tools!`)
       setTimeout(() => setBulkStatus(null), 3000)
       setConfirmBulk(false)
@@ -361,6 +352,8 @@ export function RuleExplorer({ initialPage }: { initialPage: DirectoryPage }) {
                   <div className="flex w-full flex-col [&>article]:flex-1">
                     <RuleCard
                       rule={rule}
+                      listingPosition={idx + 1}
+                      source="directory"
                       density="compact"
                       highlighted={highlightedSlug === rule.slug}
                       onVoteChange={handleVoteChange}

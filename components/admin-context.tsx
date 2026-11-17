@@ -1,9 +1,8 @@
 'use client'
 
-import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react'
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import { onAuthStateChanged } from 'firebase/auth'
 import { doc, getDoc } from 'firebase/firestore'
-import posthog from 'posthog-js'
 import { getFirebaseClientAuth, getFirebaseClientFirestore, isFirebaseConfigured } from '@/lib/firebase-client'
 
 interface AdminContextType {
@@ -31,7 +30,6 @@ export function AdminProvider({ children }: { children: ReactNode }) {
   const [isAdminMode, setIsAdminMode] = useState<boolean>(false)
   const [selectedSlugs, setSelectedSlugs] = useState<Set<string>>(new Set())
   const [deletedSlugs, setDeletedSlugs] = useState<Set<string>>(new Set())
-  const identifiedUserId = useRef<string | null>(null)
 
   useEffect(() => {
     if (!isFirebaseConfigured()) return
@@ -70,22 +68,6 @@ export function AdminProvider({ children }: { children: ReactNode }) {
           }
         }
 
-        if (user) {
-          if (identifiedUserId.current && identifiedUserId.current !== user.uid) {
-            posthog.reset()
-          }
-
-          if (identifiedUserId.current !== user.uid) {
-            posthog.identify(user.uid, {
-              ...(user.email ? { email: user.email } : {}),
-              ...(user.displayName ? { name: user.displayName } : {}),
-            })
-            identifiedUserId.current = user.uid
-          }
-        } else if (identifiedUserId.current) {
-          posthog.reset()
-          identifiedUserId.current = null
-        }
       })
 
       return () => {

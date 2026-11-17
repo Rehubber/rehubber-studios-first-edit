@@ -58,6 +58,10 @@ function parseCsv(source) {
     if (row.some((value) => value.trim() !== '')) rows.push(row)
   }
 
+  for (const parsedRow of rows) {
+    while (parsedRow.length > 3 && parsedRow[parsedRow.length - 1].trim() === '') parsedRow.pop()
+  }
+
   const firstRow = rows[0]?.map((value) => value.trim().toLowerCase())
   if (firstRow?.[0] === 'name' && firstRow[1] === 'description' && firstRow[2] === 'repository') {
     rows.shift()
@@ -76,8 +80,11 @@ function slugify(value) {
 }
 
 function normalizeRow(row, rowNumber) {
-  if (row.length !== 3) {
+  if (row.length < 3) {
     return { error: `row ${rowNumber}: expected 3 columns (name, description, repository), found ${row.length}` }
+  }
+  if (row.slice(3).some((value) => value.trim().toLowerCase() === 'delete')) {
+    return { skipped: `row ${rowNumber}: marked "delete" in the CSV` }
   }
 
   const [rawName, rawDescription, rawRepository] = row
@@ -132,9 +139,10 @@ function normalizeRow(row, rowNumber) {
 async function main() {
   const args = process.argv.slice(2)
   const apply = args.includes('--apply')
+  const skipInvalid = args.includes('--skip-invalid')
   const inputArgs = args.filter((argument) => !argument.startsWith('--'))
-  if (inputArgs.length !== 1 || args.some((argument) => argument.startsWith('--') && argument !== '--apply')) {
-    throw new Error('Usage: npm run import:directory -- <csv-path> [--apply]')
+  if (inputArgs.length !== 1 || args.some((argument) => argument.startsWith('--') && !['--apply', '--skip-invalid'].includes(argument))) {
+    throw new Error('Usage: npm run import:directory -- <csv-path> [--apply] [--skip-invalid]')
   }
 
   const csvPath = path.resolve(inputArgs[0])
@@ -146,9 +154,11 @@ async function main() {
   for (let index = 0; index < rows.length; index += 1) {
     const result = normalizeRow(rows[index], index + 1)
     if (result.error) errors.push(result.error)
+    else if (result.skipped) console.log(`Skipped: ${result.skipped}`)
     else records.push(result.rule)
   }
 
+  // Repeated names with the same repository keep their first row; conflicting repositories are skipped.
   const slugRows = new Map()
   for (const record of records) {
     const matchingRows = slugRows.get(record.slug) ?? []
@@ -156,8 +166,18 @@ async function main() {
     slugRows.set(record.slug, matchingRows)
   }
   const duplicateSlugs = new Set(
-    [...slugRows.entries()].filter(([, matchingRows]) => matchingRows.length > 1).map(([slug]) => slug),
+    [...slugRows.entries()]
+      .filter(([, matchingRows]) => new Set(matchingRows.map((row) => row.url.toLowerCase())).size > 1)
+      .map(([slug]) => slug),
   )
+  const seenSlugs = new Set()
+  const dedupedRecords = records.filter((record) => {
+    if (duplicateSlugs.has(record.slug)) return true
+    if (seenSlugs.has(record.slug)) return false
+    seenSlugs.add(record.slug)
+    return true
+  })
+  records.splice(0, records.length, ...dedupedRecords)
 
   const projectId = clean(process.env.FIREBASE_PROJECT_ID)
   const clientProjectId = clean(process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID)
@@ -206,9 +226,9 @@ async function main() {
   for (const record of conflicts) console.log(`Skipped existing slug: ${record.slug}`)
   for (const slug of duplicateSlugs) console.log(`Skipped duplicate CSV slug: ${slug}`)
 
-  if (errors.length > 0) {
+  if (errors.length > 0 && !skipInvalid) {
     process.exitCode = 1
-    if (apply) console.error('No records were written because the CSV has invalid rows.')
+    if (apply) console.error('No records were written because the CSV has invalid rows. Use --skip-invalid to import the valid rows only.')
     return
   }
 
