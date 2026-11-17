@@ -22,7 +22,7 @@ import {
 import { invalidateMainSponsorCache } from '@/components/main-sponsor-link'
 import { ACTIVE_SPONSOR_SLOT_ID, buildLiveSponsorWindow, formatRealDateTime } from '@/lib/sponsor-weeks'
 import type { SponsorBooking } from '@/lib/types'
-import posthog from 'posthog-js'
+import { trackAnalyticsEvent } from '@/lib/analytics'
 
 const WEEKLY_PRICE_USD = 299
 
@@ -191,10 +191,9 @@ export function PartnerCheckoutForm() {
       setConfirmedBooking(bookedRecord)
       setConfirmedEmail(trimmedEmail)
 
-      posthog.capture('main_sponsor_slot_booked', {
+      trackAnalyticsEvent('main_sponsor_slot_booked', {
         week_id: ACTIVE_SPONSOR_SLOT_ID,
         amount_usd: WEEKLY_PRICE_USD,
-        sponsor_name: trimmedName,
       })
 
       window.scrollTo({ top: 0, behavior: 'smooth' })

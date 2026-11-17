@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { Check, CircleAlert, Mail, Send, Sparkles } from 'lucide-react'
 import { getFirebaseClientFirestore } from '@/lib/firebase-client'
-import posthog from 'posthog-js'
+import { trackAnalyticsEvent } from '@/lib/analytics'
 
 const CATEGORIES = [
   'General Question',
@@ -62,7 +62,7 @@ export function SupportForm() {
         message: trimmedMessage,
         createdAt: serverTimestamp(),
       })
-      posthog.capture('support_request_submitted', {
+      trackAnalyticsEvent('support_request_submitted', {
         request_category: category,
       })
       setSubmitted(true)

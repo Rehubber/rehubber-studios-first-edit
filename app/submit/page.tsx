@@ -4,19 +4,20 @@ import { SiteHeader } from '@/components/site-header'
 import { SubmitForm } from '@/components/submit-form'
 
 export const metadata: Metadata = {
-  title: 'Submit your open source tool · Rehubber',
-  description: 'Submit your open-source developer tool to Rehubber for community review and listing.',
+  title: 'Submit an Open-Source Developer Tool',
+  description: 'Submit an open-source developer tool to Rehubber for review and inclusion in the community directory.',
+  alternates: { canonical: '/submit/' },
   openGraph: {
-    title: 'Submit your open source tool · Rehubber',
-    description: 'Submit your open-source developer tool to Rehubber for community review and listing.',
-    url: 'https://www.rehubber.com/submit',
+    title: 'Submit an Open-Source Developer Tool | Rehubber',
+    description: 'Submit an open-source developer tool to Rehubber for review and inclusion in the community directory.',
+    url: 'https://www.rehubber.com/submit/',
     siteName: 'Rehubber',
     type: 'website',
   },
   twitter: {
     card: 'summary',
-    title: 'Submit your open source tool · Rehubber',
-    description: 'Submit your open-source developer tool to Rehubber for community review and listing.',
+    title: 'Submit an Open-Source Developer Tool | Rehubber',
+    description: 'Submit an open-source developer tool to Rehubber for review and inclusion in the community directory.',
   },
 }
 
@@ -52,13 +53,13 @@ export default function SubmitPage() {
                 </span>
                 <div className="flex flex-col gap-0.5">
                   <a
-                    href="https://x.com/odysseus"
+                    href="https://x.com/Odysseusnt"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-xs font-medium text-foreground hover:text-primary transition-colors flex items-center gap-1.5"
                   >
                     <span>Follow us on X</span>
-                    <span className="text-muted-foreground">(@odysseus)</span>
+                    <span className="text-muted-foreground">(@Odysseusnt)</span>
                   </a>
                   <p className="text-[11px] leading-relaxed text-muted-foreground">
                     Get updates, releases, and announcements

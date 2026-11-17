@@ -58,6 +58,7 @@ A static, paginated directory hosted on Cloudflare Pages, with Firebase Authenti
    - `NEXT_PUBLIC_FIREBASE_PROJECT_ID`
    - `NEXT_PUBLIC_FIREBASE_APP_ID`
    - `NEXT_PUBLIC_FIREBASE_APPCHECK_SITE_KEY`
+   - `NEXT_PUBLIC_GA_MEASUREMENT_ID` (Google Analytics 4 measurement ID, such as `G-ABC123DEF4`)
    - `CLOUDFLARE_ACCOUNT_ID`
    - `CLOUDFLARE_PAGES_PROJECT` (`rehubber-directory`)
    Enter these as raw values without surrounding quote characters.
@@ -67,6 +68,16 @@ A static, paginated directory hosted on Cloudflare Pages, with Firebase Authenti
    - `CLOUDFLARE_API_TOKEN`: a Cloudflare API token scoped to Pages project deployments for this account.
 4. The workflow at `.github/workflows/deploy-directory.yml` deploys when relevant changes are pushed to `main`. After approving a submission in `/admin`, manually run **Actions → Deploy static directory to Cloudflare Pages → Run workflow** to publish the updated rules and vote counts. The build queries Firestore and fails rather than falling back to checked-in JSON if export credentials are missing.
 5. Add the Cloudflare Pages domain to Firebase Authentication's authorized domains and to App Check's allowed domains. Set the Cloudflare API token permission to **Account → Cloudflare Pages → Edit** and restrict it to the account that owns this project.
+
+## Google Search Console and Analytics
+
+- Add the `NEXT_PUBLIC_GA_MEASUREMENT_ID` GitHub Actions variable to enable GA4. Without a valid `G-...` measurement ID, the site does not load the Google Analytics script or send events.
+- GA4 reports standard page views and the site's custom actions: `listing_viewed` is sent when at least half of a tool card is visible; `listing_clicked`, `listing_shared`, and `outbound_clicked` are tracked separately with listing context. Submission tracking includes `listing_submission_started`, step/failure/follow-up events, and `listing_submitted` only after Firestore accepts a submission. The fallback that only saves locally uses a different event and is not counted as a submitted listing.
+- No email address, submitter name, Firebase UID, or message content is sent to GA4. GA4's anonymous client identification distinguishes new and returning visitors without using the Firebase account ID.
+- Register the event parameters you want to use as dimensions in **GA4 Admin → Custom definitions** (for example `listing_id`, `listing_name`, `listing_position`, `source`, `destination_domain`, and `destination_type`). Large reports grouped by listing ID may aggregate high-cardinality values.
+- Verify the domain in Google Search Console with a DNS TXT record in Cloudflare, then submit `https://www.rehubber.com/sitemap.xml`. The sitemap is generated at build time from the published catalog and excludes the partner booking pages and admin route.
+- To connect the properties, use **GA4 Admin → Product links → Search Console Links**, choose the verified Search Console property and the site's web data stream, and confirm the link. Google requires suitable owner/editor access to both properties, so this account-side link cannot be made by a site deployment.
+- Configure a Cloudflare Redirect Rule for `rehubber.com/*` → `https://www.rehubber.com/${1}` with a permanent (301) redirect. Cloudflare Pages' `_redirects` file cannot reliably enforce a hostname redirect; the site's canonical metadata and client-side fallback point to `www` in the meantime.
 
 The workflow builds in GitHub Actions and uploads static files with Wrangler; it does not use Firebase Hosting, Firebase App Hosting, a Firebase Cloud Function, or a Pages Function for visitor traffic. The Firestore export reads every published rule once each deployment, so avoid unnecessary redeploys. Direct Upload avoids Pages' Git-integrated build pipeline and its 500 builds/month limit; GitHub Actions minutes, Pages deployment limits, and provider terms still apply. The site remains static and browsable from the CDN between deployments.
 

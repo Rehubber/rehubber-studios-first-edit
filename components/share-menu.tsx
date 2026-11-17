@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import { Check, Copy, ExternalLink, Share2, X } from 'lucide-react'
-import posthog from 'posthog-js'
+import { trackListingEvent } from '@/lib/analytics'
 
 function buildShareOrigin(): string {
   if (typeof window !== 'undefined' && window.location?.origin) {
@@ -49,11 +49,15 @@ export function ShareMenu({
   slug,
   title,
   description,
+  listingPosition = 0,
+  source = 'tool_detail',
   compact = false,
 }: {
   slug: string
   title: string
   description?: string
+  listingPosition?: number
+  source?: string
   compact?: boolean
 }) {
   const [open, setOpen] = useState(false)
@@ -77,20 +81,17 @@ export function ShareMenu({
   }, [open])
 
   const origin = buildShareOrigin()
-  const shareUrl = `${origin}/tool/${slug}/`
-  const homepageToolUrl = `/?tool=${encodeURIComponent(slug)}`
+  const homepageToolUrl = `${origin}/?tool=${encodeURIComponent(slug)}`
+  const shareUrl = homepageToolUrl
   const shareText = description ? `${title} — ${description}` : `Check out ${title} on Rehubber`
 
   function trackShare(method: string) {
-    try {
-      posthog.capture('tool_shared', {
-        tool_slug: slug,
-        share_method: method,
-        share_format: 'page',
-      })
-    } catch {
-      // Never break UI if analytics fails
-    }
+    trackListingEvent('listing_shared', {
+      listingId: slug,
+      listingName: title,
+      listingPosition,
+      source,
+    }, { share_method: method })
   }
 
   async function handleCopy(e: React.MouseEvent) {

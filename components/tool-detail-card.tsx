@@ -7,7 +7,7 @@ import { ShareMenu } from '@/components/share-menu'
 import { UpvoteButton } from '@/components/upvote-button'
 import { formatToolAddedDate } from '@/lib/sponsor-weeks'
 import type { Rule } from '@/lib/types'
-import posthog from 'posthog-js'
+import { getOutboundEventParameters, trackListingEvent } from '@/lib/analytics'
 
 export function ToolDetailCard({
   rule,
@@ -26,16 +26,22 @@ export function ToolDetailCard({
   const descriptionText = rule.description?.trim() || rule.content?.trim() || primaryTag
 
   function handleOutboundClick() {
+    trackListingEvent(
+      'outbound_clicked',
+      {
+        listingId: rule.slug,
+        listingName: rule.title,
+        listingPosition: 0,
+        source: 'tool_detail',
+      },
+      getOutboundEventParameters(rule.url ?? ''),
+    )
+
     try {
       const key = `rehubber:viewed:v2:${rule.slug}`
       if (typeof window !== 'undefined' && !window.sessionStorage.getItem(key)) {
         window.sessionStorage.setItem(key, '1')
         setViews((prev) => prev + 1)
-        posthog.capture('tool_opened', {
-          tool_slug: rule.slug,
-          tool_category: primaryTag,
-          destination_type: 'external',
-        })
 
         import('@/lib/firebase-client')
           .then(async ({ getFirebaseAppCheckToken, getFirebaseClientFirestore }) => {
@@ -47,7 +53,7 @@ export function ToolDetailCard({
           .catch(() => {})
       }
     } catch {
-      // Ignore analytics failures
+      // Ignore session storage failures
     }
   }
 
@@ -70,7 +76,13 @@ export function ToolDetailCard({
           </h1>
         </div>
 
-        <UpvoteButton slug={rule.slug} initialCount={rule.upvotes ?? 0} onVoteChange={onVoteChange} />
+        <UpvoteButton
+          slug={rule.slug}
+          title={rule.title}
+          source="tool_detail"
+          initialCount={rule.upvotes ?? 0}
+          onVoteChange={onVoteChange}
+        />
       </div>
 
       <p className="text-pretty text-sm leading-relaxed text-muted-foreground sm:text-[15px]">
@@ -98,7 +110,12 @@ export function ToolDetailCard({
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <ShareMenu slug={rule.slug} title={rule.title} description={descriptionText} />
+          <ShareMenu
+            slug={rule.slug}
+            title={rule.title}
+            description={descriptionText}
+            source="tool_detail"
+          />
 
           {rule.url && (
             <a

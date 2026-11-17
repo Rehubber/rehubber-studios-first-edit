@@ -120,10 +120,10 @@ assert(invalidOptIn.ok === false, 'Rejects malformed emails')
 
 // 4. Social Links & Profile Target
 console.log('\nTest Suite 4: X Profile Destination')
-const expectedXProfile = 'https://x.com/odysseus'
-const expectedHandle = '@odysseus'
-assert(expectedXProfile === 'https://x.com/odysseus', 'X target URL is correctly set to https://x.com/odysseus')
-assert(expectedHandle === '@odysseus', 'X handle is correctly set to @odysseus')
+const expectedXProfile = 'https://x.com/Odysseusnt'
+const expectedHandle = '@Odysseusnt'
+assert(expectedXProfile === 'https://x.com/Odysseusnt', 'X target URL is correctly set to https://x.com/Odysseusnt')
+assert(expectedHandle === '@Odysseusnt', 'X handle is correctly set to @Odysseusnt')
 
 // 5. Four-Stage Flow Progression
 console.log('\nTest Suite 5: Four-Stage Submission Flow Transitions')

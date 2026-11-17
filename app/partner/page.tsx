@@ -3,22 +3,24 @@ import { SiteHeader } from '@/components/site-header'
 import { PartnerForm } from '@/components/partner-form'
 
 export const metadata: Metadata = {
-  title: 'Let’s partner · Rehubber Open Source Site Ally',
+  title: 'Open-Source Sponsorship Opportunities',
   description:
-    "To help sustain and grow this site, we're offering a single reserved spot as Rehubber Open source site Ally.",
+    'Learn about Rehubber sponsorship and the reserved site-ally placement for open-source developer tools.',
+  alternates: { canonical: '/partner/' },
+  robots: { index: false },
   openGraph: {
-    title: 'Let’s partner · Rehubber Open Source Site Ally',
+    title: 'Partner with Rehubber',
     description:
-      "To help sustain and grow this site, we're offering a single reserved spot as Rehubber Open source site Ally.",
+      'Learn about Rehubber sponsorship and the reserved site-ally placement for open-source developer tools.',
     url: 'https://www.rehubber.com/partner/',
     siteName: 'Rehubber',
     type: 'website',
   },
   twitter: {
     card: 'summary',
-    title: 'Let’s partner · Rehubber Open Source Site Ally',
+    title: 'Partner with Rehubber',
     description:
-      "To help sustain and grow this site, we're offering a single reserved spot as Rehubber Open source site Ally.",
+      'Learn about Rehubber sponsorship and the reserved site-ally placement for open-source developer tools.',
   },
 }
 

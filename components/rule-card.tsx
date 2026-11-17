@@ -1,13 +1,13 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { CheckSquare, ExternalLink, Eye, History, LoaderCircle, Square, Trash2, X } from 'lucide-react'
 import { ShareMenu } from '@/components/share-menu'
 import { UpvoteButton } from '@/components/upvote-button'
 import { useAdmin } from '@/components/admin-context'
 import { formatToolAddedDate } from '@/lib/sponsor-weeks'
 import type { Rule } from '@/lib/types'
-import posthog from 'posthog-js'
+import { getOutboundEventParameters, trackListingEvent } from '@/lib/analytics'
 
 function invalidateDirectoryPageCache() {
   try {
@@ -26,10 +26,14 @@ function invalidateDirectoryPageCache() {
 
 export function RuleCard({
   rule,
+  listingPosition = 0,
+  source = 'directory',
   onVoteChange,
   highlighted = false,
 }: {
   rule: Rule
+  listingPosition?: number
+  source?: string
   density?: 'spacious' | 'balanced' | 'compact'
   onVoteChange?: (slug: string, nextCount: number) => void
   highlighted?: boolean
@@ -38,10 +42,36 @@ export function RuleCard({
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const { isAdminMode, isSlugSelected, toggleSelectSlug, markDeletedLocally } = useAdmin()
+  const cardRef = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
     setViews(rule.views ?? 0)
   }, [rule.views])
+
+  useEffect(() => {
+    if (isAdminMode || typeof IntersectionObserver === 'undefined' || !cardRef.current) return
+
+    let tracked = false
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0]
+        if (!entry?.isIntersecting || entry.intersectionRatio < 0.5 || tracked) return
+
+        tracked = true
+        trackListingEvent('listing_viewed', {
+          listingId: rule.slug,
+          listingName: rule.title,
+          listingPosition,
+          source,
+        })
+        observer.disconnect()
+      },
+      { threshold: 0.5 },
+    )
+
+    observer.observe(cardRef.current)
+    return () => observer.disconnect()
+  }, [isAdminMode, listingPosition, rule.slug, rule.title, source])
 
   const isSelected = isSlugSelected(rule.slug)
   const primaryTag = rule.tags[0] || 'AI Tool'
@@ -49,18 +79,26 @@ export function RuleCard({
   const dateText = formatToolAddedDate(rule.date)
   const isExternal = Boolean(rule.url)
 
-  function trackView() {
+  function trackCardActivation() {
+    if (!isAdminMode) {
+      const context = {
+        listingId: rule.slug,
+        listingName: rule.title,
+        listingPosition,
+        source,
+      }
+      trackListingEvent('listing_clicked', context)
+      if (rule.url) {
+        trackListingEvent('outbound_clicked', context, getOutboundEventParameters(rule.url))
+      }
+    }
+
     try {
       const key = `rehubber:viewed:v2:${rule.slug}`
       if (typeof window !== 'undefined' && !window.sessionStorage.getItem(key)) {
         window.sessionStorage.setItem(key, '1')
         setViews((prev) => prev + 1)
         invalidateDirectoryPageCache()
-        posthog.capture('tool_opened', {
-          tool_slug: rule.slug,
-          tool_category: primaryTag,
-          destination_type: isExternal ? 'external' : 'directory',
-        })
 
         const runUpdate = async () => {
           try {
@@ -119,15 +157,16 @@ export function RuleCard({
         href: rule.url,
         target: '_blank',
         rel: 'noopener noreferrer',
-        onClick: trackView,
-        onAuxClick: trackView,
+        onClick: trackCardActivation,
+        onAuxClick: trackCardActivation,
       }
     : {
-        onClick: trackView,
+        onClick: trackCardActivation,
       }
 
   return (
     <article
+      ref={cardRef}
       id={`tool-${rule.slug}`}
       tabIndex={highlighted ? -1 : undefined}
       className={`group relative flex h-full min-h-[124px] flex-col justify-between overflow-visible rounded-xl border bg-card px-4 pt-3 pb-2.5 transition-all duration-150 ${
@@ -239,10 +278,19 @@ export function RuleCard({
             slug={rule.slug}
             title={rule.title}
             description={rule.description}
+            listingPosition={listingPosition}
+            source={source}
             compact
           />
 
-          <UpvoteButton slug={rule.slug} initialCount={rule.upvotes ?? 0} onVoteChange={onVoteChange} />
+          <UpvoteButton
+            slug={rule.slug}
+            title={rule.title}
+            listingPosition={listingPosition}
+            source={source}
+            initialCount={rule.upvotes ?? 0}
+            onVoteChange={onVoteChange}
+          />
         </div>
       </footer>
     </article>

@@ -4,20 +4,21 @@ import { SiteHeader } from '@/components/site-header'
 import { SupportForm } from '@/components/support-form'
 
 export const metadata: Metadata = {
-  title: 'Support & Inquiries · Rehubber',
+  title: 'Developer Tool Support',
   description:
     'Need help with your tool listing, have a feature request, or spotted a bug? Contact the Rehubber developer directory team.',
+  alternates: { canonical: '/support/' },
   openGraph: {
-    title: 'Support & Inquiries · Rehubber',
+    title: 'Developer Tool Support | Rehubber',
     description:
       'Contact Rehubber support for tool claims, bug reports, feature requests, or partnerships.',
-    url: 'https://www.rehubber.com/support',
+    url: 'https://www.rehubber.com/support/',
     siteName: 'Rehubber',
     type: 'website',
   },
   twitter: {
     card: 'summary',
-    title: 'Support & Inquiries · Rehubber',
+    title: 'Developer Tool Support | Rehubber',
     description:
       'Contact Rehubber support for tool claims, bug reports, feature requests, or partnerships.',
   },

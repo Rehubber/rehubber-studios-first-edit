@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { CircleAlert } from 'lucide-react'
 import { GithubAuthProvider, onAuthStateChanged, signInWithPopup, type User } from 'firebase/auth'
@@ -10,7 +10,7 @@ import { getFirebaseAppCheckToken, getFirebaseClientAuth, getFirebaseClientFires
 import type { SubmissionInput, SubmitResponse } from '@/lib/types'
 import { cn } from '@/lib/utils'
 import { LIMITS, parseSubmission, slugify } from '@/lib/validation'
-import posthog from 'posthog-js'
+import { trackListingEvent } from '@/lib/analytics'
 
 type FieldErrors = Partial<Record<keyof SubmissionInput, string>>
 type Success = Extract<SubmitResponse, { ok: true }>
@@ -27,6 +27,26 @@ export function SubmitForm() {
   const [error, setError] = useState<string | null>(null)
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
   const [result, setResult] = useState<Success | null>(null)
+  const [submittedListing, setSubmittedListing] = useState<{ id: string; name: string } | null>(null)
+  const submissionStarted = useRef(false)
+
+  function getListingContext(name: string) {
+    const trimmedName = name.trim()
+    return {
+      listingId: slugify(trimmedName) || 'pending',
+      listingName: trimmedName || 'Pending tool submission',
+      listingPosition: 0,
+      source: 'submit_form',
+    }
+  }
+
+  function trackSubmissionStart(event: React.FormEvent<HTMLFormElement>) {
+    if (submissionStarted.current) return
+    submissionStarted.current = true
+    const formData = new FormData(event.currentTarget)
+    const context = getListingContext(String(formData.get('title') ?? title))
+    trackListingEvent('listing_submission_started', context, { submission_step: 'details' })
+  }
 
   useEffect(() => {
     if (!isFirebaseConfigured()) return
@@ -40,6 +60,7 @@ export function SubmitForm() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    trackSubmissionStart(event)
     const form = new FormData(event.currentTarget)
     const submission = {
       title,
@@ -54,11 +75,19 @@ export function SubmitForm() {
     }
     const parsed = parseSubmission(submission)
     if (!parsed.ok) {
+      trackListingEvent('listing_submission_step', getListingContext(title), {
+        submission_step: 'validation_failed',
+      })
       setError('Please fix the highlighted fields.')
       setFieldErrors(parsed.fieldErrors)
       return
     }
 
+    const listingContext = getListingContext(parsed.data.title)
+    let submissionStep = 'github_auth'
+    trackListingEvent('listing_submission_step', listingContext, {
+      submission_step: 'details_validated',
+    })
     setPending(true)
     setError(null)
     setFieldErrors({})
@@ -71,6 +100,9 @@ export function SubmitForm() {
         const auth = getFirebaseClientAuth()
         if (!signedInUser && !auth.currentUser) {
           try {
+            trackListingEvent('listing_submission_step', listingContext, {
+              submission_step: 'github_auth',
+            })
             const provider = new GithubAuthProvider()
             provider.addScope('read:user')
             const authResult = await signInWithPopup(auth, provider)
@@ -79,11 +111,19 @@ export function SubmitForm() {
           } catch (popupErr: unknown) {
             const code = (popupErr as { code?: string })?.code
             if (code === 'auth/popup-closed-by-user') {
+              trackListingEvent('listing_submission_failed', listingContext, {
+                submission_step: 'github_auth',
+                failure_type: 'popup_closed',
+              })
               setError('GitHub sign-in was closed before completion. Please sign in to submit your tool.')
               setPending(false)
               return
             }
             if (code === 'auth/popup-blocked') {
+              trackListingEvent('listing_submission_failed', listingContext, {
+                submission_step: 'github_auth',
+                failure_type: 'popup_blocked',
+              })
               setError('The GitHub sign-in popup was blocked by your browser. Please allow popups for this site and try again.')
               setPending(false)
               return
@@ -99,6 +139,10 @@ export function SubmitForm() {
       await getFirebaseAppCheckToken().catch(() => '')
 
       if (isFirebaseConfigured() && signedInUser) {
+        submissionStep = 'firestore_acceptance'
+        trackListingEvent('listing_submission_step', listingContext, {
+          submission_step: submissionStep,
+        })
         const db = getFirebaseClientFirestore()
         const rawName =
           signedInUser.displayName ||
@@ -120,14 +164,11 @@ export function SubmitForm() {
           submitterUid: signedInUser.uid,
           createdAt: serverTimestamp(),
         })
-        posthog.capture('tool_submission_completed', {
+        trackListingEvent('listing_submitted', listingContext, {
           submission_storage: 'firestore',
           tag_count: parsed.data.tags.length,
         })
-        posthog.logger.info('tool submission completed', {
-          submission_storage: 'firestore',
-          tag_count: parsed.data.tags.length,
-        })
+        setSubmittedListing({ id: listingContext.listingId, name: parsed.data.title })
         setResult({ ok: true, submissionId: created.id, status: 'pending' })
         window.scrollTo({ top: 0, behavior: 'smooth' })
         return
@@ -149,19 +190,17 @@ export function SubmitForm() {
         // Ignore localStorage error
       }
 
-      posthog.capture('tool_submission_completed', {
+      trackListingEvent('listing_submission_fallback_saved', listingContext, {
         submission_storage: 'local',
         tag_count: parsed.data.tags.length,
       })
-      posthog.logger.info('tool submission completed', {
-        submission_storage: 'local',
-        tag_count: parsed.data.tags.length,
-      })
+      setSubmittedListing({ id: listingContext.listingId, name: parsed.data.title })
       setResult({ ok: true, submissionId, status: 'pending' })
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } catch (submitError: unknown) {
-      posthog.logger.error('tool submission failed', {
-        submission_storage: isFirebaseConfigured() ? 'firestore' : 'local',
+      trackListingEvent('listing_submission_failed', listingContext, {
+        submission_step: submissionStep,
+        firebase_configured: isFirebaseConfigured(),
       })
       console.error('Submission error:', submitError)
       setError(
@@ -179,14 +218,24 @@ export function SubmitForm() {
     setGithubUrl('')
     setDescription('')
     setResult(null)
+    setSubmittedListing(null)
+    submissionStarted.current = false
   }
 
   if (result) {
-    return <SubmitSuccess result={result} initialEmail={user?.email ?? ''} onReset={resetForm} />
+    return (
+      <SubmitSuccess
+        result={result}
+        listingId={submittedListing?.id ?? 'pending'}
+        listingName={submittedListing?.name ?? 'Pending tool submission'}
+        initialEmail={user?.email ?? ''}
+        onReset={resetForm}
+      />
+    )
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
+    <form onChangeCapture={trackSubmissionStart} onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
       <div className="grid gap-6 sm:grid-cols-2">
         {/* Column 1 (Left): Name box, The repository box between Name and Description, Description box, and GitHub Submit button directly below it */}
         <div className="flex flex-col gap-5">

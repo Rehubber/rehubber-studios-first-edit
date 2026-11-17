@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { ACTIVE_SPONSOR_SLOT_ID } from '@/lib/sponsor-weeks'
 import type { SponsorBooking } from '@/lib/types'
-import posthog from 'posthog-js'
+import { trackAnalyticsEvent } from '@/lib/analytics'
 
 export const MAIN_SPONSOR_CACHE_KEY = 'rehubber:main-sponsor:v2'
 const MAIN_SPONSOR_CACHE_TTL_MS = 2 * 60 * 1000
@@ -109,8 +109,7 @@ export function MainSponsorLink() {
           target="_blank"
           rel="noopener noreferrer sponsored"
           onClick={() =>
-            posthog.capture('main_sponsor_clicked', {
-              sponsor_name: booking.sponsorName,
+            trackAnalyticsEvent('main_sponsor_clicked', {
               week_id: booking.weekId,
             })
           }
