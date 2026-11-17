@@ -718,46 +718,6 @@ for (const item of seedNames) {
   }
 }
 
-// Generate algorithmic realistic open source tools to ensure we surpass 420 tools
-const domains = [
-  { name: 'Vector', tag: 'AI & Machine Learning', nouns: ['Embedder', 'Index', 'Tokenizer', 'Quantizer', 'RAG Engine', 'Context Cache', 'Agent Core', 'Prompt Vault', 'Model Bench', 'Tensor Flow', 'Audio Synth', 'Vision OCR'] },
-  { name: 'Data', tag: 'Databases & Storage', nouns: ['Lakehouse', 'Columnar', 'WAL Store', 'KV Engine', 'Cache Node', 'Sync Bridge', 'Replica Hub', 'Object Store', 'Time Series', 'Graph Layer', 'Query Accelerator', 'CDC Stream'] },
-  { name: 'Cloud', tag: 'DevOps & Containers', nouns: ['Deployer', 'Mesh Router', 'Ingress Controller', 'Cert Watcher', 'Pod Autoscaler', 'Tunnel Agent', 'Config Keeper', 'Log Collector', 'Metric Probe', 'Health Guard', 'Secret Keeper', 'Trace Span'] },
-  { name: 'Dev', tag: 'Developer CLI & Tools', nouns: ['Bundler', 'Packager', 'Terminal UI', 'Git Sync', 'File Watcher', 'Lint Guard', 'Mock Server', 'Diff Tool', 'Schema Gen', 'Snippet Manager', 'Bench Marker', 'Binary Inspector'] },
-  { name: 'Secure', tag: 'Security & Auth', nouns: ['Gatekeeper', 'Audit Trail', 'Token Vault', 'Key Guardian', 'Firewall Agent', 'Anomaly Sensor', 'Zero Trust', 'Session Sentinel', 'OAuth Broker', 'Policy Enforcer', 'Signature Signer', 'Vulnerability Scanner'] },
-  { name: 'Web', tag: 'Frontend & UI', nouns: ['Virtual Grid', 'Canvas Engine', 'Chart Suite', 'State Store', 'Router Hook', 'Color Palette', 'Form Validator', 'Animation Loop', 'Theme Provider', 'Headless Table', 'Icon Font', 'Markdown Parser'] },
-  { name: 'Server', tag: 'Backend & APIs', nouns: ['Gateway', 'RPC Proxy', 'REST Engine', 'GraphQL Schema', 'Job Queue', 'Worker Thread', 'Event Bus', 'Rate Limiter', 'Cache Middleware', 'Database Driver', 'Webhook Dispatcher', 'Stream Buffer'] },
-  { name: 'Studio', tag: 'Productivity & Workspaces', nouns: ['Task Matrix', 'Kanban Board', 'Knowledge Tree', 'Code Notebook', 'Sprint Tracker', 'Docs Generator', 'Diagram Canvas', 'API Tester', 'Changelog Maker', 'Release Notifier', 'Asset Pipeline', 'Design Tokenizer'] },
-]
-
-const modifiers = ['Fast', 'Open', 'Hyper', 'Micro', 'Ultra', 'Sync', 'Omni', 'Turbo', 'Pure', 'Meta', 'Rust', 'Go', 'Edge', 'Zero', 'Flex', 'Core', 'Velo', 'Pro', 'Neo', 'Apex']
-
-let genIndex = 1
-while (catalogData.length < 425) {
-  const domain = domains[genIndex % domains.length]
-  const mod = modifiers[Math.floor(genIndex / domains.length) % modifiers.length]
-  const noun = domain.nouns[genIndex % domain.nouns.length]
-  const title = `${mod}${noun}`
-  const slug = `${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${genIndex}`
-
-  if (!usedSlugs.has(slug)) {
-    usedSlugs.add(slug)
-    catalogData.push({
-      slug,
-      title,
-      description: `Open-source ${noun.toLowerCase()} built for high-performance ${domain.tag.toLowerCase()} workflows.`,
-      tags: [noun.split(' ')[0], domain.tag.split(' ')[0]],
-      author: { name: `open-${mod.toLowerCase()}`, url: `https://github.com/open-${mod.toLowerCase()}` },
-      url: `https://github.com/rehubber-catalog/${slug}`,
-      upvotes: 0,
-      views: 0,
-      date: '2024-04-10',
-      content: `${title} is a dedicated open-source utility designed to optimize ${domain.tag.toLowerCase()} development.`,
-    })
-  }
-  genIndex++
-}
-
 async function run() {
   // Save each tool to content/rules/{slug}.json
   const rulesDirectory = path.join(process.cwd(), 'content', 'rules')
