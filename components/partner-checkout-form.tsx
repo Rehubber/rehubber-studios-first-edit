@@ -6,23 +6,17 @@ import {
   ArrowLeft,
   ArrowRight,
   CalendarClock,
-  Check,
   CircleAlert,
-  ExternalLink,
   LoaderCircle,
   Lock,
 } from 'lucide-react'
-import { doc, getDoc, runTransaction, serverTimestamp } from 'firebase/firestore'
+import { doc, getDoc } from 'firebase/firestore'
 import {
   getFirebaseClientFirestore,
-  handleFirestoreError,
   isFirebaseConfigured,
-  OperationType,
 } from '@/lib/firebase-client'
-import { invalidateMainSponsorCache } from '@/components/main-sponsor-link'
-import { ACTIVE_SPONSOR_SLOT_ID, buildLiveSponsorWindow, formatRealDateTime } from '@/lib/sponsor-weeks'
+import { ACTIVE_SPONSOR_SLOT_ID, formatRealDateTime } from '@/lib/sponsor-weeks'
 import type { SponsorBooking } from '@/lib/types'
-import { trackAnalyticsEvent } from '@/lib/analytics'
 
 const WEEKLY_PRICE_USD = 299
 
@@ -48,11 +42,16 @@ export function PartnerCheckoutForm() {
   const [email, setEmail] = useState('')
   const [pending, setPending] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [confirmedBooking, setConfirmedBooking] = useState<SponsorBooking | null>(null)
-  const [confirmedEmail, setConfirmedEmail] = useState('')
+  const [checkoutResult, setCheckoutResult] = useState<string | null>(null)
 
   useEffect(() => {
     setNowMs(Date.now())
+    const result = new URLSearchParams(window.location.search).get('checkout')
+    if (result === 'success') {
+      setCheckoutResult('Thank you. Stripe is confirming your payment; your placement will go live after confirmation. Contact us if it does not appear shortly.')
+    } else if (result === 'cancelled') {
+      setCheckoutResult('Checkout was not completed. The temporary reservation remains until the Stripe checkout session expires.')
+    }
     const timer = setInterval(() => setNowMs(Date.now()), 30_000)
 
     let cancelled = false
@@ -96,7 +95,6 @@ export function PartnerCheckoutForm() {
     }
   }, [])
 
-  const liveWindow = buildLiveSponsorWindow(nowMs)
   const previewBrand = sponsorName.trim() || 'Your site'
   const previewUrl = isValidHttpsUrl(sponsorUrl.trim()) ? sponsorUrl.trim() : '#preview'
   const spotTaken = Boolean(activeBooking && activeBooking.endsAtMs > nowMs)
@@ -131,157 +129,29 @@ export function PartnerCheckoutForm() {
     setPending(true)
     setError(null)
 
-    const checkoutWindow = buildLiveSponsorWindow(Date.now())
-    const contactDocId = `booking_${checkoutWindow.startsAtMs}`
-
     try {
-      const db = getFirebaseClientFirestore()
-      const bookingRef = doc(db, 'sponsor_bookings', ACTIVE_SPONSOR_SLOT_ID)
-      const contactRef = doc(db, 'sponsor_contacts', contactDocId)
-
-      await runTransaction(db, async (transaction) => {
-        const existingSnap = await transaction.get(bookingRef)
-        if (existingSnap.exists()) {
-          const existingData = existingSnap.data()
-          const existingEndMs = typeof existingData.endsAtMs === 'number' ? existingData.endsAtMs : 0
-          if (existingData.status === 'active' && existingEndMs > Date.now()) {
-            throw new Error('SLOT_ALREADY_BOOKED')
-          }
-        }
-
-        transaction.set(bookingRef, {
-          weekId: ACTIVE_SPONSOR_SLOT_ID,
-          weekStart: checkoutWindow.weekStartIso,
-          weekEnd: checkoutWindow.weekEndIso,
-          startsAtMs: checkoutWindow.startsAtMs,
-          endsAtMs: checkoutWindow.endsAtMs,
-          sponsorName: trimmedName,
-          sponsorUrl: trimmedUrl,
-          amountUsd: WEEKLY_PRICE_USD,
-          status: 'active',
-          createdAt: serverTimestamp(),
-        })
-
-        transaction.set(contactRef, {
-          bookingId: contactDocId,
-          weekId: ACTIVE_SPONSOR_SLOT_ID,
-          weekStart: checkoutWindow.weekStartIso,
-          weekEnd: checkoutWindow.weekEndIso,
-          email: trimmedEmail,
-          sponsorName: trimmedName,
-          createdAt: serverTimestamp(),
-        })
+      const response = await fetch('/api/sponsor/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sponsorName: trimmedName, sponsorUrl: trimmedUrl, email: trimmedEmail }),
       })
-
-      invalidateMainSponsorCache()
-
-      const bookedRecord: SponsorBooking = {
-        weekId: ACTIVE_SPONSOR_SLOT_ID,
-        weekStart: checkoutWindow.weekStartIso,
-        weekEnd: checkoutWindow.weekEndIso,
-        startsAtMs: checkoutWindow.startsAtMs,
-        endsAtMs: checkoutWindow.endsAtMs,
-        sponsorName: trimmedName,
-        sponsorUrl: trimmedUrl,
-        amountUsd: WEEKLY_PRICE_USD,
-        status: 'active',
+      const data: unknown = await response.json()
+      if (!data || typeof data !== 'object') throw new Error('Invalid checkout response.')
+      if (!response.ok) {
+        throw new Error('error' in data && typeof data.error === 'string' ? data.error : 'Checkout is unavailable.')
       }
-
-      setActiveBooking(bookedRecord)
-      setConfirmedBooking(bookedRecord)
-      setConfirmedEmail(trimmedEmail)
-
-      trackAnalyticsEvent('main_sponsor_slot_booked', {
-        week_id: ACTIVE_SPONSOR_SLOT_ID,
-        amount_usd: WEEKLY_PRICE_USD,
-      })
-
-      window.scrollTo({ top: 0, behavior: 'smooth' })
+      if (!('url' in data) || typeof data.url !== 'string') throw new Error('Invalid checkout response.')
+      const checkoutUrl = new URL(data.url)
+      if (checkoutUrl.protocol !== 'https:' || checkoutUrl.hostname !== 'checkout.stripe.com') {
+        throw new Error('Invalid checkout URL.')
+      }
+      window.location.assign(checkoutUrl.href)
     } catch (err) {
-      if (err instanceof Error && err.message === 'SLOT_ALREADY_BOOKED') {
-        setError('This single reserved spot was just booked. Please check back once the current 1-week run finishes.')
-      } else if (err instanceof Error && (err.message.includes('permission') || err.message.includes('insufficient'))) {
-        try {
-          handleFirestoreError(err, OperationType.WRITE, `sponsor_bookings/${ACTIVE_SPONSOR_SLOT_ID}`)
-        } catch {
-          setError('Unable to complete booking right now. Please verify your inputs and try again.')
-        }
-      } else {
-        setError(err instanceof Error ? err.message : 'Unable to lock this spot right now. Please try again.')
-      }
+      console.error('Sponsor checkout failed', err)
+      setError(err instanceof Error ? err.message : 'Unable to start checkout. Please try again.')
     } finally {
       setPending(false)
     }
-  }
-
-  if (confirmedBooking) {
-    return (
-      <div className="flex flex-col gap-6 rounded-xl border border-primary/40 bg-primary/5 p-6 sm:p-8">
-        <div className="flex items-start gap-3">
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary">
-            <Check className="size-5" aria-hidden="true" />
-          </div>
-          <div className="flex flex-col gap-1">
-            <h2 className="text-lg font-semibold tracking-tight text-foreground">
-              Your Spot Is Confirmed
-            </h2>
-            <p className="text-xs leading-relaxed text-muted-foreground">
-              Your 1-week reservation for{' '}
-              <span className="font-semibold text-foreground">{confirmedBooking.sponsorName}</span> is live from{' '}
-              <span className="font-mono font-medium tabular-nums text-foreground">
-                {formatRealDateTime(confirmedBooking.startsAtMs)}
-              </span>{' '}
-              to{' '}
-              <span className="font-mono font-medium tabular-nums text-foreground">
-                {formatRealDateTime(confirmedBooking.endsAtMs)}
-              </span>
-              .
-            </p>
-          </div>
-        </div>
-
-        <div className="rounded-lg border border-border bg-card p-4 text-xs">
-          <div className="grid gap-3 sm:grid-cols-3">
-            <div className="flex flex-col gap-0.5">
-              <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">Duration</span>
-              <span className="font-medium text-foreground">1 week reserved spot</span>
-            </div>
-            <div className="flex flex-col gap-0.5">
-              <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">Total</span>
-              <span className="font-mono font-semibold tabular-nums text-foreground">$299 USD · 1 week</span>
-            </div>
-            <div className="flex flex-col gap-0.5">
-              <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">Receipt Sent To</span>
-              <span className="font-mono text-foreground truncate">{confirmedEmail}</span>
-            </div>
-          </div>
-        </div>
-
-        <p className="text-xs leading-relaxed text-muted-foreground">
-          1-week-at-a-time: Once this 1-week window finishes ({formatRealDateTime(confirmedBooking.endsAtMs)}), you can
-          return and book again.
-        </p>
-
-        <div className="flex flex-wrap items-center gap-3">
-          <Link
-            href="/"
-            className="inline-flex h-9 items-center gap-2 rounded-md bg-primary px-4 text-xs font-semibold text-primary-foreground transition-colors hover:bg-primary/90 whitespace-nowrap"
-          >
-            <span>View Homepage Placement</span>
-            <ArrowRight className="size-3.5" aria-hidden="true" />
-          </Link>
-          <a
-            href={confirmedBooking.sponsorUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex h-9 items-center gap-1.5 rounded-md border border-border bg-card px-3.5 text-xs font-medium text-foreground transition-colors hover:bg-secondary whitespace-nowrap"
-          >
-            <span>Test Destination Link</span>
-            <ExternalLink className="size-3" aria-hidden="true" />
-          </a>
-        </div>
-      </div>
-    )
   }
 
   return (
@@ -295,6 +165,12 @@ export function PartnerCheckoutForm() {
           <span>Back to Let&rsquo;s partner</span>
         </Link>
       </div>
+
+      {checkoutResult && (
+        <div role="status" className="rounded-lg border border-primary/40 bg-primary/5 p-3.5 text-xs leading-relaxed text-foreground">
+          {checkoutResult}
+        </div>
+      )}
 
       {/* Live Preview updating as sponsor types */}
       <section aria-labelledby="checkout-preview-heading" className="flex flex-col gap-2">
@@ -431,7 +307,7 @@ export function PartnerCheckoutForm() {
             </span>
             <div className="flex items-center gap-1.5 font-mono text-[11px] tabular-nums text-muted-foreground">
               <Lock className="size-3 shrink-0" aria-hidden="true" />
-              <span suppressHydrationWarning>{liveWindow.rangeFormatted}</span>
+              <span>Starts after payment confirmation · 1 week</span>
             </div>
           </div>
 
@@ -443,11 +319,11 @@ export function PartnerCheckoutForm() {
             {pending ? (
               <>
                 <LoaderCircle className="size-3.5 animate-spin" aria-hidden="true" />
-                <span>Booking spot…</span>
+                <span>Opening Stripe checkout…</span>
               </>
             ) : (
               <>
-                <span>Book a spot</span>
+                <span>Pay with Stripe</span>
                 <ArrowRight className="size-3.5" aria-hidden="true" />
               </>
             )}

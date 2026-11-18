@@ -32,7 +32,7 @@ export default function PartnerBookPage() {
             Sponsor Information
           </h1>
           <p className="max-w-2xl text-pretty text-sm text-muted-foreground leading-relaxed">
-            Reserve the single Rehubber Open source site Ally placement for 1 week ($299 USD).
+            Pay $299 USD upfront to reserve the single Rehubber Open source site Ally placement for 1 week.
           </p>
         </header>
 

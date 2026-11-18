@@ -13,6 +13,7 @@ on:
       - 'public/**'
       - 'scripts/**'
       - 'firestore.rules'
+      - 'functions/**'
       - 'firestore.indexes.json'
       - 'firebase.json'
       - 'instrumentation-client.ts'
