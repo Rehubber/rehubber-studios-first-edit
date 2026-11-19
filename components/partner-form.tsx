@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { ArrowLeft, ArrowRight, CalendarClock, Info } from 'lucide-react'
 import { doc, getDoc } from 'firebase/firestore'
 import { getFirebaseClientFirestore, isFirebaseConfigured } from '@/lib/firebase-client'
-import { ACTIVE_SPONSOR_SLOT_ID, buildLiveSponsorWindow, formatRealDateTime } from '@/lib/sponsor-weeks'
+import { ACTIVE_SPONSOR_SLOT_ID, formatRealDateTime } from '@/lib/sponsor-weeks'
 import type { SponsorBooking } from '@/lib/types'
 
 export function PartnerForm() {
@@ -50,8 +50,8 @@ export function PartnerForm() {
     }
   }, [])
 
-  const liveWindow = buildLiveSponsorWindow(nowMs)
-  const previewBrand = activeBooking ? activeBooking.sponsorName : 'Your site'
+  const currentBooking = activeBooking && activeBooking.endsAtMs > nowMs ? activeBooking : null
+  const previewBrand = currentBooking ? currentBooking.sponsorName : 'Your site'
 
   return (
     <div className="flex flex-col gap-6">
@@ -91,9 +91,9 @@ export function PartnerForm() {
         <div className="flex items-center gap-2 font-mono text-xs tabular-nums text-foreground">
           <CalendarClock className="size-4 shrink-0 text-primary" aria-hidden="true" />
           <span suppressHydrationWarning>
-            {activeBooking
-              ? `Reserved until ${formatRealDateTime(activeBooking.endsAtMs)}`
-              : liveWindow.rangeFormatted}
+            {currentBooking
+              ? `Reserved until ${formatRealDateTime(currentBooking.endsAtMs)}`
+              : 'Starts after payment confirmation · 1 week'}
           </span>
         </div>
 
