@@ -114,6 +114,11 @@ export function RuleExplorer({ initialPage }: { initialPage: DirectoryPage }) {
     }
   }, [])
 
+  // Sort initial rules to account for live upvotes from server
+  useEffect(() => {
+    setRules((current) => [...current].sort(compareDirectoryRules))
+  }, [])
+
   useEffect(() => {
     const targetSlug = new URLSearchParams(window.location.search).get('tool')
     if (targetSlug === null) return
