@@ -263,7 +263,7 @@ export function SubmitForm() {
               required
               value={githubUrl}
               onChange={(e) => setGithubUrl(e.target.value)}
-              placeholder="https://github.com/owner/repository"
+              placeholder="github.com/owner/repository or https://github.com/owner/repository"
               aria-invalid={Boolean(fieldErrors.authorUrl)}
               aria-describedby="githubUrl-error"
               className={cn(inputClass, 'h-7')}

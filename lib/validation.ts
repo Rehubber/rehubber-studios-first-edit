@@ -62,13 +62,18 @@ export function parseSubmission(
 
   if (authorUrl) {
     try {
-      const url = new URL(authorUrl)
+      let url: URL
+      // Allow GitHub URLs with or without https://
+      const normalizedUrl = authorUrl.startsWith('http://') || authorUrl.startsWith('https://')
+        ? authorUrl
+        : `https://${authorUrl}`
+      url = new URL(normalizedUrl)
       if (url.protocol !== 'https:' && url.protocol !== 'http:') throw new Error()
       if (!url.hostname.includes('github.com') && !url.hostname.includes('gitlab.com')) {
         fieldErrors.authorUrl = 'Repository must be a valid GitHub or GitLab URL.'
       }
     } catch {
-      fieldErrors.authorUrl = 'Link must be a valid repository URL.'
+      fieldErrors.authorUrl = 'Repository URL should be like github.com/owner/repo or https://github.com/owner/repo'
     }
   }
 
