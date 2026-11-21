@@ -25,7 +25,7 @@ A static, paginated directory hosted on Cloudflare Pages, with Firebase Authenti
    ```
 
    Enter the GitHub OAuth client ID and secret in Firebase Authentication. Add `localhost` and your Cloudflare Pages domain to Authentication's authorized domains. Keep the GitHub OAuth secret in Firebase Console; it is not a frontend environment variable.
-4. Configure Firebase App Check for the web app with reCAPTCHA v3. Set the site key as `NEXT_PUBLIC_FIREBASE_APPCHECK_SITE_KEY`. Test first, then enable App Check enforcement for Cloud Firestore.
+4. Configure Firebase App Check for the web app with reCAPTCHA Enterprise (Fraud Defense). Create a score-based web key without a checkbox challenge, allow the production domains, and register that key with the web app in App Check. Set the same key as `NEXT_PUBLIC_FIREBASE_APPCHECK_SITE_KEY` for the site build. Use a separate development key instead of adding `localhost` to the production key. Test first, then enable App Check enforcement for Cloud Firestore.
 5. Deploy Firestore rules and indexes:
 
    ```bash

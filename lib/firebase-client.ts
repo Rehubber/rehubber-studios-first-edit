@@ -1,7 +1,7 @@
 'use client'
 
 import { getApp, getApps, initializeApp } from 'firebase/app'
-import { getToken, initializeAppCheck, ReCaptchaV3Provider, type AppCheck } from 'firebase/app-check'
+import { getToken, initializeAppCheck, ReCaptchaEnterpriseProvider, type AppCheck } from 'firebase/app-check'
 import { getAuth } from 'firebase/auth'
 import { getFirestore, initializeFirestore, memoryLocalCache } from 'firebase/firestore'
 
@@ -53,7 +53,7 @@ export function ensureFirebaseAppCheck(app = getApps()[0]) {
   if (!appCheckInstance) {
     try {
       appCheckInstance = initializeAppCheck(app, {
-        provider: new ReCaptchaV3Provider(siteKey),
+        provider: new ReCaptchaEnterpriseProvider(siteKey),
         isTokenAutoRefreshEnabled: true,
       })
     } catch {
